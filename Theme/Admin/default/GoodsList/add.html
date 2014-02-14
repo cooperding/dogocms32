@@ -1,0 +1,142 @@
+<form action="__GROUP__/GoodsList/insert" class="form_dogocms" method="post" enctype="multipart/form-data">
+
+    <div class="division">
+        
+        <table>
+            <tbody>
+                <tr>
+                    <th>商品标题：</th>
+                    <td><input type="text" name="title" value="{$data.title}" data-options="required:true" class="easyui-validatebox"/><span class="red">*</span></td>
+                </tr>
+                <tr>
+                    <th>商品副标题：</th>
+                    <td><input type="text" name="subtitle" value="{$data.subtitle}" /></td>
+                </tr>
+                <tr>
+                    <th>文档分类：</th>
+                    <td><input name="sort_id" id="sort_combotree" value="0"  style="width:200px;" /><span class="red">*请先选择文档分类</span></td>
+                </tr>
+                <tr>
+                    <th>品牌商家：</th>
+                    <td><input name="brand_id" class="easyui-combotree combotree" data-options="url:'__GROUP__/BrandList/jsonTree',required:true"  value="0"  style="width:200px;"/></td>
+                </tr>
+                <tr>
+                    <th>文档标题图：</th>
+                    <td>
+                        <input type="text" id="url1" name="thumb" value="{$data.thumb}" />
+                        <input type="button" id="image1" value="选择图片" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>关键词：</th>
+                    <td><input type="text" name="keywords" value="{$data.keywords}" /></td>
+                </tr>
+                <tr>
+                    <th>描述简介：</th>
+                    <td><textarea name="description" rows="3" cols="30">{$data.description}</textarea></td>
+                </tr>
+                <tr>
+                    <th>商品编号：</th>
+                    <td><input type="text" name="number" value="{$data.number}" /></td>
+                </tr>
+                <tr>
+                    <th>库存：</th>
+                    <td><input type="number" name="stock" value="{$data.stock}" /></td>
+                </tr>
+                <tr>
+                    <th>警报库存：</th>
+                    <td><input type="number" name="stockalert" value="{$data.stockalert}" /></td>
+                </tr>
+                <tr>
+                    <th>市场价格：</th>
+                    <td><input type="text" name="market_price" value="{$data.market_price}" /></td>
+                </tr>
+                <tr>
+                    <th>商城价格：</th>
+                    <td><input type="text" name="shop_price" value="{$data.shop_price}" /></td>
+                </tr>
+                <tr>
+                    <th>上架日期：</th>
+                    <td><input type="text" name="selltime" value="{$data.selltime}" /></td>
+                </tr>
+                <tr>
+                    <th>下架日期：</th>
+                    <td><input type="text" name="soldouttime" value="{$data.soldouttime}" /></td>
+                </tr>
+                <tr>
+                    <th>审核状态：</th>
+                    <td><html:radio name="status" radios="status" checked="20"/></td>
+            </tr>
+            <tr>
+                <th>是否销售：</th>
+                <td><html:radio name="is_sale" radios="is_sale" checked="20"/></td>
+            </tr>
+            <tr>
+                <th>是否加入回收站：</th>
+                <td><html:radio name="is_recycle" radios="is_recycle" checked="10"/></td>
+            </tr>
+            <tr>
+                <th>文档内容：</th>
+                <td><textarea id="content" name="content" style="width:720px;height:400px;visibility:hidden;">{$data.content|stripslashes}</textarea></td>
+            </tr>
+
+
+
+
+
+
+            </tbody>
+        </table></div>
+    <div id="conModel" style="margin: 10px 0;"><include file="GoodsList:tempmodel" /></div>
+
+</form>
+<script>
+    $(function() {
+        $('#sort_combotree').combotree({
+            url: '__GROUP__/GoodsSort/jsonTree',
+            required: true,
+            onChange: function() {
+                var nid = $(this).combotree('getValue');
+                var href = '__GROUP__/GoodsList/tempmodel';
+                $.ajax({
+                    url: href,
+                    type: 'post',
+                    data: {
+                        id: nid
+                    },
+                    dataType: 'html',
+                    success: function(data) {
+                        //alert(data);
+                        $('#conModel').html(data);
+                    }
+                });//ajax
+            }
+        });
+        KindEditor.create('#content', {
+            themeType: 'simple',
+            allowFileManager: true,
+            uploadJson: '__GROUP__/Upload/uploadImg',
+            fileManagerJson: '__GROUP__/Upload/fileManagerJson',
+            afterBlur: function() {
+                this.sync();
+            }
+        });
+        var editor = KindEditor.editor({
+            allowFileManager: true,
+            uploadJson: '__GROUP__/Upload/uploadImg',
+            fileManagerJson: '__GROUP__/Upload/fileManagerJson'
+        });
+        KindEditor('#image1').click(function() {
+            editor.loadPlugin('image', function() {
+                editor.plugin.imageDialog({
+                    imageUrl: KindEditor('#url1').val(),
+                    clickFn: function(url, title, width, height, border, align) {
+                        KindEditor('#url1').val(url);
+                        editor.hideDialog();
+                    }
+                });
+            });
+        });
+
+    });
+</script>

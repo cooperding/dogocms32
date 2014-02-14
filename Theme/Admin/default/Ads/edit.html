@@ -1,0 +1,133 @@
+<form action="__GROUP__/Ads/update" class="form_dogocms" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{$data.id}" />
+    <div class="division">
+        <table>
+            <tbody>
+            <tr>
+                <th>广告名称：</th>
+                <td><input type="text" name="name" value="{$data.name}" data-options="required:true" class="easyui-validatebox"/><span class="red">*</span></td>
+            </tr>
+            <tr>
+                <th>广告分组：</th>
+                <td><input name="sort_id" id="combotree" class="easyui-combotree combotree" data-options="url:'__GROUP__/Ads/jsonSortTree',required:true" value="{$data.sort_id}" style="width:200px;"></td>
+            </tr>
+            <tr>
+                <th>链接地址：</th>
+                <td><input type="text" name="url" value="{$data.url}" /></td>
+            </tr>
+            <tr>
+                <th>状态：</th>
+                <td><html:radio name="status" radios="status" checked="y" /></td>
+            </tr>
+            <tr>
+                <th>广告图：</th>
+                <td>
+                    <input type="text" id="url1" name="pic" value="" />
+                    <input type="button" id="image1" value="选择图片" />
+                </td>
+            </tr>
+            <tr>
+                <th>文字简介：</th>
+                <td><input type="text" name="remark" value="{$data.remark}" /></td>
+            </tr>
+            <tr>
+                <th>{:L("orderby")}：</th><td><input type="text" name="myorder" value="{$data.myorder}" /></td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+
+</form>
+<script>
+    $(function() {
+        $('#sort_combotree').combotree({
+            url:'__GROUP__/NewsSort/jsonTree',
+            required:true,
+            onChange:function(){
+                var nid = $(this).combotree('getValue');
+                //取得id之后，判断是否修改内容模型
+                //ajax方法取得相关信息
+                //var nid = node.id;
+                /*
+                $.messager.confirm('确认信息', '确认是否修改?', function(r){
+                    if (r){
+                        alert('confirmed:'+r);
+                        location.href = 'http://www.google.com';
+                    }
+                });
+                 */
+                var href = '__GROUP__/News/tempmodel';
+                $.ajax({
+                    url:href,
+                    type:'post',
+                    data:{
+                        id:nid
+                    },
+                    dataType:'html',
+                    success:function(data){
+                        //alert(data);
+                        $('#conModel').html(data);
+                    }
+                });//ajax
+            }
+        });
+        KindEditor.create('#content', {
+            themeType : 'simple',
+            allowFileManager : true,
+            uploadJson:'__GROUP__/Upload/uploadImg',
+            fileManagerJson :'__GROUP__/Upload/fileManagerJson',
+            afterBlur : function() {
+                this.sync();
+            }
+        });
+        var editor = KindEditor.editor({
+            allowFileManager : true,
+            uploadJson:'__GROUP__/Upload/uploadImg',
+            fileManagerJson :'__GROUP__/Upload/fileManagerJson'
+        });
+        KindEditor('#image1').click(function() {
+            editor.loadPlugin('image', function() {
+                editor.plugin.imageDialog({
+                    imageUrl : KindEditor('#url1').val(),
+                    clickFn : function(url, title, width, height, border, align) {
+                        KindEditor('#url1').val(url);
+                        editor.hideDialog();
+                    }
+                });
+            });
+        });
+
+        /*
+        var colorpicker;
+        KindEditor('#colorpicker').bind('click', function(e) {
+            e.stopPropagation();
+            if (colorpicker) {
+                colorpicker.remove();
+                colorpicker = null;
+                return;
+            }
+            var colorpickerPos = KindEditor('#colorpicker').pos();
+            colorpicker = KindEditor.colorpicker({
+                x : colorpickerPos.x,
+                y : colorpickerPos.y + KindEditor('#colorpicker').height(),
+                z : 19811214,
+                selectedColor : 'default',
+                noColor : '无颜色',
+                click : function(color) {
+                    KindEditor('#color').val(color);
+                    colorpicker.remove();
+                    colorpicker = null;
+                }
+            });
+        });
+        KindEditor.click(function() {
+            if (colorpicker) {
+                colorpicker.remove();
+                colorpicker = null;
+            }
+        });
+
+         */
+
+    });
+</script>

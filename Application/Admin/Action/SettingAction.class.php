@@ -1,0 +1,218 @@
+<?php
+
+/**
+ * SettingAction.class.php
+ * 系统基本参数
+ * @author 正侠客 <lookcms@gmail.com>
+ * @copyright 2012- http://www.dingcms.com http://www.dogocms.com All rights reserved.
+ * @license http://www.apache.org/licenses/LICENSE-2.0
+ * @version dogocms 1.0 2012-11-5 11:23
+ * @package  Controller
+ * @todo 视图重新写
+ */
+class SettingAction extends BaseAction {
+
+    /**
+     * index
+     * 系统基本参数
+     * @access public
+     * @return array
+     * @version dogocms 1.0
+     */
+    public function index() {
+        $this->display();
+    }
+
+    /**
+     * add
+     * 系统基本参数添加
+     * @access public
+     * @return array
+     * @version dogocms 1.0
+     */
+    public function add() {
+        $radios = array(
+            'text' => '文本',
+            'radio' => '布尔型',
+            'textarea' => '多行文本'
+        );
+        $id = intval($_GET['id']);
+        $this->assign('id', $id);
+        $this->assign('radios', $radios);
+        $this->display();
+    }
+
+    /**
+     * edit
+     * 系统基本参数编辑
+     * @access public
+     * @return array
+     * @version dogocms 1.0
+     */
+    public function edit() {
+        $m = new SettingModel();
+        $id = intval($_GET['id']);
+        $condition['id'] = array('eq',$id);
+        $data = $m->where($condition)->find();
+        $radios = array(
+            'text' => '文本',
+            'radio' => '布尔型',
+            'textarea' => '多行文本'
+        );
+        $this->assign('radios', $radios);
+        $this->assign('sys_gid', $data['sys_gid']);
+        $this->assign('sys_type', $data['sys_type']);
+        $this->assign('data', $data);
+        $this->display();
+    }
+
+    /**
+     * insert
+     * 系统基本参数插入数据
+     * @access public
+     * @return boolean
+     * @version dogocms 1.0
+     */
+    public function insert() {
+        $m = new SettingModel();
+        $sys_name = $this->_post('sys_name');
+        $sys_gid = $this->_post('sys_gid');
+        if (empty($sys_gid) || empty($sys_name)) {//不为空说明存在，存在就不能添加
+            $this->dmsg('1', '变量名或者所属分组不能为空！', false, true);
+        }
+        $condition['sys_name'] = array('eq',$sys_name);
+        $rs = $m->where($condition)->find();
+        if (!empty($rs)) {//不为空说明存在，存在就不能添加
+            $this->dmsg('1', '变量名"' . $sys_name . '"已经存在', false, true);
+        }
+        $_POST['sys_type'] = $_POST['sys_type'][0];
+        $_POST['updatetime'] = time();
+        if ($m->create($_POST)) {
+            $rs = $m->add();
+            if ($rs) {
+                $this->dmsg('2', '添加成功！', true);
+            } else {
+                $this->dmsg('1', '操作失败！', false, true);
+            }
+        }
+    }
+
+    /**
+     * update
+     * 系统基本参数更新
+     * @access public
+     * @return boolean
+     * @version dogocms 1.0
+     */
+    public function update() {
+        $m = new SettingModel();
+        $id = $this->_post('id');
+        $sys_gid = $this->_post('sys_gid');
+        $sys_name = $this->_post('sys_name');
+        $condition['id'] = array('neq', $id);
+        if (empty($sys_gid) || empty($sys_name)) {//不为空说明存在，存在就不能添加
+            $this->dmsg('1', '变量名或者所属分组不能为空！', false, true);
+        }
+        $condition['sys_name'] = array('eq',$sys_name);
+        $rs = $m->where($condition)->find();
+        if (!empty($rs)) {//不为空说明存在，存在就不能添加
+            $this->dmsg('1', '变量名"' . $sys_name . '"已经存在', false, true);
+        }
+        $_POST['sys_type'] = $_POST['sys_type'][0];
+        $_POST['updatetime'] = time();
+        $rs = $m->save($_POST);
+        if ($rs == true) {
+            $this->dmsg('2', '修改成功！', true);
+        } else {
+            $this->dmsg('1', '未有当作或者操作失败！', false, true);
+        }
+    }
+
+    /**
+     * settinglist
+     * 系统基本参数调取不同id数据
+     * @access public
+     * @return array
+     * @version dogocms 1.0
+     */
+    public function settinglist() {
+        $m = new SettingModel();
+        $id = $this->_get('id');
+        $this->assign('id', $id);
+        $this->display('list');
+    }
+
+    /**
+     * delete
+     * 删除信息
+     * @access public
+     * @return array
+     * @version dogocms 1.0
+     */
+    public function delete() {
+        $this->dmsg('1', '暂不支持删除操作！', false, true);
+        exit;
+        $m = new SettingModel();
+        $id = $this->_post('id');
+        $condition['id'] = array('eq',$id);
+        $del = $m->where($condition)->delete();
+        if ($del == true) {
+            $this->dmsg('2', '操作成功！', true);
+        } else {
+            $this->dmsg('1', '删除操作失败！', false, true);
+        }//if
+    }
+
+    /**
+     * listJsonId
+     * 取得相应id下的列表信息
+     * @access public
+     * @return array
+     * @version dogocms 1.0
+     */
+    public function listJsonId() {
+        $m = new SettingModel();
+        $id = $this->_get('id');
+        $condition['sys_gid'] = array('eq',$id);
+        $data = $m->where($condition)->select();
+        $count = $m->where($condition)->count();
+        //$data = $m->select();
+        $array = array();
+
+        foreach ($data as $k => $v) {
+            if ($v['sys_type'] == 'radio') {
+                if ($v['sys_value'] == 1) {
+                    $v['sys_value'] = '是';
+                } elseif ($v['sys_value'] == 2) {
+                    $v['sys_value'] = '否';
+                }
+            }
+            $array['rows'][] = $v;
+        }
+        $array['total'] = $count;
+        echo json_encode($array);
+    }
+
+    /**
+     * jsonTree
+     * 分类树信息json数据
+     * @access public
+     * @return array
+     * @version dogocms 1.0
+     */
+    public function jsonTree() {
+        Load('extend');
+        $sort = array(
+            array('id' => 1, 'text' => '站点设置'),
+            array('id' => 2, 'text' => '附件设置'),
+            array('id' => 3, 'text' => '信息相关'),
+            array('id' => 4, 'text' => '会员设置'),
+            array('id' => 5, 'text' => '邮箱设置'),
+            array('id' => 6, 'text' => '其它设置')
+        );
+        $tree = list_to_tree($sort, 'id', 'parent_id', 'children');
+        echo json_encode($tree);
+    }
+    
+
+}

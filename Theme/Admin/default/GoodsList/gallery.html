@@ -1,0 +1,128 @@
+<form action="__GROUP__/GoodsList/galleryUpdate" class="form_dogocms" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{$id}" />
+    <div class="division addPic cursor_pointer" style="text-align: center;">点击增加新图片</div>
+    <div class="gallery_content">
+        <volist name="data" id="vo" key="i">
+
+
+            <div class="division galler_row galler_row_{$i}" data-row="{$i}">
+                <input name="gallery_id[]" type="hidden" value="{$vo.id}"/>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>NO.{$i}图片：</th>
+                            <td>
+                                <div class="">
+                                    <img src="{$vo.img_url}"/>
+                                </div>
+                                <br/>
+                                <input type="text" id="url{$i}" name="gallery_thumb[]" value="{$vo.img_url}" />
+                                <input type="button" id="image{$i}" onclick="uploadImg('{$i}')" class="cursor_pointer" value="选择图片" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>图片标题：</th>
+                            <td>
+                                <input type="text" name="gallery_title[]" value="{$vo.title}"/><span class="cursor_pointer" onclick="removePic('{$i}', '{$vo.id}')">删除图片</span>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <!--division-->
+        </volist>
+
+
+
+    </div><!--gallery_content-->
+
+
+
+
+</form>
+<script>
+    function removePic(i, id) {
+        var galler_row = '.galler_row_' + i;
+        $.messager.confirm('信息提示', '确定要删除信息吗?', function(r) {
+            if (!r) {
+                return false;
+            }
+            $.ajax({
+                url: '__GROUP__/GoodsList/galleryRemove',
+                type: 'post',
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.status == '2') {
+                        $(galler_row).remove();
+                    } else {
+                        alert(data.msg);
+                        return false;
+                    }
+                }
+            });
+        });//$
+
+    }
+    function uploadImg(id) {
+        var imageId = '#image' + id;
+        var urlId = '#url' + id;
+        var editor = KindEditor.editor({
+            allowFileManager: true,
+            uploadJson: '__GROUP__/Upload/uploadImg',
+            fileManagerJson: '__GROUP__/Upload/fileManagerJson'
+        });
+        editor.loadPlugin('image', function() {
+            editor.plugin.imageDialog({
+                imageUrl: KindEditor(urlId).val(),
+                clickFn: function(url, title, width, height, border, align) {
+                    KindEditor(urlId).val(url);
+                    editor.hideDialog();
+                }
+            });
+        });
+
+    }
+    $(function() {
+        $('.addPic').click(function() {
+            var row = $('.galler_row').last().attr('data-row');
+            if (!row) {
+                var row = 0;
+            }
+            var n = $('.galler_row').length;
+            if (n > 6) {
+                alert('最大图片上传数超过' + n + '条！');
+                return false;
+            }
+            var i = parseInt(row) + 1;
+            var text = '<div class="division galler_row galler_row_' + i + '" data-row="' + i + '"><input name="gallery_id[]" type="hidden" value=""/>\n\
+                    <table>\n\
+                <tbody>\n\
+                    <tr>\n\
+                        <th>NO.' + i + '图片：</th>\n\
+                        <td>\n\
+                            <div class="">\n\
+                            </div>\n\
+                            <input type="text" id="url' + i + '" name="gallery_thumb[]" value="" />\n\
+                            <input type="button" id="image' + i + '" class="cursor_pointer" onclick="uploadImg(' + i + ')" value="选择图片" />\n\
+                        </td>\n\
+                    </tr>\n\
+                    <tr>\n\
+                        <th>图片标题：</th>\n\
+                        <td>\n\
+                            <input type="text" name="gallery_title[]" value=""/><span class="cursor_pointer" onclick="removePic(' + i + ')">删除图片</span>\n\
+                        </td>\n\
+                    </tr>\n\
+                </tbody>\n\
+            </table>\n\
+        </div>';
+            $('.gallery_content').append(text);
+        });
+
+    });
+</script>

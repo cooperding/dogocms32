@@ -1,0 +1,20 @@
+<form action="__GROUP__/AttributeSort/update" class="form_dogocms" method="post">
+    <input type="hidden" name="id" value="{$data.id}" />
+    <div class="division">
+        <table>
+            <tbody>
+                <tr>
+                    <th>商品类型名称：</th>
+                    <td><input type="text" name="cat_name" value="{$data.cat_name}" data-options="required:true" class="easyui-validatebox"/><span class="red">*</span></td>
+                </tr>
+                <tr>
+                    <th>状态：</th>
+                    <td><html:radio name="status" radios="status" checked="v_status" /></td>
+            </tr>
+                <tr>
+                    <th>属性分组：</th>
+                    <td><textarea name="attr_group" rows="8" cols="30">{$data.attr_group}</textarea><br/>每行一个商品属性组。排序也将按照自然顺序排序。</td>
+                </tr>
+            </tbody>
+        </table></div>
+</form>

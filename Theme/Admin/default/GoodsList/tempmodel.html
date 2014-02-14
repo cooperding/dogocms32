@@ -1,0 +1,104 @@
+<div class="division">
+    <table>
+        <tbody>
+        <foreach name="data_model" item="vo">
+            <tr class="tr_id_{$vo.id}">
+                <th>{$vo.attr_name}：</th>
+                <td>
+                    <input type="hidden" name="attr_id_list[]" value="{$vo.id}"/>
+                    <!--first start-->
+            <if condition="$vo.attr_type eq '0'">
+
+                <input type="hidden" name="attr_price_list[]" value=""/>
+                <if condition="$vo.attr_input_type eq '0'">
+                    <input type="text" name="attr_value_list[]" value="{$vo.values}" />
+
+                    <elseif condition="$vo.attr_input_type eq '1'"/>
+                    <select name="attr_value_list[]">
+                        <php>
+                            $attr_values = explode(",",$vo['attr_values']);
+                            $value = $vo['values'];
+                            foreach($attr_values as $k=>$v){
+                            if($v==$value){
+                            echo '<option value="'.$v.'"selected="selected">'.$v.'</option>';
+                            }else{
+                            echo '<option value="'.$v.'">'.$v.'</option>';
+                            }
+                            }
+                        </php>
+                    </select>
+
+                    <elseif condition="$vo.attr_input_type eq '2'"/>
+                    <textarea name="attr_value_list[]" rows="3" cols="30">{$vo.values}</textarea>
+                </if>
+                <!--second start-->
+                <elseif condition="$vo.attr_type eq '1'"/>
+
+
+                <if condition="$vo.attr_input_type eq '0'">
+                    <input type="text" name="attr_value_list[]" value="{$vo.values}" />
+                    <elseif condition="$vo.attr_input_type eq '1'"/>
+                    <select name="attr_value_list[]">
+                        <php>
+                            $attr_values = explode(",",$vo['attr_values']);
+                            $value = $vo['values'];
+                            foreach($attr_values as $k=>$v){
+                            if($v==$value){
+                            echo '<option value="'.$v.'"selected="selected">'.$v.'</option>';
+                            }else{
+                            echo '<option value="'.$v.'">'.$v.'</option>';
+                            }
+                            }
+                        </php>
+                    </select>
+                    <elseif condition="$vo.attr_input_type eq '2'"/>
+
+                    <textarea name="attr_value_list[]" rows="3" cols="30">{$vo.values}</textarea>
+                </if>
+                价格：<input type="text" name="attr_price_list[]" value="{$vo.price}" style="width:50px;"/>
+                <span class="do_add" data-item="{$vo.id}">[+]</span>
+                <!--third start-->
+                <elseif condition="$vo.attr_type eq '2'"/>
+
+                <if condition="$vo.attr_input_type eq '0'">
+                    <input type="text" name="attr_value_list[]" value="{$vo.values}" />
+                    <elseif condition="$vo.attr_input_type eq '1'"/>
+                    <select name="attr_value_list[]">
+                        <php>
+                            $attr_values = explode(",",$vo['attr_values']);
+                            $value = $vo['values'];
+                            foreach($attr_values as $k=>$v){
+                            if($v==$value){
+                            echo '<option value="'.$v.'"selected="selected">'.$v.'</option>';
+                            }else{
+                            echo '<option value="'.$v.'">'.$v.'</option>';
+                            }
+                            }
+                        </php>
+                    </select>
+                    <elseif condition="$vo.attr_input_type eq '2'"/>
+                    <textarea name="attr_value_list[]" rows="3" cols="30">{$vo.values}</textarea>
+                </if>
+                价格：<input type="text" name="attr_price_list[]" value="{$vo.price}" style="width:50px;"/>
+                <span class="do_add" data-item="{$vo.id}">[++]</span>
+            </if>
+
+
+
+            </td>
+            </tr>
+        </foreach>
+
+
+        <script>
+            $(function() {
+                $('.do_add').click(function() {
+                    var itemid = $(this).attr('data-item');
+                    alert(itemid);
+                });
+                $.parser.parse($('.tempmodel'));
+            });
+        </script>
+        </tbody>
+    </table>
+</div>

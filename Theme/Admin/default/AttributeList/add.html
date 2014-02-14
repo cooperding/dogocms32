@@ -1,0 +1,60 @@
+<form action="__GROUP__/AttributeList/insert" class="form_dogocms" method="post" enctype="multipart/form-data">
+
+    <div class="division">
+        <table>
+            <tbody>
+                <tr>
+                    <th>属性名称：</th>
+                    <td><input type="text" name="attr_name" value="{$data.attr_name}" data-options="required:true" class="easyui-validatebox"/><span class="red">*</span></td>
+                </tr>
+            <tr>
+                <th>所属商品类型：</th>
+                <td><input name="sort_id" id="combotree" class="easyui-combotree combotree" data-options="url:'__GROUP__/AttributeSort/jsonTree',required:true"  value="0"  style="width:200px;"/></td>
+            </tr>
+            <tr>
+                <th>能否进行检索：</th>
+                <td><html:radio name="attr_index" radios="attr_index" checked="" /></td>
+            </tr>
+            <tr>
+                <th>相同属性值的商品是否关联？：</th>
+                <td><html:radio name="is_linked" radios="is_linked" checked="" />
+                <br/>
+                <span class="txt_mark">
+                不需要该属性成为检索商品条件的情况请选择不需要检索，需要该属性进行关键字检索商品时选择关键字检索，如果该属性检索时希望是指定某个范围时，选择范围检索。
+                </span>
+                </td>
+            </tr>
+            <tr>
+                <th>该属性值的录入方式：</th>
+                <td><html:radio name="attr_type" radios="attr_type" checked="" /></td>
+            </tr>
+            <tr>
+                <th>属性是否可选：</th>
+                <td><html:radio name="attr_input_type" radios="attr_input_type" checked="" />
+                <br/>
+                <span class="txt_mark">
+                选择"单选/复选属性"时，可以对商品该属性设置多个值，同时还能对不同属性值指定不同的价格加价，用户购买商品时需要选定具体的属性值。选择"唯一属性"时，商品的该属性值只能设置一个值，用户只能查看该值。
+                </span>
+                </td>
+            </tr>
+            
+            <tr>
+                <th>可选值列表：</th>
+                <td><textarea name="attr_values" rows="10" cols="60" readonly="readonly">{$data.attr_values}</textarea></td>
+            </tr>
+            </tbody>
+        </table></div>
+</form>
+<script>
+    $(function(){
+        $('input[name="attr_type[]"]').click(function(){
+            var value = $(this).val();
+            if(value==0||value==2){
+                $('textarea[name="attr_values"]').attr('readonly',true);
+            }else if(value==1){
+                $('textarea[name="attr_values"]').removeAttr('readonly');
+            }
+        });
+        
+    })
+</script>

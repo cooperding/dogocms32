@@ -1,0 +1,49 @@
+<form action="__GROUP__/ApiList/update" class="form_dogocms" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{$data.id}" />
+    <div class="division">
+        <table>
+            <tbody>
+                <tr>
+                    <th>API用户名：</th>
+                    <td>{$data.apitoken}</td>
+                </tr>
+                <tr>
+                    <th>API密钥：</th>
+                    <td>{$data.secretkey}</td>
+                </tr>
+                <tr>
+                    <th>API签名：</th>
+                    <td>{$data.signature}</td>
+                </tr>
+                <tr>
+                    <th>状态：</th>
+                    <td><html:radio name="status" radios="status" checked="v_status" /></td>
+            </tr>
+            <tr>
+                <th> 会员名：</th>
+                <td>{$data.username}</td>
+            </tr>
+            <tr>
+                <th>会员邮箱：</th>
+                <td>{$data.email}</td>
+            </tr>
+            <tr>
+                <th>添加时间：</th>
+                <td>{$data.addtime|date="Y-m-d H:i:s",###}</td>
+            </tr>
+            <tr>
+                <th>更新时间：</th>
+                <td>{$data.updatetime|date="Y-m-d H:i:s",###}</td>
+            </tr>
+            <tr>
+                <th>站点域名：</th>
+                <td><textarea name="domain" rows="3" cols="30">{$data.domain}</textarea></td>
+            </tr>
+            <tr>
+                <th>备注：</th>
+                <td><textarea name="remark" rows="3" cols="30">{$data.remark}</textarea></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</form>

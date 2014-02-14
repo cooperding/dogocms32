@@ -1,0 +1,53 @@
+<form action="__GROUP__/GoodsList/update" class="form_dogocms" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{$data.id}" />
+
+    <div class="division">
+        <table>
+            <tbody>
+                <tr>
+                    <td width="80px">商品编号</td>
+                    <td width="180px">商品名称</td>
+                    <td width="180px">副标题</td>
+                    <td width="80px">价格</td>
+                    <td width="80px">购买数量</td>
+                </tr>
+            <foreach name="list" item="vo">
+                <tr>
+                    <td>{$vo.goods_id}</td>
+                    <td>{$vo.title}</td>
+                    <td>{$vo.subtitle}</td>
+                    <td>{$vo.shop_price}/{$vo.unit}</td>
+                    <td>{$vo.numbers}</td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <table>
+            <tbody>
+                <tr>
+                    <th>收货人姓名：</th>
+                    <td><input type="text" name="name" value="{$data.name}" /></td>
+                </tr>
+                <tr>
+                    <th>手机号：</th>
+                    <td><input type="text" name="telphone" value="{$data.telphone}" /></td>
+                </tr>
+
+                <tr>
+                    <th>地址：</th>
+                    <td><input type="text" name="address" value="{$data.address}" /></td>
+                </tr>
+                <tr>
+                    <th>备注：</th>
+                    <td><input type="text" name="remark" value="{$data.remark}" /></td>
+                </tr>
+                <tr>
+                    <th>审核状态：</th>
+                    <td><html:radio name="status" radios="status" checked="v_status"/></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</form>
+

@@ -1,0 +1,17 @@
+/* CSS Document */
+/**gongong**/
+body,ul,ol,li,p,h1,h2,h3,h4,table,td,th,form,fieldset,img,dl,dt,input,select,bottom{margin:0;padding:0;}
+h1,h2,h3,h4,a{font-weight:normal}
+dd{ margin-left:18px;}
+body{font-size:13px; color:#000;}
+li{list-style:none;overflow:hidden;}
+a{text-decoration:none; color:#000;}
+a:hover{color:#CC0000;}
+a img,img,a:hover img{border:0;}
+img,input,li{ vertical-align:middle;}
+.clear{clear:both; height:0;border:0;}
+.wp{ width:960px; margin:0 auto;}
+.fleft{ float:left; display:inline; overflow:hidden;}
+.fright{ float:right; display:inline; overflow:hidden;}
+.red{color:#f00;}
+.cursor_pointer{cursor: pointer;}
