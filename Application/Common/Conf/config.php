@@ -9,6 +9,7 @@ return array(
     'DEFAULT_MODULE' => 'Home', //默认模块
     'URL_CASE_INSENSITIVE' => false, // 默认false 表示URL区分大小写 true则表示不区分大小写
     'MULTI_MODULE' => true, // true开启多模块访问，false关闭多模块访问
+    'URL_MODEL' => '2', //URL模式
     //完整域名部署
 //    'APP_SUB_DOMAIN_DEPLOY' => 1, // 开启子域名配置
 //    'APP_SUB_DOMAIN_RULES' => array(
