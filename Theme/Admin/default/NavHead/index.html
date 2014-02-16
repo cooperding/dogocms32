@@ -8,10 +8,10 @@
     }
     $(function() {
         var classId = 'navhead';
-        var urljson = './NavHead/json';
-        var hrefadd = './NavHead/add';
-        var hrefedit = './NavHead/edit';
-        var hrefcancel = './NavHead/delete';
+        var urljson = '{:U("Admin/NavHead/json")}';
+        var hrefadd = '{:U("Admin/NavHead/add")}';
+        var hrefedit = '{:U("Admin/NavHead/edit")}';
+        var hrefcancel = '{:U("Admin/NavHead/delete")}';
         openTreeGrid(classId, urljson, hrefadd, hrefedit, hrefcancel);
         $('#treegrid_' + classId).treegrid({
             columns: [[

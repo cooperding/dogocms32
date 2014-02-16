@@ -14,7 +14,7 @@ namespace Admin\Model;
 use Think\Model;
 class NavFootModel extends Model {
 
-    protected $tableName = 'nav_foot';
+    protected $tableName = 'nav_head';
     //_pk 表示主键字段名称 _autoinc 表示主键是否自动增长类型
     protected $fields = array(
         'id', 'parent_id', 'text', 'path', 'myorder', 'status', 'updatetime', 'url', '_pk' => 'id'

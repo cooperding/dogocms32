@@ -1,4 +1,4 @@
-<form action="{:U('NavHead/update')}" class="form_dogocms" method="post">
+<form action="{:U('Admin/NavHead/update')}" class="form_dogocms" method="post">
     <input type="hidden" name="id" value="{$data.id}" />
     <div class="division">
         <table>
@@ -9,7 +9,7 @@
                 </tr>
                 <tr>
                     <th>上级分组名：</th>
-                    <td><input name="parent_id" id="combotree" class="easyui-combotree combotree" data-options="url:{:U('NavHead/jsonTree')},required:true," value="{$data.parent_id}"  style="width:200px;"/></td>
+                    <td><input name="parent_id" id="combotree" class="easyui-combotree combotree" data-options="url:{:U('Admin/NavHead/jsonTree')},required:true," value="{$data.parent_id}"  style="width:200px;"/></td>
                 </tr>
                 <tr>
                     <th>链接地址：</th>

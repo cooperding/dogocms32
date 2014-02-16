@@ -78,8 +78,8 @@ class NavFootAction extends BaseAction {
     {
         //添加功能还需要验证数据不能为空的字段
         $m = D('NavFoot');
-        $parent_id = $this->_post('parent_id');
-        $text = $this->_post('text');
+        $parent_id = I('post.parent_id');
+        $text = I('post.text');
         if (empty($text)) {
             $this->dmsg('1', '分类名不能为空！', false, true);
         }
@@ -113,8 +113,8 @@ class NavFootAction extends BaseAction {
     {
         $m = D('NavFoot');
         $d = D('CommonSort');
-        $id = $this->_post('id');
-        $parent_id = $this->_post('parent_id');
+        $id = I('post.id');
+        $parent_id = I('post.parent_id');
         $tbname = 'NavFoot';
         if ($parent_id != 0) {//不为0时判断是否为子分类
             if ($id == $parent_id) {
@@ -160,7 +160,7 @@ class NavFootAction extends BaseAction {
     public function delete()
     {
         $m = D('NavFoot');
-        $id = $this->_post('id');
+        $id = I('post.id');
         if (empty($id)) {
             $this->dmsg('1', '未有id值，操作失败！', false, true);
         }

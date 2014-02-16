@@ -4,10 +4,10 @@
 <script>
     $(function() {
         var classId = 'navfoot';
-        var urljson = './NavFoot/json';
-        var hrefadd = './NavFoot/add';
-        var hrefedit = './NavFoot/edit';
-        var hrefcancel = './NavFoot/delete';
+        var urljson = '{:U("Admin/NavFoot/json")}';
+        var hrefadd = '{:U("Admin/NavFoot/add")}';
+        var hrefedit = '{:U("Admin/NavFoot/edit")}';
+        var hrefcancel = '{:U("Admin/NavFoot/delete")}';
         openTreeGrid(classId, urljson, hrefadd, hrefedit, hrefcancel);
         $('#treegrid_' + classId).treegrid({
             columns: [[

@@ -23,9 +23,9 @@ class NavHeadAction extends BaseAction {
      */
     public function index()
     {
-        $class_methods = get_class_methods('NavHeadAction');
-        dump($class_methods);
-        exit;
+//        $class_methods = get_class_methods('NavHeadAction');
+//        dump($class_methods);
+//        exit;
         $this->display();
     }
 
@@ -55,8 +55,8 @@ class NavHeadAction extends BaseAction {
      */
     public function edit()
     {
-        $m = new NavHeadModel();
-        $id = $this->_get('id');
+        $m =  D('NavHead');
+        $id = I('get.id');
         $condition['id'] = array('eq',$id);
         $data = $m->where($condition)->find();
         $status = array(
@@ -79,9 +79,9 @@ class NavHeadAction extends BaseAction {
     public function insert()
     {
         //添加功能还需要验证数据不能为空的字段
-        $m = new NavHeadModel();
-        $parent_id = $this->_post('parent_id');
-        $text = $this->_post('text');
+        $m =  D('NavHead');
+        $parent_id = I('post.parent_id');
+        $text = I('post.text');
         if (empty($text)) {
             $this->dmsg('1', '分类名不能为空！', false, true);
         }
@@ -113,10 +113,10 @@ class NavHeadAction extends BaseAction {
      */
     public function update()
     {
-        $m = new NavHeadModel();
+        $m =  D('NavHead');
         $d = D('CommonSort');
-        $id = $this->_post('id');
-        $parent_id = $this->_post('parent_id');
+        $id = I('post.id');
+        $parent_id = I('post.parent_id');
         $tbname = 'NavHead';
         if ($parent_id != 0) {//不为0时判断是否为子分类
             if($id==$parent_id){
@@ -161,8 +161,8 @@ class NavHeadAction extends BaseAction {
      */
     public function delete()
     {
-        $m = new NavHeadModel();
-        $id = $this->_post('id');
+        $m =  D('NavHead');
+        $id = I('post.id');
         if (empty($id)) {
             $this->dmsg('1', '未有id值，操作失败！', false, true);
         }
@@ -189,7 +189,7 @@ class NavHeadAction extends BaseAction {
      */
     public function json()
     {
-        $m = new NavHeadModel();
+        $m =  D('NavHead');
         $list = $m->field('id,parent_id,text,status')->select();
         $navcatCount = $m->count("id");
         $a = array();
@@ -218,7 +218,7 @@ class NavHeadAction extends BaseAction {
     public function jsonTree()
     {
         Load('extend');
-        $m = new NavHeadModel();
+        $m =  D('NavHead');
         $tree = $m->field('id,parent_id,text')->select();
         $tree = list_to_tree($tree, 'id', 'parent_id', 'children');
         $tree = array_merge(array(array('id' => 0, 'text' => L('sort_root_name'))), $tree);
