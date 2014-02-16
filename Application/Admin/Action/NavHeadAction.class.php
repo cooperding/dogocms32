@@ -23,9 +23,6 @@ class NavHeadAction extends BaseAction {
      */
     public function index()
     {
-//        $class_methods = get_class_methods('NavHeadAction');
-//        dump($class_methods);
-//        exit;
         $this->display();
     }
 
@@ -93,7 +90,7 @@ class NavHeadAction extends BaseAction {
         $_POST['status'] = $_POST['status']['0'];
         $_POST['updatetime'] = time();
         if ($m->create($_POST)) {
-            $rs = $m->add($_POST);
+            $rs = $m->add();
             if ($rs) {
                 $this->dmsg('2', '操作成功！', true);
             } else {

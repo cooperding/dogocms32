@@ -215,10 +215,10 @@ class NavFootAction extends BaseAction {
      */
     public function jsonTree()
     {
-        Load('extend');
+        $qiuyun = new \Org\Util\Qiuyun;
         $m = D('NavFoot');
         $tree = $m->field('id,parent_id,text')->select();
-        $tree = list_to_tree($tree, 'id', 'parent_id', 'children');
+        $tree = $qiuyun->list_to_tree($tree, 'id', 'parent_id', 'children');
         $tree = array_merge(array(array('id' => 0, 'text' => L('sort_root_name'))), $tree);
         echo json_encode($tree);
     }
