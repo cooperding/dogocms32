@@ -4,10 +4,10 @@
 <script>
     $(function() {
         var classId = 'navfoot';
-        var urljson = './NavFoot/json';
-        var hrefadd = './NavFoot/add';
-        var hrefedit = './NavFoot/edit';
-        var hrefcancel = './NavFoot/delete';
+        var urljson = '<?php echo U("Admin/NavFoot/json");?>';
+        var hrefadd = '<?php echo U("Admin/NavFoot/add");?>';
+        var hrefedit = '<?php echo U("Admin/NavFoot/edit");?>';
+        var hrefcancel = '<?php echo U("Admin/NavFoot/delete");?>';
         openTreeGrid(classId, urljson, hrefadd, hrefedit, hrefcancel);
         $('#treegrid_' + classId).treegrid({
             columns: [[
@@ -20,8 +20,8 @@
                         title: '动作',
                         width: 50,
                         formatter: function(value, row, index) {
-                            return '<img class="btn_do" src="/qiuyun/thinkphp32/Public/Easyui/themes/icons/pencil.png" onclick="ding_edit(\'' + hrefedit + '?id=' + row.id + '\',\'' + classId + '\')"  title="编辑"/>&nbsp;\n\
-<img class="btn_do" src="/qiuyun/thinkphp32/Public/Easyui/themes/icons/cancel.png" onclick="ding_cancel(\'' + row.id + '\',\'' + hrefcancel + '\',\'' + classId + '\')" title=" 删除"/>&nbsp;';
+                            return '<img class="btn_do" src="/qiuyun/dogocms32/Public/Easyui/themes/icons/pencil.png" onclick="ding_edit(\'' + hrefedit + '?id=' + row.id + '\',\'' + classId + '\')"  title="编辑"/>&nbsp;\n\
+<img class="btn_do" src="/qiuyun/dogocms32/Public/Easyui/themes/icons/cancel.png" onclick="ding_cancel(\'' + row.id + '\',\'' + hrefcancel + '\',\'' + classId + '\')" title=" 删除"/>&nbsp;';
                         }
                     }
                 ]]
