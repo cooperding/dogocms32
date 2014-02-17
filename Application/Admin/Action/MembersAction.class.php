@@ -10,6 +10,8 @@
  * @package  Controller
  * @todo 信息各项操作
  */
+namespace Admin\Action;
+use Think\Action;
 class MembersAction extends BaseAction {
 
     /**
@@ -61,8 +63,8 @@ class MembersAction extends BaseAction {
      */
     public function edit()
     {
-        $m = new MembersModel();
-        $id = $this->_get('id');
+        $m = D('Members');
+        $id = I('get.id');
         $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
         $status = array(
@@ -97,10 +99,10 @@ class MembersAction extends BaseAction {
      */
     public function insert()
     {
-        $m = new MembersModel();
-        $user_name = $this->_post('username');
-        $email = $this->_post('email');
-        $password = $this->_post('password');
+        $m = D('Members');
+        $user_name = I('post.username');
+        $email = I('post.email');
+        $password = I('post.password');
         $_POST['status'] = $_POST['status']['0'];
         $_POST['sex'] = $_POST['sex']['0'];
         $_POST['updatetime'] = time();
@@ -143,11 +145,11 @@ class MembersAction extends BaseAction {
      */
     public function update()
     {
-        $m = new MembersModel();
-        $id = $this->_post('id');
+        $m = D('Members');
+        $id = I('post.id');
         $condition['id'] = array('eq', $id);
-        $user_name = $this->_post('username');
-        $email = $this->_post('email');
+        $user_name = I('post.username');
+        $email = I('post.email');
         $_POST['status'] = $_POST['status']['0'];
         //$_POST['is_recycle'] = $_POST['is_recycle']['0'];
         $_POST['sex'] = $_POST['sex']['0'];
@@ -192,8 +194,8 @@ class MembersAction extends BaseAction {
      */
     public function delete()
     {
-        $m = new MembersModel();
-        $id = $this->_post('id');
+        $m = D('Members');
+        $id = I('post.id');
         $condition['id'] = array('eq', $id);
         $del = $m->where($condition)->delete();
         if ($del == true) {
@@ -212,8 +214,7 @@ class MembersAction extends BaseAction {
      */
     public function listJsonId()
     {
-        $m = new MembersModel();
-        import('ORG.Util.Page'); // 导入分页类
+        $m = D('Members');
         $pageNumber = intval($_REQUEST['page']);
         $pageRows = intval($_REQUEST['rows']);
         $pageNumber = (($pageNumber == null || $pageNumber == 0) ? 1 : $pageNumber);
@@ -223,7 +224,7 @@ class MembersAction extends BaseAction {
             $condition['username|email'] = array('like', '%' . $title . '%');
         }
         $count = $m->where($condition)->count();
-        $page = new Page($count, $pageRows);
+        new \Think\Page($count, $pageRows); // 导入分页类
         $firstRow = ($pageNumber - 1) * $pageRows;
         $data = $m->where($condition)->limit($firstRow . ',' . $pageRows)->order('id desc')->select();
         if ($data) {

@@ -1,4 +1,4 @@
-<form action="__GROUP__/Block/update" class="form_dogocms" method="post" enctype="multipart/form-data">
+<form action="{:U('Admin/Block/update')}" class="form_dogocms" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id" value="{$data.id}" />
     <div class="division">
         <table>
@@ -9,7 +9,7 @@
             </tr>
             <tr>
                 <th>所属分类：</th>
-                <td><input name="sort_id" id="combotree" class="easyui-combotree combotree" data-options="url:'__GROUP__/Block/jsonTree',required:true" value="{$data.sort_id}" style="width:200px;"></td>
+                <td><input name="sort_id" id="combotree" class="easyui-combotree combotree" data-options="url:'{:U('Admin/Block/jsonTree')}',required:true" value="{$data.sort_id}" style="width:200px;"></td>
             </tr>
             <tr>
                 <th>链接地址：</th>
@@ -73,16 +73,11 @@
         KindEditor.create('#content', {
             themeType : 'simple',
             allowFileManager : true,
-            uploadJson:'__GROUP__/Upload/uploadImg',
-            fileManagerJson :'__GROUP__/Upload/fileManagerJson',
+            uploadJson: '{:U("Admin/Upload/uploadImg")}',
+            fileManagerJson: '{:U("Admin/Upload/fileManagerJson")}',
             afterBlur : function() {
                 this.sync();
             }
-        });
-        var editor = KindEditor.editor({
-            allowFileManager : true,
-            uploadJson:'__GROUP__/Upload/uploadImg',
-            fileManagerJson :'__GROUP__/Upload/fileManagerJson'
         });
         KindEditor('#image1').click(function() {
             editor.loadPlugin('image', function() {

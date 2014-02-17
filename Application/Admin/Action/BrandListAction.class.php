@@ -10,6 +10,8 @@
  * @package  Controller
  * @todo
  */
+namespace Admin\Action;
+use Think\Action;
 class BrandListAction extends BaseAction {
 
     /**
@@ -50,8 +52,8 @@ class BrandListAction extends BaseAction {
      */
     public function edit()
     {
-        $m = new BrandListModel();
-        $id = $this->_get('id');
+        $m = D('BrandList');
+        $id = I('get.id');
         $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
         $status = array(
@@ -73,8 +75,8 @@ class BrandListAction extends BaseAction {
      */
     public function insert()
     {
-        $m = new BrandListModel();
-        $name = $this->_post('name');
+        $m = D('BrandList');
+        $name = I('post.name');
         if (empty($name)) {
             $this->dmsg('1', '请输入商家名称！', false, true);
         }
@@ -102,9 +104,9 @@ class BrandListAction extends BaseAction {
      */
     public function update()
     {
-        $m = new BrandListModel();
-        $id = $this->_post('id');
-        $name = $this->_post('name');
+        $m = D('BrandList');
+        $id = I('post.id');
+        $name = I('post.name');
         $condition['id'] = array('eq', $id);
         if (empty($name)) {
             $this->dmsg('1', '商家名称不能为空！', false, true);
@@ -128,8 +130,8 @@ class BrandListAction extends BaseAction {
      */
     public function delete()
     {
-        $m = new BrandListModel();
-        $id = $this->_post('id');
+        $m = D('BrandList');
+        $id = I('post.id');
         $condition['id'] = array('eq', $id);
         $del = $m->where($condition)->delete();
         if ($del == true) {
@@ -148,8 +150,7 @@ class BrandListAction extends BaseAction {
      */
     public function jsonList()
     {
-        $m = new BrandListModel();
-        import('ORG.Util.Page'); // 导入分页类
+        $m = D('BrandList');
         $pageNumber = intval($_REQUEST['page']);
         $pageRows = intval($_REQUEST['rows']);
         $pageNumber = (($pageNumber == null || $pageNumber == 0) ? 1 : $pageNumber);
@@ -159,7 +160,7 @@ class BrandListAction extends BaseAction {
             $condition['name|url'] = array('like', '%' . $title . '%');
         }
         $count = $m->where($condition)->count();
-        $page = new Page($count, $pageRows);
+        new \Think\Page($count, $pageRows); // 导入分页类
         $firstRow = ($pageNumber - 1) * $pageRows;
         $data = $m->where($condition)->limit($firstRow . ',' . $pageRows)->order('id desc')->select();
         if ($data) {
@@ -190,8 +191,8 @@ class BrandListAction extends BaseAction {
      */
     public function jsonTree()
     {
-        Load('extend');
-        $m = new BrandListModel();
+        $qiuyun = new \Org\Util\Qiuyun;
+        $m = D('BrandList');
         $tree = $m->field('id,name as text')->select();
         $tree = array_merge(array(array('id' => 0, 'text' => L('sort_root_name'))), $tree);
         echo json_encode($tree);

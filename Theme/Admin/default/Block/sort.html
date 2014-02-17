@@ -5,10 +5,10 @@
 <script>
     $(function() {
         var classId = 'block_sort';
-        var hrefadd = '__GROUP__/Block/sortAdd';
-        var hrefedit = '__GROUP__/Block/sortEdit';
-        var hrefcancel = '__GROUP__/Block/sortDelete';
-        var urljson = '__GROUP__/Block/jsonSortList';
+        var hrefadd = '{:U("Admin/Block/sortAdd")}';
+        var hrefedit = '{:U("Admin/Block/sortEdit")}';
+        var hrefcancel = '{:U("Admin/Block/sortDelete")}';
+        var urljson = '{:U("Admin/Block/jsonSortList")}';
         openDatagrid(classId, urljson, hrefadd, hrefedit, hrefcancel);
         $('#datagrid_' + classId).datagrid({
             columns: [[

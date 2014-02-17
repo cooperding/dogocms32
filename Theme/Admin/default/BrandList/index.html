@@ -4,10 +4,10 @@
 <script>
     $(function() {
         var classId = 'brandlist';
-        var urljson = '__GROUP__/BrandList/jsonList';
-        var hrefadd = '__GROUP__/BrandList/add';
-        var hrefedit = '__GROUP__/BrandList/edit';
-        var hrefcancel = '__GROUP__/BrandList/delete';
+        var urljson = '{:U("Admin/BrandList/jsonList")}';
+        var hrefadd = '{:U("Admin/BrandList/add")}';
+        var hrefedit = '{:U("Admin/BrandList/edit")}';
+        var hrefcancel = '{:U("Admin/BrandList/delete")}';
         openDatagrid(classId, urljson, hrefadd, hrefedit, hrefcancel);
         $('#datagrid_' + classId).datagrid({
             columns: [[

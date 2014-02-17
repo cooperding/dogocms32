@@ -1,4 +1,4 @@
-<form action="__GROUP__/News/insert" class="form_dogocms" method="post" enctype="multipart/form-data">
+<form action="{:U('Admin/News/insert')}" class="form_dogocms" method="post" enctype="multipart/form-data">
     <div class="division">
         <table>
             <tbody>
@@ -27,7 +27,7 @@
             </tr>
             <tr>
                 <th>文档分类：</th>
-                <td><input name="sort_id" class="easyui-combotree combotree" data-options="url:'__GROUP__/NewsSort/jsonTree',required:true,"  value="0"  style="width:200px;" /><span class="red">*请先选择文档分类</span></td>
+                <td><input name="sort_id" class="easyui-combotree combotree" data-options="url:'{:U('Admin/NewsSort/jsonTree')}',required:true,"  value="0"  style="width:200px;" /><span class="red">*请先选择文档分类</span></td>
             </tr>
             <tr>
                 <th>文档标题图：</th>
@@ -61,16 +61,16 @@
         KindEditor.create('#content', {
             themeType: 'simple',
             allowFileManager: true,
-            uploadJson: '__GROUP__/Upload/uploadImg',
-            fileManagerJson: '__GROUP__/Upload/fileManagerJson',
+            uploadJson: '{:U("Admin/Upload/uploadImg")}',
+            fileManagerJson: '{:U("Admin/Upload/fileManagerJson")}',
             afterBlur: function() {
                 this.sync();
             }
         });
         var editor = KindEditor.editor({
             allowFileManager: true,
-            uploadJson: '__GROUP__/Upload/uploadImg',
-            fileManagerJson: '__GROUP__/Upload/fileManagerJson'
+            uploadJson: '{:U("Admin/Upload/uploadImg")}',
+            fileManagerJson: '{:U("Admin/Upload/fileManagerJson")}'
         });
         KindEditor('#image1').click(function() {
             editor.loadPlugin('image', function() {

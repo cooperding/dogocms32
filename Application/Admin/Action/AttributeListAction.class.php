@@ -10,6 +10,8 @@
  * @package  Controller
  * @todo
  */
+namespace Admin\Action;
+use Think\Action;
 class AttributeListAction extends BaseAction {
 
     /**
@@ -81,7 +83,7 @@ class AttributeListAction extends BaseAction {
      */
     public function edit()
     {
-        $m = new AttributeListModel();
+        $m = D('AttributeList');
         $id = intval($_GET['id']);
         $condition['id'] = array('eq',$id);
         $data = $m->where($condition)->find();
@@ -125,7 +127,7 @@ class AttributeListAction extends BaseAction {
      */
     public function insert()
     {
-        $m = new AttributeListModel();
+        $m = D('AttributeList');
         $ename = $_POST['attr_name'];
         $sort_id = $_POST['sort_id'];
         if (empty($ename)) {
@@ -159,7 +161,7 @@ class AttributeListAction extends BaseAction {
      */
     public function update()
     {
-        $m = new AttributeListModel();
+        $m = D('AttributeList');
         $ename = $_POST['attr_name'];
         $data['id'] = array('eq', intval($_POST['id']));
         $sort_id = $_POST['sort_id'];
@@ -191,7 +193,7 @@ class AttributeListAction extends BaseAction {
     public function delete()
     {
         $id = intval($_POST['id']);
-        $m = new AttributeListModel();
+        $m = D('AttributeList');
         $del = $m->where('id=' . $id)->delete();
         if ($del == true) {
             $this->dmsg('2', '操作成功！', true);
@@ -207,8 +209,7 @@ class AttributeListAction extends BaseAction {
      * @version dogocms 1.0
      */
     public function listJsonId() {
-        $m = new AttributeListModel();
-        import('ORG.Util.Page'); // 导入分页类
+        $m = D('AttributeList');
         $id = intval($_GET['id']);
         if ($id != 0) {//id为0时调用全部文档
             $condition['sort_id'] = $id;
@@ -218,10 +219,13 @@ class AttributeListAction extends BaseAction {
         $pageNumber = (($pageNumber == null || $pageNumber == 0) ? 1 : $pageNumber);
         $pageRows = (($pageRows == FALSE) ? 10 : $pageRows);
         $count = $m->where($condition)->count();
-        $page = new Page($count, $pageRows);
+        new \Think\Page($count, $pageRows); // 导入分页类
         $firstRow = ($pageNumber - 1) * $pageRows;
         $data = $m->where($condition)->limit($firstRow . ',' . $pageRows)->order('id desc')->select();
         $array = array();
+        if (!$data) {
+            $data = array();
+        }
         $array['total'] = $count;
         $array['rows'] = $data;
         echo json_encode($array);

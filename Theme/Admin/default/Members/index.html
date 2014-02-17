@@ -6,10 +6,10 @@
     $(function() {
         var height = $('.indexcenter').height();
         var classId = 'members';
-        var hrefadd = '__GROUP__/Members/add?id={$id}';
-        var hrefedit = '__GROUP__/Members/edit';
-        var hrefcancel = '__GROUP__/Members/delete';
-        var urljson = '__GROUP__/Members/listJsonId?id={$id}';
+        var hrefadd = '{:U("Admin/Members/add",array("id"=>$id))}';
+        var hrefedit = '{:U("Admin/Members/edit")}';
+        var hrefcancel = '{:U("Admin/Members/delete")}';
+        var urljson = '{:U("Admin/Members/listJsonId",array("id"=>$id))}';
         //openDatagrid(classId,urljson,hrefadd,hrefedit,hrefcancel);
         $('#datagrid_' + classId).datagrid({
             url: urljson,

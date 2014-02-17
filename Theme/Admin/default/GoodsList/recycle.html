@@ -7,10 +7,10 @@
     $(function() {
         var height = $('.indexcenter').height();
         var classId = 'goodsrecycle';
-        var hrefrevert = '__GROUP__/GoodsList/recycleRevert';
-        var hrefedit = '__GROUP__/GoodsList/edit';
-        var hrefcancel = '__GROUP__/GoodsList/deleteRec';
-        var urljson = '__GROUP__/GoodsList/listJsonId?id={$id}&is_recycle=20';
+        var hrefrevert = '{:U("Admin/GoodsList/recycleRevert")}';
+        var hrefedit = '{:U("Admin/GoodsList/edit")}';
+        var hrefcancel = '{:U("Admin/GoodsList/deleteRec")}';
+        var urljson = '{:U("Admin/GoodsList/listJsonId",array("id"=>$id,"is_recycle"=>"20"))}';
         //openDatagrid(classId,urljson,hrefadd,hrefedit,hrefcancel);
         $('#datagrid_' + classId).datagrid({
             url: urljson,

@@ -29,5 +29,6 @@ return array(
     'TAGLIB_BUILD_IN' => 'cx,html',
     'TAGLIB_PRE_LOAD' => 'cx,html,dogocms', //扩展标签dogocms
     'DEFAULT_TIMEZONE' => 'PRC', //默认时区
+    'VIEW_PATH' => './Theme/',
     
 );

@@ -1,7 +1,7 @@
 
 <div class="easyui-layout layout_adslist">
     <div data-options="region:'west',split:true" title="广告分类" style="width:150px;">
-        <ul class="easyui-tree tree_adslist" data-options="url:'__GROUP__/Ads/jsonSortTree'" style="padding: 10px 5px;">
+        <ul class="easyui-tree tree_adslist" data-options="url:'{:U('Admin/Ads/jsonSortTree')}'" style="padding: 10px 5px;">
             <!--
             <foreach name="list" item="sort">
                 <li><a href="javascript:viod(0);" cmshref="__GROUP__/Setting/settinglist?id={$sort.id}">{$sort.text}</a></li>
@@ -22,7 +22,7 @@
                     onClick: function() {
                         var node = $('.tree_' + classId).tree('getSelected');
                         var nid = node.id;
-                        var url = '__GROUP__/Ads/newslist?id=' + nid;
+                        var url = '__MODULE__/Ads/newslist/id/'+nid;
                         var subtitle = node.text;
                         if (!$('#tabs_' + classId).tabs('exists', subtitle)) {
                             $('#tabs_' + classId).tabs('add', {

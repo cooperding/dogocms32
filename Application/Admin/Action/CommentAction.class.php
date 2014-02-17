@@ -10,6 +10,8 @@
  * @package  Controller
  * @todo
  */
+namespace Admin\Action;
+use Think\Action;
 class CommentAction extends BaseAction {
 
     /**
@@ -33,15 +35,15 @@ class CommentAction extends BaseAction {
      */
     public function edit()
     {
-        $m = new CommentModel();
-        $id = $this->_get('id');
-        $condition['id'] = array('eq',$id);
+        $m = D('Comment');
+        $id = I('get.id');
+        $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
-        $radios = array(
-            'y' => '可用',
-            'n' => '禁用'
+        $status = array(
+            '20' => ' 是 ',
+            '10' => ' 否 '
         );
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->assign('data', $data);
         $this->assign('v_status', $data['status']);
         $this->display();
@@ -56,8 +58,8 @@ class CommentAction extends BaseAction {
      */
     public function update()
     {
-        $m = new CommentModel();
-        $id = $this->_post('id');
+        $m = D('Comment');
+        $id = I('post.id');
         $data['id'] = array('eq', $id);
         $_POST['replaytime'] = time();
         $_POST['status'] = $_POST['status']['0'];
@@ -79,9 +81,9 @@ class CommentAction extends BaseAction {
      */
     public function delete()
     {
-        $m = new CommentModel();
-        $id = $this->_post('id');
-        $condition['id'] = array('eq',$id);
+        $m = D('Comment');
+        $id = I('post.id');
+        $condition['id'] = array('eq', $id);
         $del = $m->where($condition)->delete();
         if ($del == true) {
             $this->dmsg('2', '操作成功！', true);
@@ -99,28 +101,31 @@ class CommentAction extends BaseAction {
      */
     public function jsonList()
     {
-        $m = new CommentModel();
-        import('ORG.Util.Page'); // 导入分页类
+        $m = D('Comment');
         $pageNumber = intval($_REQUEST['page']);
         $pageRows = intval($_REQUEST['rows']);
         $pageNumber = (($pageNumber == null || $pageNumber == 0) ? 1 : $pageNumber);
         $pageRows = (($pageRows == FALSE) ? 10 : $pageRows);
         $count = $m->count();
-        $page = new Page($count, $pageRows);
+        new \Think\Page($count, $pageRows); // 导入分页类
         $firstRow = ($pageNumber - 1) * $pageRows;
-        $data = $m->field(array('c.*','t.title'))->Table(C('DB_PREFIX') . 'comment c')
+        $data = $m->field(array('c.*', 't.title'))->Table(C('DB_PREFIX') . 'comment c')
                         ->join(C('DB_PREFIX') . 'title t ON t.id=c.title_id')
                         ->limit($firstRow . ',' . $pageRows)->order('c.id desc')->select();
-        foreach ($data as $k => $v) {
-            $data[$k]['addtime'] = date('Y-m-d H:i:s', $v['addtime']);
-            $data[$k]['replytime'] = date('Y-m-d H:i:s', $v['replytime']);
-            if ($v['status'] = 'true') {
-                $data[$k]['status'] = '可用';
-            } else {
-                $data[$k]['status'] = '禁用';
-            }
-        }
         $array = array();
+        if ($data) {
+            foreach ($data as $k => $v) {
+                $data[$k]['addtime'] = date('Y-m-d H:i:s', $v['addtime']);
+                $data[$k]['replytime'] = date('Y-m-d H:i:s', $v['replytime']);
+                if ($v['status'] = '20') {
+                    $data[$k]['status'] = '已审核';
+                } else {
+                    $data[$k]['status'] = '未审核';
+                }
+            }
+        } else {
+            $data = array();
+        }
         $array['total'] = $count;
         $array['rows'] = $data;
         echo json_encode($array);

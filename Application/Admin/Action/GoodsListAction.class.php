@@ -10,6 +10,8 @@
  * @package  Controller
  * @todo 信息各项操作
  */
+namespace Admin\Action;
+use Think\Action;
 class GoodsListAction extends BaseAction {
 
     /**
@@ -33,7 +35,7 @@ class GoodsListAction extends BaseAction {
      */
     public function newslist()
     {
-        $id = $this->_get('id');
+        $id = I('get.id');
         $this->assign('id', $id);
         $this->display('newslist');
     }
@@ -47,7 +49,7 @@ class GoodsListAction extends BaseAction {
      */
     public function add()
     {
-        $id = $this->_get('id');
+        $id = I('get.id');
         $status = array(
             '20' => ' 审核 ',
             '10' => ' 未审核 ',
@@ -77,10 +79,10 @@ class GoodsListAction extends BaseAction {
      */
     public function edit()
     {
-        $m = new GoodsListModel();
-        $c = new GoodsContentModel();
-        $as = new AttributeSortModel();
-        $id = $this->_get('id');
+        $m = D('GoodsList');
+        $c = D('GoodsContent');
+        $as = D('AttributeSort');
+        $id = I('get.id');
         $condition_id['gl.id'] = array('eq', $id);
         $data = $m->field('gl.*,c.content')->Table(C('DB_PREFIX') . 'goods_list gl')
                         ->join(C('DB_PREFIX') . 'goods_content c ON c.goods_id=gl.id')
@@ -135,12 +137,12 @@ class GoodsListAction extends BaseAction {
      */
     public function insert()
     {
-        $m = new GoodsListModel();
-        $c = new GoodsContentModel();
-        $a = new GoodsAttributeModel();
-        $s = new GoodsSortModel();
-        $title = $this->_post('title');
-        $sort_id = $this->_post('sort_id');
+        $m = D('GoodsList');
+        $c = D('GoodsContent');
+        $a = D('GoodsAttribute');
+        $s = D('GoodsSort');
+        $title = I('post.title');
+        $sort_id = I('post.sort_id');
         if (empty($title)) {
             $this->dmsg('1', '文章标题不能为空！', false, true);
         }
@@ -196,13 +198,13 @@ class GoodsListAction extends BaseAction {
      */
     public function update()
     {
-        $m = new GoodsListModel();
-        $c = new GoodsContentModel();
-        $a = new GoodsAttributeModel();
-        $s = new GoodsSortModel();
-        $title = $this->_post('title');
-        $sort_id = $this->_post('sort_id');
-        $id = $this->_post('id');
+        $m = D('GoodsList');
+        $c = D('GoodsContent');
+        $a = D('GoodsAttribute');
+        $s = D('GoodsSort');
+        $title = I('post.title');
+        $sort_id = I('post.sort_id');
+        $id = I('post.id');
         $condition['id'] = array('eq', $id);
         $condition_other['goods_id'] = array('eq', $id);
         if (empty($title)) {
@@ -258,8 +260,8 @@ class GoodsListAction extends BaseAction {
      */
     public function delete()
     {
-        $m = new GoodsListModel();
-        $id = $this->_post('id');
+        $m = D('GoodsList');
+        $id = I('post.id');
         $data['id'] = array('in', $id);
         if (empty($data['id'])) {
             $this->dmsg('1', '未有id值，操作失败！', false, true);
@@ -281,8 +283,8 @@ class GoodsListAction extends BaseAction {
      */
     public function gallery()
     {
-        $m = new GoodsGalleryModel();
-        $id = $this->_get('id');
+        $m = D('GoodsGallery');
+        $id = I('get.id');
         $condition['goods_id'] = array('eq', $id);
         $data = $m->where($condition)->select();
         $this->assign('data', $data);
@@ -299,11 +301,11 @@ class GoodsListAction extends BaseAction {
      */
     public function galleryUpdate()
     {
-        $m = new GoodsGalleryModel();
-        $goods_id = $this->_post('id');
-        $gallery_id = $this->_post('gallery_id');
-        $gallery_thumb = $this->_post('gallery_thumb');
-        $gallery_title = $this->_post('gallery_title');
+        $m = D('GoodsGallery');
+        $goods_id = I('post.id');
+        $gallery_id = I('post.gallery_id');
+        $gallery_thumb = I('post.gallery_thumb');
+        $gallery_title = I('post.gallery_title');
         //$gallery_thumb = array_filter($gallery_thumb);
         foreach ($gallery_thumb as $k => $v) {
             if (!empty($v)) {
@@ -336,8 +338,8 @@ class GoodsListAction extends BaseAction {
      */
     public function galleryRemove()
     {
-        $m = new GoodsGalleryModel();
-        $id = $this->_post('id');
+        $m = D('GoodsGallery');
+        $id = I('post.id');
         $condition['id'] = array('eq', $id);
         $rs = $m->where($condition)->delete();
         if ($rs == true) {
@@ -356,8 +358,8 @@ class GoodsListAction extends BaseAction {
      */
     public function tempmodel()
     {
-        $m = new AttributeListModel();
-        $id = $this->_post('id');
+        $m = D('AttributeList');
+        $id = I('post.id');
         $condition_sort['gs.id'] = array('eq', $id);
         $data = $m->field('al.*')->Table(C('DB_PREFIX') . 'goods_sort gs')
                         ->join(C('DB_PREFIX') . 'attribute_list al on al.sort_id=gs.model_id')
@@ -393,8 +395,8 @@ class GoodsListAction extends BaseAction {
      */
     public function recycleRevert()
     {
-        $m = new GoodsListModel();
-        $id = $this->_post('id');
+        $m = D('GoodsList');
+        $id = I('post.id');
         $data['id'] = array('in', $id);
         if (empty($data['id'])) {
             $this->dmsg('1', '未有id值，操作失败！', false, true);
@@ -416,10 +418,10 @@ class GoodsListAction extends BaseAction {
      */
     public function deleteRec()
     {
-        $m = new GoodsListModel();
-        $c = new GoodsContentModel();
-        $a = new GoodsAttributeModel();
-        $id = $this->_post('id');
+        $m = D('GoodsList');
+        $c = D('GoodsContent');
+        $a = D('GoodsAttribute');
+        $id = I('post.id');
         $condition['id'] = array('in', $id);
         $condition_other['goods_id'] = array('in', $id);
 
@@ -454,10 +456,9 @@ class GoodsListAction extends BaseAction {
      */
     public function listJsonId()
     {
-        $m = new GoodsListModel();
-        $s = new GoodsSortModel();
-        import('ORG.Util.Page'); // 导入分页类
-        $id = $this->_get('id');
+        $m = D('GoodsList');
+        $s = D('GoodsSort');
+        $id = I('get.id');
         if ($id != 0) {//id为0时调用全部文档
             $condition_sort['id'] = $id;
             $condition_sort['path'] = array('like', '%,' . $id . ',%');
@@ -483,7 +484,7 @@ class GoodsListAction extends BaseAction {
         }
         $condition['gl.is_recycle'] = isset($_GET['is_recycle']) ? '20' : '10';
         $count = $m->table(C('DB_PREFIX') . 'goods_list gl')->where($condition)->count();
-        $page = new Page($count, $pageRows);
+        new \Think\Page($count, $pageRows); // 导入分页类
         $firstRow = ($pageNumber - 1) * $pageRows;
         $data = $m->table(C('DB_PREFIX') . 'goods_sort gs')
                         ->join(C('DB_PREFIX') . 'goods_list gl on gs.id=gl.sort_id')

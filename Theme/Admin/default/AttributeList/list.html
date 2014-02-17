@@ -7,10 +7,10 @@
     $(function() {
         var height = $('.indexcenter').height();
         var classId = 'attributetab{$id}';
-        var hrefadd = '__GROUP__/AttributeList/add?id={$id}';
-        var hrefedit = '__GROUP__/AttributeList/edit';
-        var hrefcancel = '__GROUP__/AttributeList/delete';
-        var urljson = '__GROUP__/AttributeList/listJsonId?id={$id}';
+        var hrefadd = '{:U("Admin/AttributeList/newslist",array("id"=>$id))}';
+        var hrefedit = '{:U("Admin/AttributeList/edit")}';
+        var hrefcancel = '{:U("Admin/AttributeList/delete")}';
+        var urljson = '{:U("Admin/AttributeList/listJsonId",array("id"=>$id))}';
         //openDatagrid(classId,urljson,hrefadd,hrefedit,hrefcancel);
         $('#datagrid_' + classId).datagrid({
             url: urljson,

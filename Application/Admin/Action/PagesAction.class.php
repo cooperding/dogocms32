@@ -11,6 +11,8 @@
  * @package  Controller
  * @todo 联动模型其他操作
  */
+namespace Admin\Action;
+use Think\Action;
 class PagesAction extends BaseAction {
 
     /**
@@ -34,11 +36,11 @@ class PagesAction extends BaseAction {
      */
     public function add()
     {
-        $radios = array(
-            'y' => '可用',
-            'n' => '禁用'
+        $status = array(
+            '20' => '可用',
+            '10' => '禁用'
         );
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->display();
     }
 
@@ -51,15 +53,15 @@ class PagesAction extends BaseAction {
      */
     public function edit()
     {
-        $m = new PagesModel();
-        $id = $this->_get('id');
+        $m = D('Pages');
+        $id = I('get.id');
         $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
-        $radios = array(
-            'y' => '可用',
-            'n' => '禁用'
+        $status = array(
+            '20' => '可用',
+            '10' => '禁用'
         );
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->assign('data', $data);
         $this->assign('v_status', $data['status']);
         $this->display();
@@ -74,9 +76,9 @@ class PagesAction extends BaseAction {
      */
     public function insert()
     {
-        $m = new PagesModel();
-        $ename = $this->_post('ename');
-        $sort_id = $this->_post('sort_id');
+        $m = D('Pages');
+        $ename = I('post.ename');
+        $sort_id = I('post.sort_id');
         if (empty($ename)) {
             $this->dmsg('1', '单页名不能为空！', false, true);
         }
@@ -107,10 +109,10 @@ class PagesAction extends BaseAction {
      */
     public function update()
     {
-        $m = new PagesModel();
-        $ename = $this->_post('ename');
-        $sort_id = $this->_post('sort_id');
-        $id = $this->_post('id');
+        $m = D('Pages');
+        $ename = I('post.ename');
+        $sort_id = I('post.sort_id');
+        $id = I('post.id');
         $data['id'] = array('eq', $id);
         if (empty($ename)) {
             $this->dmsg('1', '单页名不能为空！', false, true);
@@ -137,8 +139,8 @@ class PagesAction extends BaseAction {
      */
     public function delete()
     {
-        $m = new PagesModel();
-        $id = $this->_post('id');
+        $m = D('Pages');
+        $id = I('post.id');
         $condition_id['id'] = array('eq', $id);
         $del = $m->where($condition_id)->delete();
         if ($del == true) {
@@ -169,11 +171,11 @@ class PagesAction extends BaseAction {
      */
     public function sortadd()
     {
-        $radios = array(
-            'y' => '启用',
-            'n' => '禁用'
+        $status = array(
+            '20' => '可用',
+            '10' => '禁用'
         );
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->display();
     }
 
@@ -186,15 +188,15 @@ class PagesAction extends BaseAction {
      */
     public function sortedit()
     {
-        $m = new PagesSortModel();
-        $id = $this->_get('id');
+        $m = D('PagesSort');
+        $id = I('get.id');
         $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
-        $radios = array(
-            'y' => '启用',
-            'n' => '禁用'
+        $status = array(
+            '20' => '可用',
+            '10' => '禁用'
         );
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->assign('v_status', $data['status']);
         $this->assign('data', $data);
         $this->display();
@@ -209,13 +211,13 @@ class PagesAction extends BaseAction {
      */
     public function sortinsert()
     {
-        $m = new PagesSortModel();
-        $parent_id = $this->_post('parent_id');
-        $ename = $this->_post('ename');
+        $m = D('PagesSort');
+        $parent_id = I('post.parent_id');
+        $ename = I('post.ename');
         if (empty($ename)) {
             $this->dmsg('1', '分类名不能为空！', false, true);
         }
-        $en_name = $this->_post('en_name');
+        $en_name = I('post.en_name');
         if (empty($en_name)) {
             import("ORG.Util.Pinyin");
             $pinyin = new Pinyin();
@@ -247,10 +249,10 @@ class PagesAction extends BaseAction {
      */
     public function sortupdate()
     {
-        $m = new PagesSortModel();
-        $d = new CommonSortModel();
-        $id = $this->_post('id');
-        $parent_id = $this->_post('parent_id');
+        $m = D('PagesSort');
+        $d = D('CommonSort');
+        $id = I('post.id');
+        $parent_id = I('post.parent_id');
         $tbname = 'PagesSort';
         if ($parent_id != 0) {//不为0时判断是否为子分类
             if ($id == $parent_id) {
@@ -278,7 +280,7 @@ class PagesAction extends BaseAction {
         }
         $_POST['status'] = $_POST['status']['0'];
         $_POST['updatetime'] = time();
-        $en_name = $this->_post('en_name');
+        $en_name = I('post.en_name');
         if (empty($en_name)) {
             import("ORG.Util.Pinyin");
             $pinyin = new Pinyin();
@@ -301,8 +303,8 @@ class PagesAction extends BaseAction {
      */
     public function sortdelete()
     {
-        $m = new PagesSortModel();
-        $id = $this->_post('id');
+        $m = D('PagesSort');
+        $id = I('post.id');
         $condition_id['id'] = array('eq', $id);
         $del = $m->where($condition_id)->delete();
         if ($del == true) {
@@ -321,15 +323,19 @@ class PagesAction extends BaseAction {
      */
     public function jsonSortList()
     {
-        $m = new PagesSortModel();
+        $m = D('PagesSort');
         $list = $m->field(array('id', 'parent_id', 'ename' => 'text'))->select();
         $navcatCount = $m->count("id");
         $a = array();
-        foreach ($list as $k => $v) {
-            $a[$k] = $v;
-            $a[$k]['_parentId'] = intval($v['parent_id']); //_parentId为easyui中标识父id
-        }
         $array = array();
+        if ($list) {
+            foreach ($list as $k => $v) {
+                $a[$k] = $v;
+                $a[$k]['_parentId'] = intval($v['parent_id']); //_parentId为easyui中标识父id
+            }
+        } else {
+            $array['rows'] = 0;
+        }
         $array['total'] = $navcatCount;
         $array['rows'] = $a;
         echo json_encode($array);
@@ -344,10 +350,10 @@ class PagesAction extends BaseAction {
      */
     public function jsonTree()
     {
-        Load('extend');
-        $m = new PagesSortModel();
+        $qiuyun = new \Org\Util\Qiuyun;
+        $m = D('PagesSort');
         $tree = $m->field(array('id', 'parent_id', 'ename' => 'text'))->select();
-        $tree = list_to_tree($tree, 'id', 'parent_id', 'children');
+        $tree = $qiuyun->list_to_tree($tree, 'id', 'parent_id', 'children');
         $tree = array_merge(array(array('id' => 0, 'text' => L('sort_root_name'))), $tree);
         echo json_encode($tree);
     }
@@ -361,8 +367,7 @@ class PagesAction extends BaseAction {
      */
     public function jsonList()
     {
-        $m = new PagesModel();
-        import('ORG.Util.Page'); // 导入分页类
+        $m = D('Pages');
         $pageNumber = intval($_REQUEST['page']);
         $pageRows = intval($_REQUEST['rows']);
         $pageNumber = (($pageNumber == null || $pageNumber == 0) ? 1 : $pageNumber);
@@ -372,7 +377,7 @@ class PagesAction extends BaseAction {
             $condition['ename'] = array('like', '%' . $title . '%');
         }
         $count = $m->where($condition)->count();
-        $page = new Page($count, $pageRows);
+        new \Think\Page($count, $pageRows); // 导入分页类
         $firstRow = ($pageNumber - 1) * $pageRows;
         $data = $m->where($condition)->limit($firstRow . ',' . $pageRows)->order('id desc')->select();
         if ($data) {

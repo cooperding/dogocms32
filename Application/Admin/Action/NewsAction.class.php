@@ -10,6 +10,8 @@
  * @package  Controller
  * @todo 信息各项操作
  */
+namespace Admin\Action;
+use Think\Action;
 class NewsAction extends BaseAction {
 
     /**
@@ -33,7 +35,7 @@ class NewsAction extends BaseAction {
      */
     public function newslist()
     {
-        $id = $this->_get('id');
+        $id = I('get.id');
         $this->assign('id', $id);
         $this->display('newslist');
     }
@@ -47,7 +49,7 @@ class NewsAction extends BaseAction {
      */
     public function add()
     {
-        $id = $this->_get('id');
+        $id = I('get.id');
         $flag = array(
             'h' => ' 头条[h] ',
             'r' => ' 推荐[r] ',
@@ -76,8 +78,8 @@ class NewsAction extends BaseAction {
      */
     public function edit()
     {
-        $m = new TitleModel();
-        $id = $this->_get('id');
+        $m = D('Title');
+        $id = I('get.id');
         $condition_id['t.id'] = array('eq', $id);
         $data = $m->field(array('t.*', 'c.content'))
                         ->Table(C('DB_PREFIX') . 'title t')
@@ -114,10 +116,10 @@ class NewsAction extends BaseAction {
      */
     public function insert()
     {
-        $t = new TitleModel();
-        $c = new ContentModel();
-        $title = $this->_post('title');
-        $sort_id = $this->_post('sort_id');
+        $t = D('Title');
+        $c = D('Content');
+        $title = I('post.title');
+        $sort_id = I('post.sort_id');
         if (empty($title)) {
             $this->dmsg('1', '文章标题不能为空！', false, true);
         }
@@ -152,13 +154,13 @@ class NewsAction extends BaseAction {
      */
     public function update()
     {
-        $t = new TitleModel();
-        $c = new ContentModel();
-        $id = $this->_post('id');
+        $t = D('Title');
+        $c = D('Content');
+        $id = I('post.id');
         $data['id'] = array('eq', $id);
         $cdata['title_id'] = array('eq', $id);
-        $title = $this->_post('title');
-        $sort_id = $this->_post('sort_id');
+        $title = I('post.title');
+        $sort_id = I('post.sort_id');
         if (empty($title)) {
             $this->dmsg('1', '文章标题不能为空！', false, true);
         }
@@ -187,8 +189,8 @@ class NewsAction extends BaseAction {
      */
     public function delete()
     {
-        $t = new TitleModel();
-        $id = $this->_post('id');
+        $t = D('Title');
+        $id = I('post.id');
         $data['id'] = array('in', $id);
         if (empty($data['id'])) {
             $this->dmsg('1', '未有id值，操作失败！', false, true);
@@ -211,7 +213,7 @@ class NewsAction extends BaseAction {
     public function tempmodel()
     {
         $mf = new ModelFieldModel();
-        $id = $this->_post('id');
+        $id = I('post.id');
         $condition_sort['sort_id'] = array('eq', $id);
         $data_filed = $mf->where($condition_sort)->order('myorder asc,id asc')->select();
         foreach ($data_filed as $k => $v) {
@@ -250,8 +252,8 @@ class NewsAction extends BaseAction {
      */
     public function recycleRevert()
     {
-        $t = new TitleModel();
-        $id = $this->_post('id');
+        $t = D('Title');
+        $id = I('post.id');
         $data['id'] = array('in', $id);
         if (empty($data['id'])) {
             $this->dmsg('1', '未有id值，操作失败！', false, true);
@@ -273,9 +275,9 @@ class NewsAction extends BaseAction {
      */
     public function deleteRec()
     {
-        $t = new TitleModel();
-        $c = new ContentModel();
-        $id = $this->_post('id');
+        $t = D('Title');
+        $c = D('Content');
+        $id = I('post.id');
         $data['id'] = array('in', $id);
         $cdata['title_id'] = array('in', $id);
         $rst = $t->where($data)->delete();
@@ -296,10 +298,9 @@ class NewsAction extends BaseAction {
      */
     public function listJsonId()
     {
-        $m = new TitleModel();
-        $s = new NewsSortModel();
-        import('ORG.Util.Page'); // 导入分页类
-        $id = $this->_get('id');
+        $m = D('Title');
+        $s = D('NewsSort');
+        $id = I('get.id');
         if ($id != 0) {//id为0时调用全部文档
             $condition_sort['id'] = $id;
             $condition_sort['path'] = array('like', '%,' . $id . ',%');
@@ -323,7 +324,7 @@ class NewsAction extends BaseAction {
 
         $condition['t.is_recycle'] = isset($_GET['is_recycle']) ? '11' : '10';
         $count = $m->table(C('DB_PREFIX') . 'title t')->where($condition)->count();
-        $page = new Page($count, $pageRows);
+        new \Think\Page($count, $pageRows); // 导入分页类
         $firstRow = ($pageNumber - 1) * $pageRows;
         $data = $m->table(C('DB_PREFIX') . 'title t')
                         ->join(C('DB_PREFIX') . 'news_sort nt on nt.id=t.sort_id')
@@ -359,10 +360,10 @@ class NewsAction extends BaseAction {
      */
     public function jsonSortTree()
     {
-        Load('extend');
-        $m = new NewsSortModel();
+        $qiuyun = new \Org\Util\Qiuyun;
+        $m = D('NewsSort');
         $tree = $m->field('id,parent_id,text')->select();
-        $tree = list_to_tree($tree, 'id', 'parent_id', 'children');
+        $tree = $qiuyun->list_to_tree($tree, 'id', 'parent_id', 'children');
         $tree = array_merge(array(array('id' => 0, 'text' => '全部文档')), $tree);
         echo json_encode($tree);
     }

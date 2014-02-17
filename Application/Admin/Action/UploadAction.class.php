@@ -10,6 +10,8 @@
  * @package  Controller
  * @todo 上传权限及各种安全过滤
  */
+namespace Admin\Action;
+use Think\Action;
 class UploadAction extends BaseAction {
 
     /**
@@ -19,7 +21,8 @@ class UploadAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function uploadImg() {
+    public function uploadImg()
+    {
 
         import('ORG.Net.UploadFile');
         $upload = new UploadFile(); // 实例化上传类
@@ -94,7 +97,8 @@ class UploadAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function fileManagerJson() {
+    public function fileManagerJson()
+    {
         echo '<script>alert("123");</script>';
         echo json_encode(array('error' => 1, 'message' => 'file1234567'));
         exit;

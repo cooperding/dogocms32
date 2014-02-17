@@ -10,6 +10,8 @@
  * @package  Controller
  * @todo
  */
+namespace Admin\Action;
+use Think\Action;
 class ApiListAction extends BaseAction {
 
     /**
@@ -19,7 +21,8 @@ class ApiListAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function index() {
+    public function index()
+    {
         $this->display();
     }
 
@@ -30,14 +33,15 @@ class ApiListAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function edit() {
-        $m = new ApiListModel();
-        $id = $this->_get('id');
-        $condition['al.id'] = array('eq',$id);
-        $data = $m->table(C('DB_PREFIX').'api_list al')
-                ->join(C('DB_PREFIX').'members m on al.members_id=m.id')
-                ->field('al.*,m.username,m.email')
-                ->where($condition)->find();
+    public function edit()
+    {
+        $m = D('ApiList');
+        $id = I('get.id');
+        $condition['al.id'] = array('eq', $id);
+        $data = $m->table(C('DB_PREFIX') . 'api_list al')
+                        ->join(C('DB_PREFIX') . 'members m on al.members_id=m.id')
+                        ->field('al.*,m.username,m.email')
+                        ->where($condition)->find();
         $status = array(
             '20' => ' 启用 ',
             '10' => ' 禁用 '
@@ -48,7 +52,6 @@ class ApiListAction extends BaseAction {
         $this->display();
     }
 
-    
     /**
      * update
      * 更新信息
@@ -58,9 +61,9 @@ class ApiListAction extends BaseAction {
      */
     public function update()
     {
-        $m = new ApiListModel();
-        $id = $this->_post('id');
-        $name = $this->_post('name');
+        $m = D('ApiList');
+        $id = I('post.id');
+        $name = I('post.name');
         $condition['id'] = array('eq', $id);
         $_POST['status'] = $_POST['status']['0'];
         $_POST['updatetime'] = time();
@@ -71,6 +74,7 @@ class ApiListAction extends BaseAction {
             $this->dmsg('1', '操作失败！', false, true);
         }
     }
+
     /**
      * Flash
      * Flash删除
@@ -80,8 +84,8 @@ class ApiListAction extends BaseAction {
      */
     public function delete()
     {
-        $m = new ApiListModel();
-        $id = $this->_post('id');
+        $m = D('ApiList');
+        $id = I('post.id');
         $condition['id'] = array('eq', $id);
         $del = $m->where($condition)->delete();
         if ($del == true) {
@@ -90,6 +94,7 @@ class ApiListAction extends BaseAction {
             $this->dmsg('1', '操作失败！', false, true);
         }//if
     }
+
     /**
      * jsonList
      * 取得列表信息
@@ -99,28 +104,32 @@ class ApiListAction extends BaseAction {
      */
     public function jsonList()
     {
-        $m = new ApiListModel();
-        import('ORG.Util.Page'); // 导入分页类
+        $m = D('ApiList');
         $pageNumber = intval($_REQUEST['page']);
         $pageRows = intval($_REQUEST['rows']);
         $pageNumber = (($pageNumber == null || $pageNumber == 0) ? 1 : $pageNumber);
         $pageRows = (($pageRows == FALSE) ? 10 : $pageRows);
         $count = $m->count();
-        $page = new Page($count, $pageRows);
+        new \Think\Page($count, $pageRows); // 导入分页类
         $firstRow = ($pageNumber - 1) * $pageRows;
-        $data = $m->table(C('DB_PREFIX').'api_list al')
-                ->join(C('DB_PREFIX').'members m on al.members_id=m.id')
-                ->field('al.*,m.username,m.email')
-                ->limit($firstRow . ',' . $pageRows)->order('al.id desc')->select();
-        foreach ($data as $k => $v) {
-            $data[$k]['addtime'] = date('Y-m-d H:i:s', $v['addtime']);
-            if($v['status']=='20'){
-                $data[$k]['status'] = '启用';
-            }elseif($v['status']=='10'){
-                $data[$k]['status'] = '禁用';
-            }
-        }
+        $data = $m->table(C('DB_PREFIX') . 'api_list al')
+                        ->join(C('DB_PREFIX') . 'members m on al.members_id=m.id')
+                        ->field('al.*,m.username,m.email')
+                        ->limit($firstRow . ',' . $pageRows)->order('al.id desc')->select();
+
         $array = array();
+        if ($data) {
+            foreach ($data as $k => $v) {
+                $data[$k]['addtime'] = date('Y-m-d H:i:s', $v['addtime']);
+                if ($v['status'] == '20') {
+                    $data[$k]['status'] = '启用';
+                } elseif ($v['status'] == '10') {
+                    $data[$k]['status'] = '禁用';
+                }
+            }
+        } else {
+            $data = array();
+        }
         $array['total'] = $count;
         $array['rows'] = $data;
         echo json_encode($array);

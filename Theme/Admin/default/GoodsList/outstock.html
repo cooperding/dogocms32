@@ -8,9 +8,9 @@
         var height = $('.indexcenter').height();
         var classId = 'goodsoutstock';
         //var hrefrevert = '__GROUP__/GoodsList/recycleRevert';
-        var hrefedit = '__GROUP__/GoodsList/edit';
-        var hrefcancel = '__GROUP__/GoodsList/deleteRec';
-        var urljson = '__GROUP__/GoodsList/listJsonId?id={$id}&is_outstock=0';
+        var hrefedit = '{:U("Admin/GoodsList/edit",array("id"=>$id))}';
+        var hrefcancel = '{:U("Admin/GoodsList/deleteRec",array("id"=>$id))}';
+        var urljson = '{:U("Admin/GoodsList/listJsonId",array("id"=>$id,"is_outstock"=>0))}';
         //openDatagrid(classId,urljson,hrefadd,hrefedit,hrefcancel);
         $('#datagrid_' + classId).datagrid({
             url: urljson,

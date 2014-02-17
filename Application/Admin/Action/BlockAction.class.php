@@ -10,6 +10,8 @@
  * @package  Controller
  * @todo
  */
+namespace Admin\Action;
+use Think\Action;
 class BlockAction extends BaseAction {
 
     /**
@@ -50,8 +52,8 @@ class BlockAction extends BaseAction {
      */
     public function edit()
     {
-        $m = new BlockListModel();
-        $id = $this->_get('id');
+        $m = D('BlockList');
+        $id = I('get.id');
         $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
         $status = array(
@@ -74,8 +76,8 @@ class BlockAction extends BaseAction {
      */
     public function insert()
     {
-        $m = new BlockListModel();
-        $title = $this->_post('title');
+        $m = D('BlockList');
+        $title = I('post.title');
         if (empty($title)) {
             $this->dmsg('1', '请将信息输入完整！', false, true);
         }
@@ -103,10 +105,10 @@ class BlockAction extends BaseAction {
      */
     public function update()
     {
-        $m = new BlockListModel();
-        $id = $this->_post('id');
-        $title = $this->_post('title');
-        $sort_id = $this->_post('sort_id');
+        $m = D('BlockList');
+        $id = I('post.id');
+        $title = I('post.title');
+        $sort_id = I('post.sort_id');
         $condition['id'] = array('eq', $id);
         if (empty($title)) {
             $this->dmsg('1', '网站名不能为空！', false, true);
@@ -133,8 +135,8 @@ class BlockAction extends BaseAction {
      */
     public function delete()
     {
-        $m = new BlockListModel();
-        $id = $this->_post('id');
+        $m = D('BlockList');
+        $id = I('post.id');
         $condition['id'] = array('eq', $id);
         $del = $m->where($condition)->delete();
         if ($del == true) {
@@ -165,11 +167,11 @@ class BlockAction extends BaseAction {
      */
     public function sortAdd()
     {
-        $radios = array(
-            'y' => '启用',
-            'n' => '禁用'
+        $status = array(
+            '20' => ' 启用 ',
+            '10' => ' 禁用 '
         );
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->display();
     }
 
@@ -182,15 +184,15 @@ class BlockAction extends BaseAction {
      */
     public function sortEdit()
     {
-        $m = new BlockSortModel();
-        $id = $this->_get('id');
+        $m = D('BlockSort');
+        $id = I('get.id');
         $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
-        $radios = array(
-            'y' => '启用',
-            'n' => '禁用'
+        $status = array(
+            '20' => ' 启用 ',
+            '10' => ' 禁用 '
         );
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->assign('v_status', $data['status']);
         $this->assign('data', $data);
         $this->display();
@@ -205,8 +207,8 @@ class BlockAction extends BaseAction {
      */
     public function sortInsert()
     {
-        $m = new BlockSortModel();
-        $ename = $this->_post('ename');
+        $m = D('BlockSort');
+        $ename = I('post.ename');
         $condition['ename'] = array('eq', $ename);
         if (empty($ename)) {
             $this->dmsg('1', '请将信息输入完整！', false, true);
@@ -234,9 +236,9 @@ class BlockAction extends BaseAction {
      */
     public function sortUpdate()
     {
-        $m = new BlockSortModel();
-        $id = $this->_post('id');
-        $ename = $this->_post('ename');
+        $m = D('BlockSort');
+        $id = I('post.id');
+        $ename = I('post.ename');
         $condition['ename'] = array('eq', $ename);
         $condition['id'] = array('neq', $id);
         if (empty($ename)) {
@@ -264,9 +266,9 @@ class BlockAction extends BaseAction {
      */
     public function sortDelete()
     {
-        $m = new BlockSortModel();
+        $m = D('BlockSort');
         $l = M('Block');
-        $id = $this->_post('id');
+        $id = I('post.id');
         $condition_sort['sort_id'] = array('eq', $id);
         if ($l->field('id')->where($condition_sort)->find()) {
             $this->dmsg('1', '列表中含有该分类的信息，不能删除！', false, true);
@@ -289,19 +291,21 @@ class BlockAction extends BaseAction {
      */
     public function jsonSortList()
     {
-        $m = new BlockSortModel();
+        $m = D('BlockSort');
         $list = $m->select();
         $count = $m->count("id");
         $a = array();
-        foreach ($list as $k => $v) {
-            $a[$k] = $v;
-            if ($v['status'] == 'y') {
-                $a[$k]['status'] = '启用';
-            } else {
-                $a[$k]['status'] = '禁用';
+        $array = array();
+        if ($list) {
+            foreach ($list as $k => $v) {
+                $a[$k] = $v;
+                if ($v['status'] == '20') {
+                    $a[$k]['status'] = '启用';
+                } else {
+                    $a[$k]['status'] = '禁用';
+                }
             }
         }
-        $array = array();
         $array['total'] = $count;
         $array['rows'] = $a;
         echo json_encode($array);
@@ -316,11 +320,11 @@ class BlockAction extends BaseAction {
      */
     public function jsonTree()
     {
-        Load('extend');
-        $m = new BlockSortModel();
+        $qiuyun = new \Org\Util\Qiuyun;
+        $m = D('BlockSort');
         $condition['status'] = array('eq', 'y');
         $tree = $m->field(array('id', 'ename' => 'text'))->where($condition)->select();
-        $tree = list_to_tree($tree, 'id', 'parent_id', 'children');
+        $tree = $qiuyun->list_to_tree($tree, 'id', 'parent_id', 'children');
         $tree = array_merge(array(array('id' => 0, 'text' => L('sort_root_name'))), $tree);
         echo json_encode($tree);
     }
@@ -334,8 +338,7 @@ class BlockAction extends BaseAction {
      */
     public function jsonList()
     {
-        $m = new BlockListModel();
-        import('ORG.Util.Page'); // 导入分页类
+        $m = D('BlockList');
         $pageNumber = intval($_REQUEST['page']);
         $pageRows = intval($_REQUEST['rows']);
         $pageNumber = (($pageNumber == null || $pageNumber == 0) ? 1 : $pageNumber);
@@ -345,7 +348,7 @@ class BlockAction extends BaseAction {
             $condition['title'] = array('like', '%' . $title . '%');
         }
         $count = $m->where($condition)->count();
-        $page = new Page($count, $pageRows);
+        new \Think\Page($count, $pageRows); // 导入分页类
         $firstRow = ($pageNumber - 1) * $pageRows;
         $data = $m->where($condition)->limit($firstRow . ',' . $pageRows)->order('id desc')->select();
         if ($data) {

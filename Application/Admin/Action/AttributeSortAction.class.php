@@ -10,6 +10,8 @@
  * @package  Controller
  * @todo
  */
+namespace Admin\Action;
+use Think\Action;
 class AttributeSortAction extends BaseAction {
 
     /**
@@ -19,7 +21,8 @@ class AttributeSortAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function index() {
+    public function index()
+    {
         $this->display();
     }
 
@@ -30,7 +33,8 @@ class AttributeSortAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function add() {
+    public function add()
+    {
         $status = array(
             '20' => '可用',
             '10' => '禁用'
@@ -46,8 +50,9 @@ class AttributeSortAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function edit() {
-        $m = new AttributeSortModel();
+    public function edit()
+    {
+        $m = D('AttributeSort');
         $id = intval($_GET['id']);
         $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
@@ -68,8 +73,9 @@ class AttributeSortAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function insert() {
-        $m = new AttributeSortModel();
+    public function insert()
+    {
+        $m = D('AttributeSort');
         $ename = $_POST['cat_name'];
         if (empty($ename)) {
             $this->dmsg('1', '商品类型名称不能为空！', false, true);
@@ -95,8 +101,9 @@ class AttributeSortAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function update() {
-        $m = new AttributeSortModel();
+    public function update()
+    {
+        $m = D('AttributeSort');
         $ename = $_POST['cat_name'];
         $data['id'] = array('eq', intval($_POST['id']));
         if (empty($ename)) {
@@ -119,9 +126,10 @@ class AttributeSortAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function delete() {
+    public function delete()
+    {
         $id = intval($_POST['id']);
-        $m = new AttributeSortModel();
+        $m = D('AttributeSort');
         $condition['id'] = array('eq', $id);
         $del = $m->where($condition)->delete();
         if ($del == true) {
@@ -138,17 +146,18 @@ class AttributeSortAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function jsonList() {
-        $m = new AttributeSortModel();
-        import('ORG.Util.Page'); // 导入分页类
+    public function jsonList()
+    {
+        $m = D('AttributeSort');
         $pageNumber = intval($_POST['page']);
         $pageRows = intval($_POST['rows']);
         $pageNumber = (($pageNumber == null || $pageNumber == 0) ? 1 : $pageNumber);
         $pageRows = (($pageRows == FALSE) ? 10 : $pageRows);
         $count = $m->count();
-        $page = new Page($count, $pageRows);
+        new \Think\Page($count, $pageRows); // 导入分页类
         $firstRow = ($pageNumber - 1) * $pageRows;
         $data = $m->limit($firstRow . ',' . $pageRows)->order('id desc')->select();
+        $array = array();
         if ($data) {
             foreach ($data as $k => $v) {
                 if ($v['status'] == '20') {
@@ -157,8 +166,9 @@ class AttributeSortAction extends BaseAction {
                     $data[$k]['status'] = '禁用';
                 }
             }
+        } else {
+            $data = array();
         }
-        $array = array();
         $array['total'] = $count;
         $array['rows'] = $data;
         echo json_encode($array);
@@ -171,11 +181,10 @@ class AttributeSortAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function jsonTree() {
-        //Load('extend');
-        $m = new AttributeSortModel();
+    public function jsonTree()
+    {
+        $m = D('AttributeSort');
         $tree = $m->field('id,cat_name as text')->select();
-        //$tree = list_to_tree($tree, 'id', 'parent_id', 'children');
         $tree = array_merge(array(array('id' => 0, 'text' => L('sort_root_name'))), $tree);
         echo json_encode($tree);
     }
@@ -187,8 +196,9 @@ class AttributeSortAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function jsonSortTree() {
-        $m = new AttributeSortModel();
+    public function jsonSortTree()
+    {
+        $m = D('AttributeSort');
         $tree = $m->field('id,cat_name as text')->select();
         $tree = array_merge(array(array('id' => 0, 'text' => '全部文档')), $tree);
         echo json_encode($tree);

@@ -4,9 +4,9 @@
 <script>
     $(function() {
         var classId = 'message';
-        var urljson = '__GROUP__/Message/jsonList';
-        var hrefedit = '__GROUP__/Message/edit';
-        var hrefcancel = '__GROUP__/Message/delete';
+        var urljson = '{:U("Admin/Message/jsonList")}';
+        var hrefedit = '{:U("Admin/Message/edit")}';
+        var hrefcancel = '{:U("Admin/Message/delete")}';
         var height = $('.indexcenter').height();
         $('#datagrid_' + classId).datagrid({
             url: urljson,

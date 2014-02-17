@@ -4,10 +4,10 @@
     $(function() {
         var height = $('.indexcenter').height();
         var classId = 'operators';
-        var hrefadd = '__GROUP__/Operators/add?id={$id}';
-        var hrefedit = '__GROUP__/Operators/edit';
-        var hrefcancel = '__GROUP__/Operators/delete';
-        var urljson = '__GROUP__/Operators/listJsonId?id={$id}';
+        var hrefadd = '{:U("Admin/Operators/add")}';
+        var hrefedit = '{:U("Admin/Operators/edit")}';
+        var hrefcancel = '{:U("Admin/Operators/edit")}';
+        var urljson = '{:U("Admin/Operators/listJsonId",array("id"=>$id))}';
         //openDatagrid(classId,urljson,hrefadd,hrefedit,hrefcancel);
         $('#datagrid_' + classId).datagrid({
             url: urljson,

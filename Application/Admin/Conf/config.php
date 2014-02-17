@@ -2,7 +2,7 @@
 
 return array(
     //'URL_MODEL' => '2', //URL模式
-    'VIEW_PATH' => './Theme/',
+    
     'DEFAULT_THEME' => 'default', // 设置默认的模板主题
     //'URL_MODULE_MAP'    =>    array('test'=>'admin'),//设置了模块映射后，原来的Admin模块将不能访问，只能访问test模块。
 //    'TMPL_PARSE_STRING' => array(

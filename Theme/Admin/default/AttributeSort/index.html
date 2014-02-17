@@ -4,10 +4,10 @@
 <script>
     $(function() {
         var classId = 'attributesort';
-        var urljson = '__GROUP__/AttributeSort/jsonList';
-        var hrefadd = '__GROUP__/AttributeSort/add';
-        var hrefedit = '__GROUP__/AttributeSort/edit';
-        var hrefcancel = '__GROUP__/AttributeSort/delete';
+        var urljson = '{:U("Admin/AttributeSort/jsonList")}';
+        var hrefadd = '{:U("Admin/AttributeSort/add")}';
+        var hrefedit = '{:U("Admin/AttributeSort/edit")}';
+        var hrefcancel = '{:U("Admin/AttributeSort/delete")}';
         openDatagrid(classId, urljson, hrefadd, hrefedit, hrefcancel);
         $('#datagrid_' + classId).datagrid({
             columns: [[

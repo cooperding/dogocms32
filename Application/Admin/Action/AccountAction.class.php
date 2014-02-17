@@ -9,6 +9,8 @@
  * @version dogocms 1.0 2012-11-5 11:20
  * @package  Controller
  */
+namespace Admin\Action;
+use Think\Action;
 class AccountAction extends BaseAction
 {
 
@@ -34,7 +36,7 @@ class AccountAction extends BaseAction
      */
     public function perinfo()
     {
-        $m = new OperatorsModel();
+        $m = D('Operators');
         $uid = session('LOGIN_UID');
         $condition['id'] = array('eq',$uid);
         $data = $m->where($condition)->find();
@@ -64,10 +66,10 @@ class AccountAction extends BaseAction
      */
     public function updatepwd()
     {
-        $m = new OperatorsModel();
-        $oldpwd = $this->_post('oldpwd');
-        $newpwd = $this->_post('newpwd');
-        $newpwd2 = $this->_post('newpwd2');
+        $m = D('Operators');
+        $oldpwd = I('post.oldpwd');
+        $newpwd = I('post.newpwd');
+        $newpwd2 = I('post.newpwd2');
         if(empty($oldpwd)||empty($newpwd)||empty($newpwd2)){
             $this->dmsg('1', '密码不能为空！', false, true);
         }

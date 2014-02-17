@@ -10,6 +10,8 @@
  * @package  Controller
  * @todo
  */
+namespace Admin\Action;
+use Think\Action;
 class MessageAction extends BaseAction {
 
     /**
@@ -33,15 +35,15 @@ class MessageAction extends BaseAction {
      */
     public function edit()
     {
-        $m = new MessageModel();
-        $id = $this->_get('id');
-        $condition['id'] = array('eq',$id);
+        $m = D('Message');
+        $id = I('get.id');
+        $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
-        $radios = array(
-            'y' => '可用',
-            'n' => '禁用'
+        $status = array(
+            '20' => '可用',
+            '10' => '禁用'
         );
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->assign('data', $data);
         $this->assign('v_status', $data['status']);
         $this->display();
@@ -56,10 +58,10 @@ class MessageAction extends BaseAction {
      */
     public function update()
     {
-        $m = new MessageModel();
-        $sort_id = $this->_post('sort_id');
-        $id = $this->_post('id');
-        $data['id'] = array('eq',$id);
+        $m = D('Message');
+        $sort_id = I('post.sort_id');
+        $id = I('post.id');
+        $data['id'] = array('eq', $id);
         if ($sort_id == 0) {
             $this->dmsg('1', '请选择所属分类！', false, true);
         }
@@ -83,9 +85,9 @@ class MessageAction extends BaseAction {
      */
     public function delete()
     {
-        $m = new MessageModel();
-        $id = $this->_post('id');
-        $condition['id'] = array('eq',$id);
+        $m = D('Message');
+        $id = I('post.id');
+        $condition['id'] = array('eq', $id);
         $del = $m->where($condition)->delete();
         if ($del == true) {
             $this->dmsg('2', '操作成功！', true);
@@ -115,11 +117,11 @@ class MessageAction extends BaseAction {
      */
     public function sortadd()
     {
-        $radios = array(
-            'y' => '启用',
-            'n' => '禁用'
+        $status = array(
+            '20' => '启用',
+            '10' => '禁用'
         );
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->display();
     }
 
@@ -132,15 +134,15 @@ class MessageAction extends BaseAction {
      */
     public function sortedit()
     {
-        $m = new MessageSortModel();
-        $id = $this->_get('id');
-        $condition['id'] = array('eq',$id);
+        $m = D('MessageSort');
+        $id = I('get.id');
+        $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
-        $radios = array(
-            'y' => '启用',
-            'n' => '禁用'
+        $status = array(
+            '20' => '启用',
+            '10' => '禁用'
         );
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->assign('v_status', $data['status']);
         $this->assign('data', $data);
         $this->display();
@@ -155,9 +157,9 @@ class MessageAction extends BaseAction {
      */
     public function sortinsert()
     {
-        $m = new MessageSortModel();
-        $ename = $this->_post('ename');
-        $condition['ename'] = array('eq',$ename);
+        $m = D('MessageSort');
+        $ename = I('post.ename');
+        $condition['ename'] = array('eq', $ename);
         if (empty($ename)) {
             $this->dmsg('1', '请将信息输入完整！', false, true);
         }
@@ -184,11 +186,11 @@ class MessageAction extends BaseAction {
      */
     public function sortupdate()
     {
-        $m = new MessageSortModel();
-        $id = $this->_post('id');
-        $ename = $this->_post('ename');
+        $m = D('MessageSort');
+        $id = I('post.id');
+        $ename = I('post.ename');
         $condition['id'] = array('neq', $id);
-        $condition['ename'] = array('eq',$ename);
+        $condition['ename'] = array('eq', $ename);
         if (empty($ename)) {
             $this->dmsg('1', '请将信息输入完整！', false, true);
         }
@@ -214,9 +216,9 @@ class MessageAction extends BaseAction {
      */
     public function sortdelete()
     {
-        $m = new MessageSortModel();
-        $l = new MessageModel();
-        $id = $this->_post('id');
+        $m = D('MessageSort');
+        $l = D('Message');
+        $id = I('post.id');
         $condition['sort_id'] = array('eq', $id);
         if ($l->field('id')->where($condition)->find()) {
             $this->dmsg('1', '列表中含有该分类的信息，不能删除！', false, true);
@@ -238,28 +240,31 @@ class MessageAction extends BaseAction {
      */
     public function jsonList()
     {
-        $m = new MessageModel();
-        import('ORG.Util.Page'); // 导入分页类
+        $m = D('Message');
         $pageNumber = intval($_REQUEST['page']);
         $pageRows = intval($_REQUEST['rows']);
         $pageNumber = (($pageNumber == null || $pageNumber == 0) ? 1 : $pageNumber);
         $pageRows = (($pageRows == FALSE) ? 10 : $pageRows);
         $count = $m->count();
-        $page = new Page($count, $pageRows);
+        new \Think\Page($count, $pageRows); // 导入分页类
         $firstRow = ($pageNumber - 1) * $pageRows;
         $data = $m->join(' join ' . C('DB_PREFIX') . 'message m')
                         ->join(C('DB_PREFIX') . 'message_sort ms ON ms.id=m.id')
                         ->limit($firstRow . ',' . $pageRows)->order('m.id desc')->select();
-        foreach ($data as $k => $v) {
-            $data[$k]['addtime'] = date('Y-m-d H:i:s', $v['addtime']);
-            $data[$k]['replytime'] = date('Y-m-d H:i:s', $v['replytime']);
-            if ($v['status'] = 'true') {
-                $data[$k]['status'] = '可用';
-            } else {
-                $data[$k]['status'] = '禁用';
-            }
-        }
         $array = array();
+        if ($data) {
+            foreach ($data as $k => $v) {
+                $data[$k]['addtime'] = date('Y-m-d H:i:s', $v['addtime']);
+                $data[$k]['replytime'] = date('Y-m-d H:i:s', $v['replytime']);
+                if ($v['status'] = '20') {
+                    $data[$k]['status'] = '可用';
+                } else {
+                    $data[$k]['status'] = '禁用';
+                }
+            }
+        } else {
+            $data = array();
+        }
         $array['total'] = $count;
         $array['rows'] = $data;
         echo json_encode($array);
@@ -274,14 +279,16 @@ class MessageAction extends BaseAction {
      */
     public function sortJson()
     {
-        $m = new MessageSortModel();
+        $m = D('MessageSort');
         $list = $m->select();
         $count = $m->count("id");
         $a = array();
-        foreach ($list as $k => $v) {
-            $a[$k] = $v;
-        }
         $array = array();
+        if ($list) {
+            foreach ($list as $k => $v) {
+                $a[$k] = $v;
+            }
+        }
         $array['total'] = $count;
         $array['rows'] = $a;
         echo json_encode($array);
@@ -296,10 +303,10 @@ class MessageAction extends BaseAction {
      */
     public function jsonTree()
     {
-        Load('extend');
-        $m = new MessageSortModel();
-        $tree = $m->field(array('id','ename' => 'text'))->select();
-        $tree = list_to_tree($tree, 'id', 'parent_id', 'children');
+        $qiuyun = new \Org\Util\Qiuyun;
+        $m = D('MessageSort');
+        $tree = $m->field(array('id', 'ename' => 'text'))->select();
+        $tree = $qiuyun->list_to_tree($tree, 'id', 'parent_id', 'children');
         $tree = array_merge(array(array('id' => 0, 'text' => L('sort_root_name'))), $tree);
         echo json_encode($tree);
     }

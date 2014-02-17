@@ -7,10 +7,10 @@
     $(function() {
         var height = $('.indexcenter').height();
         var classId = 'settingtab{$id}';
-        var hrefadd = '__GROUP__/Setting/add?id={$id}';
-        var hrefedit = '__GROUP__/Setting/edit';
-        var hrefcancel = '__GROUP__/Setting/delete';
-        var urljson = '__GROUP__/Setting/listJsonId?id={$id}';
+        var hrefadd = '{:U("Admin/Setting/add",array("id"=>$id))}';
+        var hrefedit = '{:U("Admin/Setting/edit")}';
+        var hrefcancel = '{:U("Admin/Setting/delete")}';
+        var urljson = '{:U("Admin/Setting/listJsonId",array("id"=>$id))}';
         //openDatagrid(classId,urljson,hrefadd,hrefedit,hrefcancel);
         $('#datagrid_' + classId).datagrid({
             url: urljson,

@@ -11,10 +11,10 @@
     $(function() {
         var height = $('.indexcenter').height();
         var classId = 'orderlist';
-        var hrefadd = '__GROUP__/OrderList/add';
-        var hrefedit = '__GROUP__/OrderList/edit';
-        var hrefcancel = '__GROUP__/OrderList/delete';
-        var urljson = '__GROUP__/OrderList/listJsonId';
+        var hrefadd = '{:U("Admin/OrderList/add")}';
+        var hrefedit = '{:U("Admin/OrderList/edit")}';
+        var hrefcancel = '{:U("Admin/OrderList/delete")}';
+        var urljson = '{:U("Admin/OrderList/listJsonId")}';
         //openDatagrid(classId,urljson,hrefadd,hrefedit,hrefcancel);
         $('#datagrid_' + classId).datagrid({
             url: urljson,

@@ -1,4 +1,4 @@
-<form action="__GROUP__/Setting/insert" class="form_dogocms" method="post">
+<form action="{:U('Admin/Setting/insert')}" class="form_dogocms" method="post">
     <div class="division">
         <table>
             <tbody>
@@ -9,7 +9,7 @@
                 <tr>
                     <th>所属分组：</th>
                     <td>
-                        <input name="sys_gid" class="easyui-combotree combotree" data-options="url:'__GROUP__/Setting/jsonTree',required:true," style="width:200px;"/>
+                        <input name="sys_gid" class="easyui-combotree combotree" data-options="url:'{:U('Admin/Setting/jsonTree')}',required:true," style="width:200px;"/>
                     </td>
                 </tr>
                 <tr>

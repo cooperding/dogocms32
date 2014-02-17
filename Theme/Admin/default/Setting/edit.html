@@ -1,4 +1,4 @@
-<form action="__GROUP__/Setting/update" class="form_dogocms" method="post">
+<form action="{:U('Admin/Setting/update')}" class="form_dogocms" method="post">
     <input type="hidden" name="id" value="{$data.id}" />
     <div class="division">
         <table>
@@ -10,12 +10,12 @@
                 <tr>
                     <th>所属分组：</th>
                     <td>
-                        <input name="sys_gid" class="easyui-combotree combotree" data-options="url:'__GROUP__/Setting/jsonTree',required:true," value="{$data.sys_gid}" style="width:200px;"/>
+                        <input name="sys_gid" class="easyui-combotree combotree" data-options="url:'{:U('Admin/Setting/jsonTree')}',required:true," value="{$data.sys_gid}" style="width:200px;"/>
                     </td>
-            </tr>
-            <tr>
-                <th>变量类型：</th>
-                <td><html:radio name="sys_type" radios="radios" checked="sys_type"/></td>
+                </tr>
+                <tr>
+                    <th>变量类型：</th>
+                    <td><html:radio name="sys_type" radios="radios" checked="sys_type"/></td>
             </tr>
             <tr>
                 <th>参数值：</th><td><textarea name="sys_value" rows="3" cols="30">{$data.sys_value|stripslashes}</textarea><span class="red">*选择布尔值输入否：1/是：2</span></td>
@@ -27,5 +27,6 @@
                 <th>排序：</th><td><input type="text" name="myorder" value="{$data.myorder}" /></td>
             </tr>
             </tbody>
-        </table></div>
+        </table>
+    </div>
 </form>

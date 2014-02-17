@@ -1,4 +1,4 @@
-<form action="__GROUP__/GoodsList/update" class="form_dogocms" method="post" enctype="multipart/form-data">
+<form action="{:U('Admin/GoodsList/update')}" class="form_dogocms" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id" value="{$data.id}" />
 
     <div class="division">
@@ -19,7 +19,7 @@
                 </tr>
                 <tr>
                     <th>品牌商家：</th>
-                    <td><input name="brand_id" class="easyui-combotree combotree" data-options="url:'__GROUP__/BrandList/jsonTree',required:true"  value="{$data.brand_id}"  style="width:200px;"/></td>
+                    <td><input name="brand_id" class="easyui-combotree combotree" data-options="url:'{:U('Admin/BrandList/jsonTree')}',required:true"  value="{$data.brand_id}"  style="width:200px;"/></td>
                 </tr>
                 <tr>
                     <th>文档标题图：</th>
@@ -88,11 +88,11 @@
 <script>
     $(function() {
         $('#sort_combotree').combotree({
-            url: '__GROUP__/GoodsSort/jsonTree',
+            url: '{:U("Admin/GoodsSort/jsonTree")}',
             required: true,
             onChange: function() {
                 var nid = $(this).combotree('getValue');
-                var href = '__GROUP__/GoodsList/tempmodel';
+                var href = '{:U("Admin/GoodsList/tempmodel")}';
                 $.ajax({
                     url: href,
                     type: 'post',
@@ -110,16 +110,16 @@
         KindEditor.create('#content', {
             themeType: 'simple',
             allowFileManager: true,
-            uploadJson: '__GROUP__/Upload/uploadImg',
-            fileManagerJson: '__GROUP__/Upload/fileManagerJson',
+            uploadJson: '{:U("Admin/Upload/uploadImg")}',
+            fileManagerJson: '{:U("Admin/Upload/fileManagerJson")}',
             afterBlur: function() {
                 this.sync();
             }
         });
         var editor = KindEditor.editor({
             allowFileManager: true,
-            uploadJson: '__GROUP__/Upload/uploadImg',
-            fileManagerJson: '__GROUP__/Upload/fileManagerJson'
+            uploadJson: '{:U("Admin/Upload/uploadImg")}',
+            fileManagerJson: '{:U("Admin/Upload/fileManagerJson")}'
         });
         KindEditor('#image1').click(function() {
             editor.loadPlugin('image', function() {

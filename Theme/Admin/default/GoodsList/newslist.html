@@ -11,11 +11,11 @@
     $(function() {
         var height = $('.indexcenter').height();
         var classId = 'goodslisttab{$id}';
-        var hrefadd = '__GROUP__/GoodsList/add?id={$id}';
-        var hrefedit = '__GROUP__/GoodsList/edit';
-        var hrefcancel = '__GROUP__/GoodsList/delete';
-        var urljson = '__GROUP__/GoodsList/listJsonId?id={$id}';
-        var hrefgallery = '__GROUP__/GoodsList/gallery';
+        var hrefadd = '{:U("Admin/GoodsList/add",array("id"=>$id))}';
+        var hrefedit = '{:U("Admin/GoodsList/edit")}';
+        var hrefcancel = '{:U("Admin/GoodsList/delete")}';
+        var urljson = '{:U("Admin/GoodsList/listJsonId",array("id"=>$id))}';
+        var hrefgallery = '{:U("Admin/GoodsList/gallery")}';
         //openDatagrid(classId,urljson,hrefadd,hrefedit,hrefcancel);
         $('#datagrid_' + classId).datagrid({
             url: urljson,

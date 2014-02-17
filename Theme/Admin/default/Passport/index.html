@@ -19,7 +19,7 @@
                             <input type="text" name="vd_code" id="vd_code" class="logininput" required />
                         </div><!--yz_left-->
                         <div class="yz_right">
-                            <span class="dogo-click-yzmurl" style="cursor: pointer;"><img src="{:U('Passport/verify')}" title="看不清？点击更换另一个验证码。">看不清楚？点击图片</span>
+                            <span class="dogo-click-yzmurl" style="cursor: pointer;"><img src="{:U('Admin/Passport/verify')}" title="看不清？点击更换另一个验证码。">看不清楚？点击图片</span>
                         </div><!--yz_right-->
                         <div class="clear"></div><!--clear-->
                     </div><!--yazhengma-->
@@ -44,7 +44,7 @@
 <script>
     $(function() {
         $('.dogo-click-yzmurl').click(function() {
-            var url = "{:U('Passport/verify')}?tm=" + Math.random();
+            var url = "{:U('Admin/Passport/verify')}?tm=" + Math.random();
             $('.dogo-click-yzmurl img').attr('src', url);
         });
     });

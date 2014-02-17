@@ -10,6 +10,8 @@
  * @package  Controller
  * @todo 信息各项操作
  */
+namespace Admin\Action;
+use Think\Action;
 class OperatorsAction extends BaseAction {
 
     /**
@@ -33,11 +35,11 @@ class OperatorsAction extends BaseAction {
      */
     public function add()
     {
-        $radios = array(
-            'y' => '启用',
-            'n' => '禁用'
+        $status = array(
+            '20' => '可用',
+            '10' => '禁用'
         );
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->display();
     }
 
@@ -50,18 +52,18 @@ class OperatorsAction extends BaseAction {
      */
     public function edit()
     {
-        $m = new OperatorsModel();
-        $id = $this->_get('id');
-        $condition['o.id'] = array('eq',$id);
-        $data = $m->Table( C('DB_PREFIX') . 'operators o')
-                ->join(C('DB_PREFIX') . 'role_user r ON r.user_id=o.id')
-                ->where($condition)->find();
-        $radios = array(
-            'y' => '启用',
-            'n' => '禁用'
+        $m = D('Operators');
+        $id = I('get.id');
+        $condition['o.id'] = array('eq', $id);
+        $data = $m->Table(C('DB_PREFIX') . 'operators o')
+                        ->join(C('DB_PREFIX') . 'role_user r ON r.user_id=o.id')
+                        ->where($condition)->find();
+        $status = array(
+            '20' => '可用',
+            '10' => '禁用'
         );
+        $this->assign('status', $status);
         $this->assign('data', $data);
-        $this->assign('radios', $radios);
         $this->assign('v_status', $data['status']);
         $this->display();
     }
@@ -75,10 +77,9 @@ class OperatorsAction extends BaseAction {
      */
     public function insert()
     {
-        $m = new OperatorsModel();
-        $r = new RoleModel();
-        $user_name = $this->_post('username');
-        $password = $this->_post('password');
+        $m = D('Operators');
+        $user_name = I('post.username');
+        $password = I('post.password');
         $_POST['status'] = $_POST['status'][0];
         if (empty($user_name)) {
             $this->dmsg('1', '用户名不能为空！', false, true);
@@ -86,9 +87,9 @@ class OperatorsAction extends BaseAction {
         if (empty($password)) {
             $this->dmsg('1', '密码不能为空！', false, true);
         }
-        $condition['username'] = array('eq',$user_name);
+        $condition['username'] = array('eq', $user_name);
         $data = $m->where($condition)->find();
-        if($data){
+        if ($data) {
             $this->dmsg('1', '用户名已经存在！', false, true);
         }
         $_POST['creat_time'] = time();
@@ -99,7 +100,7 @@ class OperatorsAction extends BaseAction {
             if ($rs == true) {
                 $id = $m->getLastInsID();
                 $role_user['user_id'] = $id;
-                $role_user['role_id'] = $this->_post('role_id');
+                $role_user['role_id'] = I('post.role_id');
                 $this->dmsg('2', '操作成功！', true);
             } else {
                 $this->dmsg('1', '操作失败！', false, true);
@@ -116,10 +117,9 @@ class OperatorsAction extends BaseAction {
      */
     public function update()
     {
-        $m = new OperatorsModel();
-        $r = new RoleModel();
-        $user_name = $this->_post('username');
-        $password = $this->_post('password');
+        $m = D('Operators');
+        $user_name = I('post.username');
+        $password = I('post.password');
         $_POST['status'] = $_POST['status'][0];
         if (empty($user_name)) {
             $this->dmsg('1', '用户名不能为空！', false, true);
@@ -127,16 +127,16 @@ class OperatorsAction extends BaseAction {
         if (empty($password)) {
             $this->dmsg('1', '密码不能为空！', false, true);
         }
-        $condition['username'] = array('eq',$user_name);
+        $condition['username'] = array('eq', $user_name);
         $data = $m->where($condition)->find();
-        if($data){
+        if ($data) {
             $this->dmsg('1', '用户名已经存在！', false, true);
         }
         $_POST['creat_time'] = time();
         $_POST['updatetime'] = time();
-        if(!empty($password)){
+        if (!empty($password)) {
             $_POST['password'] = $this->changePassword($user_name, $password);
-        }else{
+        } else {
             unset($_POST['password']);
         }
         $rs = $m->save($_POST);
@@ -156,10 +156,10 @@ class OperatorsAction extends BaseAction {
      */
     public function delete()
     {
-        $m = new OperatorsModel();
-        $id = $this->_post('id');
+        $m = D('Operators');
+        $id = I('post.id');
         $uid = session('LOGIN_UID');
-        if($uid==$id||$id=='1'){
+        if ($uid == $id || $id == '1') {
             $this->dmsg('1', '该会员不能删除！', false, true);
         }
         $condition['id'] = array('eq', $id);
@@ -169,7 +169,6 @@ class OperatorsAction extends BaseAction {
         } else {
             $this->dmsg('1', '操作失败！', false, true);
         }//if
-        
     }
 
     /**
@@ -181,23 +180,26 @@ class OperatorsAction extends BaseAction {
      */
     public function listJsonId()
     {
-        $m = new OperatorsModel();
-        import('ORG.Util.Page'); // 导入分页类
+        $m = D('Operators');
         $pageNumber = intval($_REQUEST['page']);
         $pageRows = intval($_REQUEST['rows']);
         $pageNumber = (($pageNumber == null || $pageNumber == 0) ? 1 : $pageNumber);
         $pageRows = (($pageRows == FALSE) ? 10 : $pageRows);
         $count = $m->where($condition)->count();
-        $page = new Page($count, $pageRows);
+        new \Think\Page($count, $pageRows); // 导入分页类
         $firstRow = ($pageNumber - 1) * $pageRows;
         $data = $m->where($condition)->limit($firstRow . ',' . $pageRows)->order('id desc')->select();
-        foreach ($data as $k => $v) {
-            $data[$k]['creat_time'] = date('Y-m-d H:i:s', $v['creat_time']);
-            if($v['status']=='y'){
-                $data[$k]['status'] = '启用';
-            }else{
-                $data[$k]['status'] = '启用';
+        if ($data) {
+            foreach ($data as $k => $v) {
+                $data[$k]['creat_time'] = date('Y-m-d H:i:s', $v['creat_time']);
+                if ($v['status'] == '20') {
+                    $data[$k]['status'] = '启用';
+                } else {
+                    $data[$k]['status'] = '启用';
+                }
             }
+        } else {
+            $data = array();
         }
         $array = array();
         $array['total'] = $count;

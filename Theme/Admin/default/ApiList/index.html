@@ -4,10 +4,10 @@
 <script>
     $(function() {
         var classId = 'apilist';
-        var urljson = '__GROUP__/ApiList/jsonList';
-        var hrefadd = '__GROUP__/ApiList/add';
-        var hrefedit = '__GROUP__/ApiList/edit';
-        var hrefcancel = '__GROUP__/ApiList/delete';
+        var urljson = '{:U("Admin/ApiList/jsonList")}';
+        var hrefadd = '{:U("Admin/ApiList/add")}';
+        var hrefedit = '{:U("Admin/ApiList/edit")}';
+        var hrefcancel = '{:U("Admin/ApiList/delete")}';
         openDatagrid(classId, urljson, hrefadd, hrefedit, hrefcancel);
         $('#datagrid_' + classId).datagrid({
             columns: [[

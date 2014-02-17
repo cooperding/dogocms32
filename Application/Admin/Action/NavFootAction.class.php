@@ -191,16 +191,18 @@ class NavFootAction extends BaseAction {
         $list = $m->field('id,parent_id,text,status')->select();
         $navcatCount = $m->count("id");
         $a = array();
-        foreach ($list as $k => $v) {
-            $a[$k] = $v;
-            $a[$k]['_parentId'] = intval($v['parent_id']); //_parentId为easyui中标识父id
-            if ($v['status'] == '20') {
-                $a[$k]['status'] = '启用';
-            } elseif ($v['status'] == '10') {
-                $a[$k]['status'] = '禁用';
+        $array = array();
+        if ($list) {
+            foreach ($list as $k => $v) {
+                $a[$k] = $v;
+                $a[$k]['_parentId'] = intval($v['parent_id']); //_parentId为easyui中标识父id
+                if ($v['status'] == '20') {
+                    $a[$k]['status'] = '启用';
+                } elseif ($v['status'] == '10') {
+                    $a[$k]['status'] = '禁用';
+                }
             }
         }
-        $array = array();
         $array['total'] = $navcatCount;
         $array['rows'] = $a;
         echo json_encode($array);

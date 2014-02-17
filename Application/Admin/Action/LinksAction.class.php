@@ -10,6 +10,8 @@
  * @package  Controller
  * @todo 上传图片的操作
  */
+namespace Admin\Action;
+use Think\Action;
 class LinksAction extends BaseAction {
 
     /**
@@ -33,11 +35,11 @@ class LinksAction extends BaseAction {
      */
     public function add()
     {
-        $radios = array(
-            'y' => '可用',
-            'n' => '禁用'
+        $status = array(
+            '20' => '可用',
+            '10' => '禁用'
         );
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->display();
     }
 
@@ -50,15 +52,15 @@ class LinksAction extends BaseAction {
      */
     public function edit()
     {
-        $m = new LinksModel();
-        $id = $this->_get('id');
+        $m = D('Links');
+        $id = I('get.id');
         $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
-        $radios = array(
-            'y' => '可用',
-            'n' => '禁用'
+        $status = array(
+            '20' => '可用',
+            '10' => '禁用'
         );
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->assign('data', $data);
         $this->assign('v_status', $data['status']);
         $this->display();
@@ -73,9 +75,9 @@ class LinksAction extends BaseAction {
      */
     public function insert()
     {
-        $m = new LinksModel();
-        $webname = $this->_post('webname');
-        $sort_id = $this->_post('sort_id');
+        $m = D('Links');
+        $webname = I('post.webname');
+        $sort_id = I('post.sort_id');
         if (empty($webname)) {
             $this->dmsg('1', '网站名不能为空！', false, true);
         }
@@ -106,10 +108,10 @@ class LinksAction extends BaseAction {
      */
     public function update()
     {
-        $m = new LinksModel();
-        $id = $this->_post('id');
-        $webname = $this->_post('webname');
-        $sort_id = $this->_post('sort_id');
+        $m = D('Links');
+        $id = I('post.id');
+        $webname = I('post.webname');
+        $sort_id = I('post.sort_id');
         $data['id'] = array('eq', $id);
         if (empty($webname)) {
             $this->dmsg('1', '网站名不能为空！', false, true);
@@ -136,8 +138,8 @@ class LinksAction extends BaseAction {
      */
     public function delete()
     {
-        $m = new LinksModel();
-        $id = $this->_post('id');
+        $m = D('Links');
+        $id = I('post.id');
         $condition['id'] = array('eq', $id);
         $del = $m->where($condition)->delete();
         if ($del == true) {
@@ -168,11 +170,11 @@ class LinksAction extends BaseAction {
      */
     public function sortadd()
     {
-        $radios = array(
-            'y' => '启用',
-            'n' => '禁用'
+        $status = array(
+            '20' => ' 是 ',
+            '10' => ' 否 '
         );
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->display();
     }
 
@@ -185,15 +187,15 @@ class LinksAction extends BaseAction {
      */
     public function sortedit()
     {
-        $m = new LinksSortModel();
-        $id = $this->_get('id');
+        $m = D('LinksSort');
+        $id = I('get.id');
         $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
-        $radios = array(
-            'y' => '启用',
-            'n' => '禁用'
+        $status = array(
+            '20' => ' 是 ',
+            '10' => ' 否 '
         );
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->assign('v_status', $data['status']);
         $this->assign('data', $data);
         $this->display();
@@ -208,8 +210,8 @@ class LinksAction extends BaseAction {
      */
     public function sortinsert()
     {
-        $m = new LinksSortModel();
-        $ename = $this->_post('ename');
+        $m = D('LinksSort');
+        $ename = I('post.ename');
         if (empty($ename)) {
             $this->dmsg('1', '请将信息输入完整！', false, true);
         }
@@ -236,9 +238,9 @@ class LinksAction extends BaseAction {
      */
     public function sortupdate()
     {
-        $m = new LinksSortModel();
-        $id = $this->_post('id');
-        $ename = $this->_post('ename');
+        $m = D('LinksSort');
+        $id = I('post.id');
+        $ename = I('post.ename');
         $condition['ename'] = array('eq', $ename);
         $condition['id'] = array('neq', $id);
         if (empty($ename)) {
@@ -266,9 +268,9 @@ class LinksAction extends BaseAction {
      */
     public function sortdelete()
     {
-        $m = new LinksSortModel();
-        $l = new LinksModel();
-        $id = $this->_post('id');
+        $m = D('LinksSort');
+        $l = D('Links');
+        $id = I('post.id');
         $condition['sort_id'] = array('eq', $id);
         if ($l->field('id')->where($condition)->find()) {
             $this->dmsg('1', '列表中含有该分类的信息，不能删除！', false, true);
@@ -291,19 +293,22 @@ class LinksAction extends BaseAction {
      */
     public function sortJson()
     {
-        $m = new LinksSortModel();
+        $m = D('LinksSort');
         $list = $m->select();
         $count = $m->count("id");
         $a = array();
-        foreach ($list as $k => $v) {
-            $a[$k] = $v;
-            if ($v['status'] == 'y') {
-                $a[$k]['status'] = '启用';
-            } else {
-                $a[$k]['status'] = '禁用';
+        $array = array();
+        if ($list) {
+            foreach ($list as $k => $v) {
+                $a[$k] = $v;
+                if ($v['status'] == '20') {
+                    $a[$k]['status'] = '启用';
+                } else {
+                    $a[$k]['status'] = '禁用';
+                }
             }
         }
-        $array = array();
+
         $array['total'] = $count;
         $array['rows'] = $a;
         echo json_encode($array);
@@ -318,10 +323,10 @@ class LinksAction extends BaseAction {
      */
     public function jsonTree()
     {
-        Load('extend');
-        $m = new LinksSortModel();
+        $qiuyun = new \Org\Util\Qiuyun;
+        $m = D('LinksSort');
         $tree = $m->field(array('id', 'ename' => 'text'))->select();
-        $tree = list_to_tree($tree, 'id', 'parent_id', 'children');
+        $tree = $qiuyun->list_to_tree($tree, 'id', 'parent_id', 'children');
         $tree = array_merge(array(array('id' => 0, 'text' => L('sort_root_name'))), $tree);
         echo json_encode($tree);
     }
@@ -335,8 +340,7 @@ class LinksAction extends BaseAction {
      */
     public function jsonList()
     {
-        $m = new LinksModel();
-        import('ORG.Util.Page'); // 导入分页类
+        $m = D('Links');
         $pageNumber = intval($_REQUEST['page']);
         $pageRows = intval($_REQUEST['rows']);
         $pageNumber = (($pageNumber == null || $pageNumber == 0) ? 1 : $pageNumber);
@@ -346,13 +350,13 @@ class LinksAction extends BaseAction {
             $condition['webname|weburl'] = array('like', '%' . $k . '%');
         }
         $count = $m->where($condition)->count();
-        $page = new Page($count, $pageRows);
+        new \Think\Page($count, $pageRows); // 导入分页类
         $firstRow = ($pageNumber - 1) * $pageRows;
         $data = $m->limit($firstRow . ',' . $pageRows)->where($condition)->order('id desc')->select();
         if ($data) {
             foreach ($data as $k => $v) {
                 $data[$k]['addtime'] = date('Y-m-d H:i:s', $v['addtime']);
-                if ($v['status'] == 'y') {
+                if ($v['status'] == '20') {
                     $data[$k]['status'] = '启用';
                 } else {
                     $data[$k]['status'] = '禁用';

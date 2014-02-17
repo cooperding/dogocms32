@@ -10,6 +10,8 @@
  * @package  Controller
  * @todo
  */
+namespace Admin\Action;
+use Think\Action;
 class AdsAction extends BaseAction {
 
     /**
@@ -33,7 +35,7 @@ class AdsAction extends BaseAction {
      */
     public function newslist()
     {
-        $id = $this->_get('id');
+        $id = I('get.id');
         $this->assign('id', $id);
         $this->display('newslist');
     }
@@ -48,8 +50,8 @@ class AdsAction extends BaseAction {
     public function add()
     {
         $status = array(
-            'y' => '可用',
-            'n' => '禁用'
+            '20' => '可用',
+            '10' => '禁用'
         );
         $this->assign('status', $status);
         $this->display();
@@ -64,13 +66,13 @@ class AdsAction extends BaseAction {
      */
     public function edit()
     {
-        $m = new AdsModel();
-        $id = $this->_get('id');
+        $m = D('Ads');
+        $id = I('get.id');
         $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
         $status = array(
-            'y' => '可用',
-            'n' => '禁用'
+            '20' => '可用',
+            '10' => '禁用'
         );
         $this->assign('status', $status);
         $this->assign('data', $data);
@@ -87,9 +89,9 @@ class AdsAction extends BaseAction {
      */
     public function insert()
     {
-        $m = new AdsModel();
-        $name = $this->_post('name');
-        $sort_id = $this->_post('sort_id');
+        $m = D('Ads');
+        $name = I('post.name');
+        $sort_id = I('post.sort_id');
         if (empty($name)) {
             $this->dmsg('1', '广告名称不能为空！', false, true);
         }
@@ -120,10 +122,10 @@ class AdsAction extends BaseAction {
      */
     public function update()
     {
-        $m = new AdsModel();
-        $id = $this->_post('id');
-        $name = $this->_post('name');
-        $sort_id = $this->_post('sort_id');
+        $m = D('Ads');
+        $id = I('post.id');
+        $name = I('post.name');
+        $sort_id = I('post.sort_id');
         if (empty($name)) {
             $this->dmsg('1', '广告名称不能为空！', false, true);
         }
@@ -149,8 +151,8 @@ class AdsAction extends BaseAction {
      */
     public function delete()
     {
-        $m = new AdsModel();
-        $id = $this->_post('id');
+        $m = D('Ads');
+        $id = I('post.id');
         $condition['id'] = array('eq', $id);
         $del = $m->where($condition)->delete();
         if ($del == true) {
@@ -181,11 +183,11 @@ class AdsAction extends BaseAction {
      */
     public function sortadd()
     {
-        $radios = array(
-            'y' => '启用',
-            'n' => '禁用'
+        $status = array(
+            '20' => '可用',
+            '10' => '禁用'
         );
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->display();
     }
 
@@ -198,15 +200,15 @@ class AdsAction extends BaseAction {
      */
     public function sortedit()
     {
-        $id = $this->_get('id');
-        $m = new AdsSortModel();
+        $id = I('get.id');
+        $m = D('AdsSort');
         $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
-        $radios = array(
-            'y' => '启用',
-            'n' => '禁用'
+        $status = array(
+            '20' => '可用',
+            '10' => '禁用'
         );
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->assign('v_status', $data['status']);
         $this->assign('data', $data);
         $this->display();
@@ -221,8 +223,8 @@ class AdsAction extends BaseAction {
      */
     public function sortinsert()
     {
-        $m = new AdsSortModel();
-        $ename = $this->_post('ename');
+        $m = D('AdsSort');
+        $ename = I('post.ename');
         $condition['ename'] = array('eq', $ename);
         if (empty($ename)) {
             $this->dmsg('1', '请将信息输入完整！', false, true);
@@ -250,9 +252,9 @@ class AdsAction extends BaseAction {
      */
     public function sortupdate()
     {
-        $m = new AdsSortModel();
-        $id = $this->_post('id');
-        $ename = $this->_post('ename');
+        $m = D('AdsSort');
+        $id = I('post.id');
+        $ename = I('post.ename');
         $condition['ename'] = array('eq', $ename);
         $condition['id'] = array('neq', $id);
         if (empty($ename)) {
@@ -280,9 +282,9 @@ class AdsAction extends BaseAction {
      */
     public function sortdelete()
     {
-        $m = new AdsSortModel();
-        $l = new AdsModel();
-        $id = $this->_post('id');
+        $m = D('AdsSort');
+        $l = D('Ads');
+        $id = I('post.id');
         $condition_sort['sort_id'] = array('eq', $id);
         if ($l->field('id')->where($condition_sort)->find()) {
             $this->dmsg('1', '列表中含有该分类的信息，不能删除！', false, true);
@@ -305,19 +307,21 @@ class AdsAction extends BaseAction {
      */
     public function sortJson()
     {
-        $m = new AdsSortModel();
+        $m = D('AdsSort');
         $list = $m->select();
         $count = $m->count("id");
         $a = array();
-        foreach ($list as $k => $v) {
-            $a[$k] = $v;
-            if ($v['status'] == 'y') {
-                $a[$k]['status'] = '启用';
-            } elseif ($v['status'] == 'n') {
-                $a[$k]['status'] = '禁用';
+        $array = array();
+        if ($list) {
+            foreach ($list as $k => $v) {
+                $a[$k] = $v;
+                if ($v['status'] == '20') {
+                    $a[$k]['status'] = '启用';
+                } elseif ($v['status'] == '10') {
+                    $a[$k]['status'] = '禁用';
+                }
             }
         }
-        $array = array();
         $array['total'] = $count;
         $array['rows'] = $a;
         echo json_encode($array);
@@ -332,8 +336,7 @@ class AdsAction extends BaseAction {
      */
     public function jsonSortTree()
     {
-        Load('extend');
-        $m = new AdsSortModel();
+        $m = D('AdsSort');
         $tree = $m->field(array('id', 'ename' => 'text'))->select();
         $tree = array_merge(array(array('id' => 0, 'text' => L('全部分类'))), $tree);
         echo json_encode($tree);
@@ -348,9 +351,8 @@ class AdsAction extends BaseAction {
      */
     public function listJsonId()
     {
-        $m = new AdsModel();
-        import('ORG.Util.Page'); // 导入分页类
-        $id = $this->_get('id');
+        $m = D('Ads');
+        $id = I('get.id');
         if ($id != 0) {//id为0时调用全部文档;
             $condition['a.sort_id'] = array('eq', $id);
         }
@@ -363,7 +365,7 @@ class AdsAction extends BaseAction {
             $condition['a.name'] = array('like', '%' . $title . '%');
         }
         $count = $m->Table(C('DB_PREFIX') . 'ads a')->where($condition)->count();
-        $page = new Page($count, $pageRows);
+        new \Think\Page($count, $pageRows); // 导入分页类
         $firstRow = ($pageNumber - 1) * $pageRows;
         $data = $m->Table(C('DB_PREFIX') . 'ads a')
                         ->join(C('DB_PREFIX') . 'ads_sort s on a.sort_id=s.id')
@@ -372,9 +374,9 @@ class AdsAction extends BaseAction {
         if ($data) {
             foreach ($data as $k => $v) {
                 $data[$k]['addtime'] = date('Y-m-d H:i:s', $v['addtime']);
-                if ($v['status'] == 'y') {
+                if ($v['status'] == '20') {
                     $data[$k]['status'] = '启用';
-                } elseif ($v['status'] == 'n') {
+                } elseif ($v['status'] == '10') {
                     $data[$k]['status'] = '禁用';
                 }
             }

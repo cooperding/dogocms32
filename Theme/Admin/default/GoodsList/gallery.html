@@ -1,4 +1,4 @@
-<form action="__GROUP__/GoodsList/galleryUpdate" class="form_dogocms" method="post" enctype="multipart/form-data">
+<form action="{:U('Admin/GoodsList/galleryUpdate')}" class="form_dogocms" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id" value="{$id}" />
     <div class="division addPic cursor_pointer" style="text-align: center;">点击增加新图片</div>
     <div class="gallery_content">
@@ -51,7 +51,7 @@
                 return false;
             }
             $.ajax({
-                url: '__GROUP__/GoodsList/galleryRemove',
+                url: '{:U("Admin/GoodsList/galleryRemove")}',
                 type: 'post',
                 data: {
                     id: id
@@ -74,8 +74,8 @@
         var urlId = '#url' + id;
         var editor = KindEditor.editor({
             allowFileManager: true,
-            uploadJson: '__GROUP__/Upload/uploadImg',
-            fileManagerJson: '__GROUP__/Upload/fileManagerJson'
+            uploadJson: '{:U("Admin/Upload/uploadImg")}',
+            fileManagerJson: '{:U("Admin/Upload/fileManagerJson")}',
         });
         editor.loadPlugin('image', function() {
             editor.plugin.imageDialog({

@@ -5,10 +5,10 @@
 <script>
     $(function() {
         var classId = 'newssort';
-        var urljson = '__GROUP__/NewsSort/json';
-        var hrefadd = '__GROUP__/NewsSort/add';
-        var hrefedit = '__GROUP__/NewsSort/edit';
-        var hrefcancel = '__GROUP__/NewsSort/delete';
+        var urljson = '{:U("Admin/NewsSort/json")}';
+        var hrefadd = '{:U("Admin/NewsSort/add")}';
+        var hrefedit = '{:U("Admin/NewsSort/edit")}';
+        var hrefcancel = '{:U("Admin/NewsSort/delete")}';
         //openTreeGrid(classId,urljson,hrefadd,hrefedit,hrefcancel);
         var height = $('.indexcenter').height();
         $('#treegrid_' + classId).treegrid({

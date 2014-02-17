@@ -4,10 +4,10 @@
 <script>
     $(function() {
         var classId = 'links';
-        var urljson = '__GROUP__/Links/jsonList';
-        var hrefadd = '__GROUP__/Links/add';
-        var hrefedit = '__GROUP__/Links/edit';
-        var hrefcancel = '__GROUP__/Links/delete';
+        var urljson = '{:U("Admin/Links/jsonList")}';
+        var hrefadd = '{:U("Admin/Links/add")}';
+        var hrefedit = '{:U("Admin/Links/edit")}';
+        var hrefcancel = '{:U("Admin/Links/delete")}';
         openDatagrid(classId, urljson, hrefadd, hrefedit, hrefcancel);
         $('#datagrid_' + classId).datagrid({
             columns: [[

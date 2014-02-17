@@ -10,6 +10,8 @@
  * @package  Controller
  * @todo 视图重新写
  */
+namespace Admin\Action;
+use Think\Action;
 class SettingAction extends BaseAction {
 
     /**
@@ -19,7 +21,8 @@ class SettingAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function index() {
+    public function index()
+    {
         $this->display();
     }
 
@@ -30,7 +33,8 @@ class SettingAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function add() {
+    public function add()
+    {
         $radios = array(
             'text' => '文本',
             'radio' => '布尔型',
@@ -49,10 +53,11 @@ class SettingAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function edit() {
-        $m = new SettingModel();
+    public function edit()
+    {
+        $m = D('Setting');
         $id = intval($_GET['id']);
-        $condition['id'] = array('eq',$id);
+        $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
         $radios = array(
             'text' => '文本',
@@ -73,14 +78,15 @@ class SettingAction extends BaseAction {
      * @return boolean
      * @version dogocms 1.0
      */
-    public function insert() {
-        $m = new SettingModel();
-        $sys_name = $this->_post('sys_name');
-        $sys_gid = $this->_post('sys_gid');
+    public function insert()
+    {
+        $m = D('Setting');
+        $sys_name = I('post.sys_name');
+        $sys_gid = I('post.sys_gid');
         if (empty($sys_gid) || empty($sys_name)) {//不为空说明存在，存在就不能添加
             $this->dmsg('1', '变量名或者所属分组不能为空！', false, true);
         }
-        $condition['sys_name'] = array('eq',$sys_name);
+        $condition['sys_name'] = array('eq', $sys_name);
         $rs = $m->where($condition)->find();
         if (!empty($rs)) {//不为空说明存在，存在就不能添加
             $this->dmsg('1', '变量名"' . $sys_name . '"已经存在', false, true);
@@ -104,16 +110,17 @@ class SettingAction extends BaseAction {
      * @return boolean
      * @version dogocms 1.0
      */
-    public function update() {
-        $m = new SettingModel();
-        $id = $this->_post('id');
-        $sys_gid = $this->_post('sys_gid');
-        $sys_name = $this->_post('sys_name');
+    public function update()
+    {
+        $m = D('Setting');
+        $id = I('post.id');
+        $sys_gid = I('post.sys_gid');
+        $sys_name = I('post.sys_name');
         $condition['id'] = array('neq', $id);
         if (empty($sys_gid) || empty($sys_name)) {//不为空说明存在，存在就不能添加
             $this->dmsg('1', '变量名或者所属分组不能为空！', false, true);
         }
-        $condition['sys_name'] = array('eq',$sys_name);
+        $condition['sys_name'] = array('eq', $sys_name);
         $rs = $m->where($condition)->find();
         if (!empty($rs)) {//不为空说明存在，存在就不能添加
             $this->dmsg('1', '变量名"' . $sys_name . '"已经存在', false, true);
@@ -135,9 +142,10 @@ class SettingAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function settinglist() {
-        $m = new SettingModel();
-        $id = $this->_get('id');
+    public function settinglist()
+    {
+        $m = D('Setting');
+        $id = I('get.id');
         $this->assign('id', $id);
         $this->display('list');
     }
@@ -149,12 +157,13 @@ class SettingAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function delete() {
+    public function delete()
+    {
         $this->dmsg('1', '暂不支持删除操作！', false, true);
         exit;
-        $m = new SettingModel();
-        $id = $this->_post('id');
-        $condition['id'] = array('eq',$id);
+        $m = D('Setting');
+        $id = I('post.id');
+        $condition['id'] = array('eq', $id);
         $del = $m->where($condition)->delete();
         if ($del == true) {
             $this->dmsg('2', '操作成功！', true);
@@ -170,24 +179,28 @@ class SettingAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function listJsonId() {
-        $m = new SettingModel();
-        $id = $this->_get('id');
-        $condition['sys_gid'] = array('eq',$id);
+    public function listJsonId()
+    {
+        $m = D('Setting');
+        $id = I('get.id');
+        $condition['sys_gid'] = array('eq', $id);
         $data = $m->where($condition)->select();
         $count = $m->where($condition)->count();
         //$data = $m->select();
         $array = array();
-
-        foreach ($data as $k => $v) {
-            if ($v['sys_type'] == 'radio') {
-                if ($v['sys_value'] == 1) {
-                    $v['sys_value'] = '是';
-                } elseif ($v['sys_value'] == 2) {
-                    $v['sys_value'] = '否';
+        if ($data) {
+            foreach ($data as $k => $v) {
+                if ($v['sys_type'] == 'radio') {
+                    if ($v['sys_value'] == 1) {
+                        $v['sys_value'] = '是';
+                    } elseif ($v['sys_value'] == 2) {
+                        $v['sys_value'] = '否';
+                    }
                 }
+                $array['rows'][] = $v;
             }
-            $array['rows'][] = $v;
+        } else {
+            $array['rows'] = 0;
         }
         $array['total'] = $count;
         echo json_encode($array);
@@ -200,8 +213,9 @@ class SettingAction extends BaseAction {
      * @return array
      * @version dogocms 1.0
      */
-    public function jsonTree() {
-        Load('extend');
+    public function jsonTree()
+    {
+        $qiuyun = new \Org\Util\Qiuyun;
         $sort = array(
             array('id' => 1, 'text' => '站点设置'),
             array('id' => 2, 'text' => '附件设置'),
@@ -210,9 +224,8 @@ class SettingAction extends BaseAction {
             array('id' => 5, 'text' => '邮箱设置'),
             array('id' => 6, 'text' => '其它设置')
         );
-        $tree = list_to_tree($sort, 'id', 'parent_id', 'children');
+        $tree = $qiuyun->list_to_tree($sort, 'id', 'parent_id', 'children');
         echo json_encode($tree);
     }
-    
 
 }

@@ -5,10 +5,10 @@
     $(function() {
         var height = $('.indexcenter').height();
         var classId = 'pages_sort';
-        var hrefadd = '__GROUP__/Pages/sortadd';
-        var hrefedit = '__GROUP__/Pages/sortedit';
-        var hrefcancel = '__GROUP__/Pages/sortdelete';
-        var urljson = '__GROUP__/Pages/jsonSortList';
+        var hrefadd = '{:U("Admin/Pages/sortadd")}';
+        var hrefedit = '{:U("Admin/Pages/sortedit")}';
+        var hrefcancel = '{:U("Admin/Pages/sortdelete")}';
+        var urljson = '{:U("Admin/Pages/jsonSortList")}';
         $('.layout_' + classId).css('height', height - 50);
         openTreeGrid(classId, urljson, hrefadd, hrefedit, hrefcancel);
         $('#treegrid_' + classId).treegrid({

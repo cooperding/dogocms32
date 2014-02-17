@@ -4,9 +4,9 @@
 <script>
     $(function() {
         var classId = 'comment';
-        var urljson = '__GROUP__/Comment/jsonList';
-        var hrefedit = '__GROUP__/Comment/edit';
-        var hrefcancel = '__GROUP__/Comment/delete';
+        var urljson = '{:U("Admin/Comment/jsonList")}';
+        var hrefedit = '{:U("Admin/Comment/edit")}';
+        var hrefcancel = '{:U("Admin/Comment/delete")}';
         var height = $('.indexcenter').height();
         $('#datagrid_' + classId).datagrid({
             url: urljson,
