@@ -39,7 +39,7 @@
                         <input type="text" name="yzmLogin" class="form-control input-lg" id="inputLoginYzm" placeholder="验证码" value="{$data.username}">
                     </div>
                     <div class="col-sm-4">
-                        <span class="dogo-click-yzmurl cursor"><img class="" src="{:U('Member/Passport/vercode')}" title="看不清？点击更换另一个验证码。"/>换一张</span>
+                        <span class="dogo-click-yzmurl cursor"><img class="" src="{:U('User/Passport/verify')}" title="看不清？点击更换另一个验证码。"/>换一张</span>
                     </div>
                 </div>
 
@@ -98,7 +98,7 @@
                         <input type="text" name="yzmSignup" class="form-control input-lg" id="inputSignupYzm" placeholder="验证码" value="{$data.username}">
                     </div>
                     <div class="col-sm-4">
-                        <span class="dogo-click-yzmurl cursor"><img class="" src="{:U('Member/Passport/vercode')}" title="看不清？点击更换另一个验证码。"/>换一张</span>
+                        <span class="dogo-click-yzmurl cursor"><img class="" src="{:U('User/Passport/verify')}" title="看不清？点击更换另一个验证码。"/>换一张</span>
                     </div>
                 </div>
 
@@ -191,7 +191,7 @@
             });
         });
         $('.dogo-click-yzmurl').click(function() {
-            var url = "{:U('User/Passport/vercode')}?tm=" + Math.random();
+            var url = "{:U('User/Passport/verify')}?tm=" + Math.random();
             $('.dogo-click-yzmurl img').attr('src', url);
         });
         $('.dogo-click-login').click(function() {

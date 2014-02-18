@@ -1,6 +1,6 @@
 <footer class="dogo-footer">
     <div class="dogo-blank"></div>
-    
+
 
 
 
@@ -39,7 +39,7 @@
                         <input type="text" name="yzmLogin" class="form-control input-lg" id="inputLoginYzm" placeholder="验证码" value="{$data.username}">
                     </div>
                     <div class="col-sm-4">
-                        <span class="dogo-click-yzmurl cursor"><img class="" src="{:U('Member/Passport/vercode')}" title="看不清？点击更换另一个验证码。"/>换一张</span>
+                        <span class="dogo-click-yzmurl cursor"><img class="" src="{:U('User/Passport/verify')}" title="看不清？点击更换另一个验证码。"/>换一张</span>
                     </div>
                 </div>
 
@@ -98,7 +98,7 @@
                         <input type="text" name="yzmSignup" class="form-control input-lg" id="inputSignupYzm" placeholder="验证码" value="{$data.username}">
                     </div>
                     <div class="col-sm-4">
-                        <span class="dogo-click-yzmurl cursor"><img class="" src="{:U('Member/Passport/vercode')}" title="看不清？点击更换另一个验证码。"/>换一张</span>
+                        <span class="dogo-click-yzmurl cursor"><img class="" src="{:U('User/Passport/verify')}" title="看不清？点击更换另一个验证码。"/>换一张</span>
                     </div>
                 </div>
 
@@ -118,10 +118,10 @@
 
 
 
-<script type="text/javascript" src="{$style_cmomon}/js/jquery-2.0.3.min.js"></script>
-<script type="text/javascript" src="{$style_cmomon}/v3.0.3/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="{$style_cmomon}/js/alertify.min.js"></script>
-<script type="text/javascript" src="{$style_cmomon}/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="__PUBLIC__{$style_common}/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__{$style_common}/v3.1.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__{$style_common}/js/alertify.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__{$style_common}/js/jquery.cookie.js"></script>
 
 <script>
     $(function() {
@@ -129,7 +129,7 @@
             var email = $('input[name="emailLogin"]').val();
             var pwd = $('input[name="pwdLogin"]').val();
             var yzm = $('input[name="yzmLogin"]').val();
-            var url = "{:U('Member/Passport/checkLogin')}";
+            var url = "{:U('User/Passport/checkLogin')}";
             var type = '10';
             //Alertify.dialog.alert(email);
             $.ajax({
@@ -139,7 +139,7 @@
                 data: {email: email, pwd: pwd, v_code: yzm, type: type},
                 success: function(data) {
                     if (data.status == 0) {
-                        setTimeout("$('.dogo-dialog-login').modal('hide')",2000);
+                        setTimeout("$('.dogo-dialog-login').modal('hide')", 2000);
                         Alertify.log.success(data.msg, 3000);
                     } else if (data.status == 1) {
                         Alertify.log.error(data.msg, 3000);
@@ -153,18 +153,18 @@
             var pwd = $('input[name="pwdSignup"]').val();
             var pwd2 = $('input[name="pwd2Signup"]').val();
             var yzm = $('input[name="yzmSignup"]').val();
-            var url = "{:U('Member/Passport/register')}";
+            var url = "{:U('User/Passport/register')}";
             var type = '10';
             //Alertify.dialog.alert(email);
             $.ajax({
                 type: "POST",
                 url: url,
                 dataType: "json",
-                data: {uname: name,email: email, pwd: pwd,pwd2: pwd2, v_code: yzm, type: type},
+                data: {uname: name, email: email, pwd: pwd, pwd2: pwd2, v_code: yzm, type: type},
                 success: function(data) {
                     if (data.status == 0) {
-                        setTimeout("$('.dogo-dialog-signup').modal('hide')",2000);
-                        setTimeout("$('.dogo-dialog-login').modal('show')",2000);
+                        setTimeout("$('.dogo-dialog-signup').modal('hide')", 2000);
+                        setTimeout("$('.dogo-dialog-login').modal('show')", 2000);
                         Alertify.log.success(data.msg, 3000);
                     } else if (data.status == 1) {
                         Alertify.log.error(data.msg, 3000);
@@ -173,7 +173,7 @@
             });
         });
         $('.dogo-click-logout').click(function() {
-            var url = "{:U('Member/Passport/logout')}";
+            var url = "{:U('User/Passport/logout')}";
             var type = '10';
             //Alertify.dialog.alert(email);
             $.ajax({
@@ -191,7 +191,7 @@
             });
         });
         $('.dogo-click-yzmurl').click(function() {
-            var url = "{:U('Member/Passport/vercode')}?tm=" + Math.random();
+            var url = "{:U('User/Passport/verify')}?tm=" + Math.random();
             $('.dogo-click-yzmurl img').attr('src', url);
         });
         $('.dogo-click-login').click(function() {
@@ -204,19 +204,19 @@
         });
         $('.dogo-click-up').each(function() {
             var row_id = $(this).attr('data-row-id');
-            var cookieid = $.cookie('row_id_'+row_id);
+            var cookieid = $.cookie('row_id_' + row_id);
             if (cookieid == row_id) {
                 $('.disabled_' + row_id).addClass('disabled');
             }
         });
-        $('.dogo-box-content img').each(function(){
+        $('.dogo-box-content img').each(function() {
             $(this).addClass('img-responsive');
         });
         $('.dogo-click-up').click(function() {
             var row_id = $(this).attr('data-row-id');
-            var url = "{:U('Ajax/vote')}";
+            var url = "{:U('Home/Ajax/vote')}";
             var type = '10';
-            var cookieid = $.cookie('row_id_'+row_id);
+            var cookieid = $.cookie('row_id_' + row_id);
             if (cookieid == row_id) {
                 alert('您已赞过该信息！');
                 return false;
@@ -230,7 +230,7 @@
                     if (data.status == 0) {
                         $('.num_up_' + row_id).text(data.num);
                         $('.disabled_' + row_id).addClass('disabled');
-                        $.cookie('row_id_'+row_id, row_id, {expires: 1});
+                        $.cookie('row_id_' + row_id, row_id, {expires: 1});
                         Alertify.log.success("成功赞了一下", 3000);
                     } else if (data.status == 1) {
                         Alertify.log.error(data.msg, 3000);
@@ -243,9 +243,9 @@
         });
         $('.dogo-click-down').click(function() {
             var row_id = $(this).attr('data-row-id');
-            var url = "{:U('Ajax/vote')}";
+            var url = "{:U('Home/Ajax/vote')}";
             var type = '11';
-            var cookieid = $.cookie('row_id_'+row_id);
+            var cookieid = $.cookie('row_id_' + row_id);
             if (cookieid == row_id) {
                 alert('您已踩过该信息！');
                 return false;

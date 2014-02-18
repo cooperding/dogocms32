@@ -7,12 +7,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="keywords" content="{$keywords}" />
         <meta name="description" content="{$description}" />
-        <link rel="stylesheet" type="text/css" href="{$style_cmomon}/v3.0.3/css/bootstrap.min.css"/>
-        <link rel="stylesheet" type="text/css" href="{$style_cmomon}/v3.0.3/css/bootstrap-theme.min.css"/>
-        <link rel="stylesheet" type="text/css" href="{$style_cmomon}/css/alertify.css"/>
-        <link rel="stylesheet" type="text/css" href="{$style_cmomon}/css/alertify.default.css"/>
-        <link rel="stylesheet" type="text/css" href="{$style}/style/common.css"/>
-        <link rel="stylesheet" type="text/css" href="{$style}/style/style.css"/>
+        <link rel="stylesheet" type="text/css" href="__PUBLIC__{$style_common}/v3.1.1/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="__PUBLIC__{$style_common}/v3.1.1/css/bootstrap-theme.min.css"/>
+        <link rel="stylesheet" type="text/css" href="__PUBLIC__{$style_common}/css/alertify.css"/>
+        <link rel="stylesheet" type="text/css" href="__PUBLIC__{$style_common}/css/alertify.default.css"/>
+        <link rel="stylesheet" type="text/css" href="__PUBLIC__{$style}/style/common.css"/>
+        <link rel="stylesheet" type="text/css" href="__PUBLIC__{$style}/style/style.css"/>
     </head>
     <body>
         <div class="dogo-page ">
@@ -61,12 +61,12 @@
                                         <li id="fat-menu" class="dropdown">
                                             <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">会员中心<b class="caret"></b></a>
                                             <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
-                                                <li role="presentation"><a role="menuitem" href="{:U('Member/Index/index')}">我的主页</a></li>
+                                                <li role="presentation"><a role="menuitem" href="{:U('User/Index/index')}">我的主页</a></li>
                                                 <li role="presentation"><a role="menuitem" href="">我的订单</a></li>
                                                 <li role="presentation"><a role="menuitem" href="">修改密码</a></li>
-                                                <li role="presentation"><a role="menuitem" href="{:U('Member/Passport/login')}" title="登录"> <span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
-                                                <li role="presentation"><a role="menuitem" href="{:U('Member/Passport/signup')}" title="注册">注册</a></li>
-                                                <li role="presentation"><a role="menuitem" href="{:U('Member/Passport/resetPassword')}">忘记密码</a></li>
+                                                <li role="presentation"><a role="menuitem" href="{:U('User/Passport/login')}" title="登录"> <span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                                                <li role="presentation"><a role="menuitem" href="{:U('User/Passport/signup')}" title="注册">注册</a></li>
+                                                <li role="presentation"><a role="menuitem" href="{:U('User/Passport/resetPassword')}">忘记密码</a></li>
                                                 <li role="presentation" class="divider"></li>
                                                 <li role="presentation"><a role="menuitem" href="javascript:void(0)" class="dogo-click-logout"> <span class="glyphicon glyphicon-log-out"></span> 退出登录</a></li>
                                             </ul>
