@@ -35,9 +35,9 @@
         <foreach name="list" item="vo" key="i">
             <section class="dogo-box dogo-border-all dogo-pd515">
                 <div class="dogo-box-header">
-                    <h4><span class="glyphicon glyphicon-hand-right"></span> <a href="{:U('Content/index',array('id'=>$vo['id']))}">{$vo.title}</a></h4>
+                    <h4><span class="glyphicon glyphicon-hand-right"></span> <a href="{:U('Home/Content/index',array('id'=>$vo['id']))}">{$vo.title}</a></h4>
                     <p>
-                        <span class="glyphicon glyphicon-user"></span> <a href="{:U('Members/index',array('uid'=>$vo['members_id']))}">{$vo.username} </a>
+                        <span class="glyphicon glyphicon-user"></span> <a href="{:U('Home/User/index',array('uid'=>$vo['members_id']))}">{$vo.username} </a>
                         
                     </p>
                 </div>
@@ -46,7 +46,7 @@
                         {$vo.content}
                     <if condition="$vo.titlepic neq ''">
                         <br/>
-                        <a href="{:U('Content/index',array('id'=>$vo['id']))}"><img class="img-responsive" src="{$vo.titlepic}"/></a>
+                        <a href="{:U('Home/Content/index',array('id'=>$vo['id']))}"><img class="img-responsive" src="{$vo.titlepic}"/></a>
                     </if>
                     </p>
                 </div><!--dogo-box-content-->
@@ -57,7 +57,7 @@
                             <span type="button" class="btn btn-default dogo-click-down disabled_{$vo.id}" data-row-id="{$vo.id}" title="踩"> <span class="glyphicon glyphicon-thumbs-down"></span> <span class="num_down_{$vo.id}">{$vo.num_beat}</span></span>
                         </div>
                         <div class="col-md-6 dogo-align">
-                            <a href="{:U('Content/index',array('id'=>$vo['id']))}"><span type="button" class="btn btn-default" title="评论"> <span class="glyphicon glyphicon-comment"></span> {$vo.num_comment}</span></a>
+                            <a href="{:U('Home/Content/index',array('id'=>$vo['id']))}"><span type="button" class="btn btn-default" title="评论"> <span class="glyphicon glyphicon-comment"></span> {$vo.num_comment}</span></a>
                             <span type="button" class="btn btn-default"> <span class="glyphicon glyphicon-plus-sign"></span> 分享</span>
                         </div>
                     </div><!--row-->

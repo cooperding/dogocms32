@@ -19,7 +19,7 @@ class BasehomeAction extends Action {
     function _initialize()
     {
         $skin = $this->getSkin(); //获取前台主题皮肤名称
-        $navhead = R('Api/News/getNav', array('header')); //导航菜单
+        $navhead = R('Common/System/getNav', array('header')); //导航菜单
         $this->assign('navhead', $navhead);
         
         $this->assign('style_common', '/Common');
@@ -41,9 +41,9 @@ class BasehomeAction extends Action {
 
     public function getSkin()
     {
-        $skin = R('Api/News/getCfg', array('cfg_skin_web'));
+        $skin = R('Common/System/getCfg', array('cfg_skin_web'));
         if (!$skin) {
-            $skin = 'default';
+            $skin = C('DEFAULT_THEME');
         }
         return $skin;
     }

@@ -12,7 +12,7 @@
  */
 namespace Home\Action;
 use Think\Action;
-class SearchAction extends BaseAction {
+class SearchAction extends BasehomeAction {
 
     public function index()
     {

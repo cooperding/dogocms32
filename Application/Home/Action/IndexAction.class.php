@@ -23,8 +23,7 @@ class IndexAction extends BasehomeAction {
         $count = $t->Table(C('DB_PREFIX') . 'title t')
                         ->join(C('DB_PREFIX') . 'content c ON c.title_id = t.id ')
                         ->where($condition)->count();
-        $page = new \Org\Util\QiuyunPage($count, 5);
-        //$page = new DingPage($count, 5); // 实例化分页类 传入总记录数和每页显示的记录数
+        $page = new \Org\Util\QiuyunPage($count, 5); // 实例化分页类 传入总记录数和每页显示的记录数
         $page->setConfig('header', '条记录');
         $page->setConfig('theme', "%upPage% %downPage% %first% %prePage% %linkPage% %nextPage% %end% <li><span>%totalRow% %header% %nowPage%/%totalPage% 页</span></li>");
         $show = $page->show(); // 分页显示输出

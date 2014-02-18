@@ -49,7 +49,7 @@ class ContentAction extends BasehomeAction {
         $this->assign('title', $data['title']);
         $this->assign('keywords', $data['keywords']);
         $this->assign('description', $data['description']);
-        $this->display($skin . ':content');
+        $this->theme($skin)->display(':content');
     }
 
 }

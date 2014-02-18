@@ -18,10 +18,9 @@ class ListAction extends BasehomeAction {
     
     public function index()
     {
-        $id = $this->_get('id');
+        $id = I('get.id');
         $t = D('Title');
         $ns = D('NewsSort');
-        import('ORG.Util.DingPage'); // 导入分页类
         $condition_sort['path'] = array('like', '%,' . $id . ',%');
         $condition_sort['id'] = array('eq', $id);
         $condition_sort['_logic'] = 'OR';
@@ -36,7 +35,7 @@ class ListAction extends BasehomeAction {
         $count = $t->Table(C('DB_PREFIX') . 'title t')
                         ->join(C('DB_PREFIX') . 'content c ON c.title_id = t.id ')
                         ->where($condition)->count();
-        $page = new DingPage($count, 5); // 实例化分页类 传入总记录数和每页显示的记录数
+        $page = new \Org\Util\QiuyunPage($count, 5); // 实例化分页类 传入总记录数和每页显示的记录数
         $page->setConfig('header', '条记录');
         $page->setConfig('theme', "%upPage% %downPage% %first% %prePage% %linkPage% %nextPage% %end% <li><span>%totalRow% %header% %nowPage%/%totalPage% 页</span></li>");
         $show = $page->show(); // 分页显示输出
@@ -56,7 +55,7 @@ class ListAction extends BasehomeAction {
         $this->assign('description', $one_data['description']);
         $this->assign('list', $list);
         $this->assign('page', $show); // 赋值分页输出
-        $this->display($skin . ':list');
+        $this->theme($skin)->display(':list');
     }
 
 }

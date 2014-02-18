@@ -214,7 +214,7 @@
         });
         $('.dogo-click-up').click(function() {
             var row_id = $(this).attr('data-row-id');
-            var url = "{:U('Ajax/vote')}";
+            var url = "{:U('Home/Ajax/vote')}";
             var type = '10';
             var cookieid = $.cookie('row_id_' + row_id);
             if (cookieid == row_id) {
@@ -243,7 +243,7 @@
         });
         $('.dogo-click-down').click(function() {
             var row_id = $(this).attr('data-row-id');
-            var url = "{:U('Ajax/vote')}";
+            var url = "{:U('Home/Ajax/vote')}";
             var type = '11';
             var cookieid = $.cookie('row_id_' + row_id);
             if (cookieid == row_id) {

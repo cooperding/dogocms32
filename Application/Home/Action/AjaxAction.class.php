@@ -48,8 +48,8 @@ class AjaxAction extends BasehomeAction {
     {
         $t = D('Title');
         $ir = D('InformationRecord');
-        $key_id = $this->_post('key_id');
-        $type = $this->_post('type');
+        $key_id = I('post.key_id');
+        $type = I('post.type');
         $this->checkLoginStatus(); //验证登录状态
         $ip = get_client_ip();
         $uid = session('LOGIN_M_ID'); //会员ID
@@ -92,8 +92,8 @@ class AjaxAction extends BasehomeAction {
     {
         $t = D('Title');
         $c = D('Comment');
-        $key_id = $this->_post('key_id');
-        $content = $this->_post('content');
+        $key_id = I('post.key_id');
+        $content = I('post.content');
         $this->checkLoginStatus(); //验证登录状态
         $ip = get_client_ip();
         $uid = session('LOGIN_M_ID'); //会员ID

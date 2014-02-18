@@ -12,7 +12,7 @@
  */
 namespace Home\Action;
 use Think\Action;
-class CommentAction extends BaseAction {
+class CommentAction extends BasehomeAction {
 
     public function index()
     {
@@ -29,6 +29,7 @@ class CommentAction extends BaseAction {
           $this->assign('keywords', $data_keywords['sys_value']);
           $this->assign('description', $data_description['sys_value']);
           $this->display(':index');
+         * $this->theme($skin)->display(':index');
          *
          */
     }

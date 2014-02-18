@@ -13,7 +13,7 @@
  */
 namespace Home\Action;
 use Think\Action;
-class PageAction extends BaseAction {
+class PageAction extends BasehomeAction {
 
     public function index($id)
     {
@@ -62,6 +62,7 @@ class PageAction extends BaseAction {
         $this->assign('keywords', $one_data['keywords']);
         $this->assign('description', $one_data['description']);
         $this->display(':list');
+        $this->theme($skin)->display(':page');
     }
 
 }
