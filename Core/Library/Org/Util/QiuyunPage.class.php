@@ -8,9 +8,9 @@
 // +----------------------------------------------------------------------
 // | Author: 麦当苗儿 <zuojiazi@vip.qq.com> <http://www.zjzit.cn>
 // +----------------------------------------------------------------------
-namespace Think;
+namespace Org\Util;
 
-class Page{
+class QiuyunPage{
     public $firstRow; // 起始行数
     public $listRows; // 列表每页显示行数
     public $parameter; // 分页跳转时要带的参数

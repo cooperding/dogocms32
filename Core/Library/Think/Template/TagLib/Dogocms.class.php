@@ -26,12 +26,12 @@ class Dogocms extends TagLib {
 
     //取得配置信息
     //之后存入缓存文件
-    public function _cfg($attr, $content)
+    public function _cfg($tag)
     {
-        $tag = $this->parseXmlAttr($attr, 'cfg');
+        //$tag = $this->parseXmlAttr($attr, 'cfg');
         $name = $tag['name'];
         $m = M('Setting');
-        $condition['sys_name'] = $name;
+        $condition['sys_name'] = array('eq',$name);
         $data = $m->where($condition)->find();
         $parseStr = '';
         if ($data) {
@@ -41,9 +41,8 @@ class Dogocms extends TagLib {
     }
 
 //  头部和底部导航
-    public function _nav($attr, $content)
+    public function _nav($tag)
     {
-        $tag = $this->parseXmlAttr($attr, 'nav');
         $name = $tag['name'];
         $limit = $tag['limit'];
         $order = $tag['order']; //字符串加引号
@@ -69,9 +68,8 @@ class Dogocms extends TagLib {
         return $parsestr;
     }
 
-    public function _article($attr, $content)
+    public function _article($tag)
     {
-        $tag = $this->parseXmlAttr($attr, 'article');
         $typeid = trim($tag['typeid']); //分类id
         $type = strtoupper($tag['type']); //分类类型type:all
         $tid = $tag['tid']; //指定文档id
@@ -197,9 +195,8 @@ class Dogocms extends TagLib {
     }
 
     //文档分类
-    public function _sort($attr, $content)
+    public function _sort($tag)
     {
-        $tag = $this->parseXmlAttr($attr, 'sort');
         $limit = $tag['limit'];
         $order = $tag['order']; //字符串加引号
         $type = $tag['type'];
@@ -225,9 +222,8 @@ class Dogocms extends TagLib {
     }
 
 //  头部和底部导航
-    public function _links($attr, $content)
-    {//typeid,limit,type,order
-        $tag = $this->parseXmlAttr($attr, 'links');
+    public function _links($tag)
+    {
         $typeid = $tag['typeid'];
         $limit = $tag['limit'];
         $order = $tag['order']; //字符串加引号
@@ -254,9 +250,8 @@ class Dogocms extends TagLib {
     }
 
     //  block碎片标签 typeid,limit,order
-    public function _block($attr, $content)
+    public function _block($tag)
     {
-        $tag = $this->parseXmlAttr($attr, 'block');
         $typeid = $tag['typeid'];
         $limit = $tag['limit'];
         $order = $tag['order']; //字符串加引号

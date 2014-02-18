@@ -21,7 +21,6 @@ return array(
     'URL_HTML_SUFFIX' => 'html', // URL伪静态后缀设置
     'URL_DENY_SUFFIX' => 'ico|png|gif|jpg', // URL禁止访问的后缀设置
     'READ_DATA_MAP' => true, //字段映射,在数据获取的时候自动处理的话
-    
     'LANG_SWITCH_ON' => true, // 开启语言包功能
     'LANG_AUTO_DETECT' => false, // 自动侦测语言 开启多语言功能后有效
     'LANG_LIST' => 'en-us,zh-cn', // 允许切换的语言列表 用逗号分隔
@@ -30,5 +29,4 @@ return array(
     'TAGLIB_PRE_LOAD' => 'cx,html,dogocms', //扩展标签dogocms
     'DEFAULT_TIMEZONE' => 'PRC', //默认时区
     'VIEW_PATH' => './Theme/',
-    
 );
