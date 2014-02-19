@@ -1,15 +1,15 @@
-<include file="$header" />
+<include file="$tpl_header" />
 <div class="row">
     <div class="col-md-3">
         <div class="dogo-sidebar">
-            <include file="$sidebar" />
+            <include file="$tpl_sidebar" />
         </div><!--dogo-sidebar-->
     </div><!--col-md-->
     <div class="col-md-9">
         <div class="dogo-member">
             <h4>邮箱管理</h4>
             <div class="dogo-blank"></div>
-            <form class="form-horizontal" role="form" action="{:U('Member/Index/doEmail')}" method="post">
+            <form class="form-horizontal" role="form" action="{:U('User/Index/doEmail')}" method="post">
                 <div class="form-group">
                     <label for="inputEmail" class="col-sm-2 control-label input-lg">邮箱状态：</label>
                     <div class="col-sm-10">
@@ -54,13 +54,13 @@
     </div><!--col-md-->
 </div><!--row-->
 
-<include file="$footer" />
+<include file="$tpl_footer" />
 <script>
     $(function() {
         $('.click_emailauth').click(function() {
             $.ajax({
                 type: "POST",
-                url: '{:U("Member/Index/authEmail")}',
+                url: '{:U("User/Index/authEmail")}',
                 dataType: "json",
                 success: function(data) {
                     if (data.status == 1) {

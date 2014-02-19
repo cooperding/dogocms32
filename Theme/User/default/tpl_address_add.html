@@ -1,9 +1,9 @@
-<include file="$header" />
+<include file="$tpl_header" />
 <div class="row">
     <div class="col-md-3">
 
         <div class="dogo-sidebar">
-            <include file="$sidebar" />
+            <include file="$tpl_sidebar" />
         </div><!--dogo-sidebar-->
     </div><!--col-md-->
     <div class="col-md-9">
@@ -11,18 +11,17 @@
             <h4>添加收货地址</h4>
             <div class="dogo-blank"></div>
 
-            <form class="form-horizontal " role="form" action="{:U('Member/Index/addressUpdate')}" method="post">
-                <input name="id" value="{$data.id}" type="hidden"/>
+            <form class="form-horizontal " role="form" action="{:U('User/Index/addressInsert')}" method="post">
                 <div class="form-group">
                     <label for="inputName" class="col-sm-2 control-label">收货人姓名：</label>
                     <div class="col-sm-10">
-                        <input type="text" name="name" class="form-control input-lg" id="inputName" placeholder="收货人姓名" value="{$data.name}" required="required">
+                        <input type="text" name="name" class="form-control input-lg" id="inputName" placeholder="收货人姓名" value="{$data.username}" required="required">
                     </div>
                 </div><!--form-group-->
                 <div class="form-group">
                     <label for="inputTelphone" class="col-sm-2 control-label">手机号码：</label>
                     <div class="col-sm-10">
-                        <input type="text" name="telphone" class="form-control input-lg" id="inputTelphone" placeholder="手机号码" value="{$data.telphone}" required="required">
+                        <input type="text" name="telphone" class="form-control input-lg" id="inputTelphone" placeholder="手机号码" value="{$data.username}" required="required">
                     </div>
                 </div><!--form-group-->
                 <div class="form-group">
@@ -50,13 +49,13 @@
                 <div class="form-group">
                     <label for="inputZipcode" class="col-sm-2 control-label">邮政编码：</label>
                     <div class="col-sm-10">
-                        <input type="text" name="zipcode" class="form-control input-lg" id="inputZipcode" placeholder="邮政编码" value="{$data.zipcode}" required="required">
+                        <input type="text" name="zipcode" class="form-control input-lg" id="inputZipcode" placeholder="邮政编码" value="{$data.username}" required="required">
                     </div>
                 </div><!--form-group-->
                 <div class="form-group">
                     <label for="inputAddress" class="col-sm-2 control-label">街道地址：</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control input-lg" name="address" id="inputAddress" rows="3" placeholder="街道地址" required="required">{$data.address}</textarea>
+                        <textarea class="form-control input-lg" name="address" id="inputAddress" rows="3" placeholder="街道地址" required="required">{$data.signature}</textarea>
                     </div>
                 </div><!--form-group-->
 
@@ -66,7 +65,7 @@
                     <div class="col-sm-10">
                         <div class="checkbox">
                             <label>
-                                <input name="is_default" type="checkbox" id="inputIsdefault" <eq name="data.is_default" value="20">checked</eq>> 设置为默认收货地址
+                                <input name="is_default" type="checkbox" id="inputIsdefault"> 设置为默认收货地址
                             </label>
                         </div>
                     </div>
@@ -84,7 +83,7 @@
 
     </div><!--col-md-->
 </div><!--row-->
-<include file="$footer" />
+<include file="$tpl_footer" />
 </div><!--container-->
 </div><!--dogo-page-->
 

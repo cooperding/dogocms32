@@ -26,13 +26,13 @@ class BaseuserAction extends Action {
         $this->assign('count_address', $this->getAddressCount());
         $this->assign('count_apilist', $this->getApiListCount());
         $skin = $this->getSkin(); //获取前台主题皮肤名称
-        $navhead = R('Api/News/getNav', array('header')); //导航菜单
+        $navhead = R('Common/System/getNav', array('header')); //导航菜单
         $this->assign('navhead', $navhead);
-        $this->assign('style', __PUBLIC__ . '/Skin/Member/' . $skin);
-        $this->assign('style_cmomon', __PUBLIC__ . '/Common');
-        $this->assign('header', './App/Tpl/Member/' . $skin . '/header.html');
-        $this->assign('footer', './App/Tpl/Member/' . $skin . '/footer.html');
-        $this->assign('sidebar', './App/Tpl/Member/' . $skin . '/sidebar.html');
+        $this->assign('style_common', '/Common');
+        $this->assign('style', '/Skin/User/' . $skin);
+        $this->assign('tpl_header', './Theme/User/' . $skin . '/tpl_header.html');
+        $this->assign('tpl_footer', './Theme/User/' . $skin . '/tpl_footer.html');
+        $this->assign('tpl_sidebar', './Theme/User/' . $skin . '/tpl_sidebar.html');
     }
 
     /*
@@ -43,9 +43,9 @@ class BaseuserAction extends Action {
 
     public function getSkin()
     {
-        $skin = R('Api/News/getCfg', array('cfg_member_skin'));
+        $skin = R('Common/System/getCfg', array('cfg_member_skin'));
         if(!$skin){
-            $skin = 'default';
+            $skin = C('DEFAULT_THEME');
         }
         return $skin;
     }
@@ -57,7 +57,7 @@ class BaseuserAction extends Action {
 
     public function getAddressCount()
     {
-        $m = new MembersAddressModel();
+        $m = D('MembersAddress');
         $uid = session('LOGIN_M_ID');
         $condition['members_id'] = array('eq', $uid);
         $count = $m->where($condition)->count();
@@ -71,7 +71,7 @@ class BaseuserAction extends Action {
 
     public function getApiListCount()
     {
-        $m = new ApiListModel();
+        $m = D('ApiList');
         $uid = session('LOGIN_M_ID');
         $condition['members_id'] = array('eq', $uid);
         $count = $m->where($condition)->count();

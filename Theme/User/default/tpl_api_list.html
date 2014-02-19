@@ -1,16 +1,16 @@
-<include file="$header" />
+<include file="$tpl_header" />
 <div class="row">
     <div class="col-md-3">
 
         <div class="dogo-sidebar">
-            <include file="$sidebar" />
+            <include file="$tpl_sidebar" />
         </div><!--dogo-sidebar-->
     </div><!--col-md-->
     <div class="col-md-9">
         <div class="dogo-member">
             <h4>API列表</h4>
             <div class="dogo-blank"></div>
-            <a href="{:U('Index/apiListAdd')}"><span class="btn btn-info">申请API接口</span></a>
+            <a href="{:U('User/Index/apiListAdd')}"><span class="btn btn-info">申请API接口</span></a>
             <table class="table table-hover table-responsive">
                 <thead>
                     <tr>
@@ -28,8 +28,8 @@
                         <td>{$vo.apitoken}</td>
                         <td>{$vo.addtime|date="Y-m-d H:i",###}</td>
                         <td>{$vo.status}</td>
-                        <td><a href="{:U('Index/apiListEdit',array('id'=>$vo['id']))}" title="编辑API"><span class="glyphicon glyphicon-edit"></span></a> / 
-                            <a href="{:U('Index/apiDelete',array('id'=>$vo['id']))}" onclick="return confirm('确认要删除该信息吗？');" title="删除API">
+                        <td><a href="{:U('User/Index/apiListEdit',array('id'=>$vo['id']))}" title="编辑API"><span class="glyphicon glyphicon-edit"></span></a> / 
+                            <a href="{:U('User/Index/apiDelete',array('id'=>$vo['id']))}" onclick="return confirm('确认要删除该信息吗？');" title="删除API">
                                 <span class="glyphicon glyphicon-remove-circle"></span></a>
                         </td>
                     </tr>
@@ -44,7 +44,7 @@
 
     </div><!--col-md-->
 </div><!--row-->
-<include file="$footer" />
+<include file="$tpl_footer" />
 </div><!--container-->
 </div><!--dogo-page-->
 

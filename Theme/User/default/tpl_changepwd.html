@@ -1,16 +1,16 @@
-<include file="$header" />
+<include file="$tpl_header" />
 <div class="row">
     <div class="col-md-3">
 
         <div class="dogo-sidebar">
-            <include file="$sidebar" />
+            <include file="$tpl_sidebar" />
         </div><!--dogo-sidebar-->
     </div><!--col-md-->
     <div class="col-md-9">
         <div class="dogo-member">
             <h4>修改密码</h4>
             <div class="dogo-blank"></div>
-            <form class="form-horizontal" role="form" action="{:U('Member/Index/doChangePwd')}" method="post">
+            <form class="form-horizontal" role="form" action="{:U('User/Index/doChangePwd')}" method="post">
 
                 <div class="form-group">
                     <label for="oldpwd" class="col-sm-2 control-label input-lg">原密码：</label>
@@ -39,7 +39,7 @@
 
     </div><!--col-md-->
 </div><!--row-->
-<include file="$footer" />
+<include file="$tpl_footer" />
 </div><!--container-->
 </div><!--dogo-page-->
 

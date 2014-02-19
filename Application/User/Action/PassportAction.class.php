@@ -103,16 +103,16 @@ class PassportAction extends Action {
     public function checkLogin()
     {
         $m = D('Members');
-        $v_code = I('post.v_code');
-        $verify = session('verify_member');
+        $ver_code = I('post.v_code');
+        $verify_status = $this->check_verify($ver_code);
         $type = I('post.type');
-        if (empty($v_code) || md5($v_code) != $verify) {
+        if (!$verify_status) {
             if ($type == '10') {
-                $array = array('status' => 1, 'msg' => '验证码为空或者输入错误！');
+                $array = array('status' => 1, 'msg' => '验证码输入错误或已过期！');
                 echo json_encode($array);
                 exit;
             } else {
-                $this->error('验证码为空或者输入错误！');
+                $this->error('验证码输入错误或已过期！');
                 exit;
             }
         }

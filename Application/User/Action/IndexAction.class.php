@@ -24,7 +24,7 @@ class IndexAction extends BaseuserAction {
      */
     public function index()
     {
-        $m = new MembersModel();
+        $m = D('Members');
         $uid = session('LOGIN_M_ID');
         $condition['id'] = array('eq', $uid);
         $data['uname'] = session('LOGIN_M_NAME');
@@ -37,7 +37,7 @@ class IndexAction extends BaseuserAction {
         $this->assign('title', '会员中心');
         $this->assign('sidebar_active', 'index');
         $this->assign('data', $data);
-        $this->display($skin . ':index');
+        $this->theme($skin)->display(':index');
     }
 
     /**
@@ -49,7 +49,7 @@ class IndexAction extends BaseuserAction {
      */
     public function personal()
     {
-        $m = new MembersModel();
+        $m = D('Members');
         $uid = session('LOGIN_M_ID');
         $condition['id'] = array('eq', $uid);
         $data = $m->field('username,sex,signature,birthday')->where($condition)->find();
@@ -57,7 +57,7 @@ class IndexAction extends BaseuserAction {
         $this->assign('title', '个人资料');
         $this->assign('sidebar_active', 'personal');
         $this->assign('data', $data);
-        $this->display($skin . ':personal');
+        $this->theme($skin)->display(':personal');
     }
 
     /**
@@ -69,7 +69,7 @@ class IndexAction extends BaseuserAction {
      */
     public function email()
     {
-        $m = new MembersModel();
+        $m = D('Members');
         $uid = session('LOGIN_M_ID');
         $condition['id'] = array('eq', $uid);
         $data = $m->field('email,email_status')->where($condition)->find();
@@ -77,7 +77,7 @@ class IndexAction extends BaseuserAction {
         $this->assign('title', '邮箱信息');
         $this->assign('sidebar_active', 'email');
         $this->assign('data', $data);
-        $this->display($skin . ':email');
+        $this->theme($skin)->display(':email');
     }
 
     /**
@@ -92,7 +92,7 @@ class IndexAction extends BaseuserAction {
         $skin = $this->getSkin(); //获取前台主题皮肤名称
         $this->assign('title', '修改密码');
         $this->assign('sidebar_active', 'changepwd');
-        $this->display($skin . ':changepwd');
+        $this->theme($skin)->display(':changepwd');
     }
 
     /**
@@ -104,7 +104,7 @@ class IndexAction extends BaseuserAction {
      */
     public function addressList()
     {
-        $m = new MembersAddressModel();
+        $m = D('MembersAddress');
         $uid = session('LOGIN_M_ID');
         $condition['members_id'] = array('eq', $uid);
         $data = $m->where($condition)->select();
@@ -112,7 +112,7 @@ class IndexAction extends BaseuserAction {
         $this->assign('title', '收货地址列表');
         $this->assign('sidebar_active', 'address');
         $this->assign('list', $data);
-        $this->display($skin . ':address_list');
+        $this->theme($skin)->display(':address_list');
     }
 
     /**
@@ -127,7 +127,7 @@ class IndexAction extends BaseuserAction {
         $skin = $this->getSkin(); //获取前台主题皮肤名称
         $this->assign('title', '添加收货地址');
         $this->assign('sidebar_active', 'address');
-        $this->display($skin . ':address_add');
+        $this->theme($skin)->display(':address_add');
     }
 
     /**
@@ -139,16 +139,16 @@ class IndexAction extends BaseuserAction {
      */
     public function addressEdit()
     {
-        $m = new MembersAddressModel();
+        $m = D('MembersAddress');
         $uid = session('LOGIN_M_ID');
         $condition['members_id'] = array('eq', $uid);
-        $condition['id'] = array('eq', $this->_get('id'));
+        $condition['id'] = array('eq', I('get.id'));
         $data = $m->where($condition)->find();
         $skin = $this->getSkin(); //获取前台主题皮肤名称
         $this->assign('title', '修改收货地址');
         $this->assign('sidebar_active', 'changepwd');
         $this->assign('data', $data);
-        $this->display($skin . ':address_edit');
+        $this->theme($skin)->display(':address_edit');
     }
 
     /**
@@ -160,7 +160,7 @@ class IndexAction extends BaseuserAction {
      */
     public function apiList()
     {
-        $m = new ApiListModel();
+        $m = D('ApiList');
         $uid = session('LOGIN_M_ID');
         $condition['members_id'] = array('eq', $uid);
         $data = $m->where($condition)->select();
@@ -175,7 +175,7 @@ class IndexAction extends BaseuserAction {
         $this->assign('title', 'API列表');
         $this->assign('sidebar_active', 'apilist');
         $this->assign('list', $data);
-        $this->display($skin . ':api_list');
+        $this->theme($skin)->display(':api_list');
     }
 
     /**
@@ -190,7 +190,7 @@ class IndexAction extends BaseuserAction {
         $skin = $this->getSkin(); //获取前台主题皮肤名称
         $this->assign('title', '添加API信息');
         $this->assign('sidebar_active', 'apilist');
-        $this->display($skin . ':api_add');
+        $this->theme($skin)->display(':api_add');
     }
 
     /**
@@ -202,16 +202,16 @@ class IndexAction extends BaseuserAction {
      */
     public function apiListEdit()
     {
-        $m = new ApiListModel();
+        $m = D('ApiList');
         $uid = session('LOGIN_M_ID');
         $condition['members_id'] = array('eq', $uid);
-        $condition['id'] = array('eq', $this->_get('id'));
+        $condition['id'] = array('eq', I('get.id'));
         $data = $m->where($condition)->find();
         $skin = $this->getSkin(); //获取前台主题皮肤名称
         $this->assign('title', '修改API信息');
         $this->assign('sidebar_active', 'apilist');
         $this->assign('data', $data);
-        $this->display($skin . ':api_edit');
+        $this->theme($skin)->display(':api_edit');
     }
 
     /**
@@ -223,16 +223,16 @@ class IndexAction extends BaseuserAction {
      */
     public function doPersonal()
     {
-        $m = new MembersModel();
+        $m = D('Members');
         $uid = session('LOGIN_M_ID');
         $condition['id'] = array('eq', $uid);
         $data['updatetime'] = time();
-        $data['sex'] = $this->_post('sex');
-        $data['birthday'] = strtotime($this->_post('birthday'));
-        $data['signature'] = $this->_post('signature');
+        $data['sex'] = I('post.sex');
+        $data['birthday'] = strtotime(I('post.birthday'));
+        $data['signature'] = I('post.signature');
         $rs = $m->where($condition)->save($data);
         if ($rs == true) {
-            $this->success('操作成功', __GROUP__ . '/Index/personal');
+            $this->success('操作成功', __MODULE__ . '/Index/personal');
         } else {
             $this->error('操作失败，请重新操作！');
         }
@@ -247,11 +247,11 @@ class IndexAction extends BaseuserAction {
      */
     public function doEmail()
     {
-        $m = new MembersModel();
+        $m = D('Members');
         $uid = session('LOGIN_M_ID');
         $condition['id'] = array('eq', $uid);
         $data['updatetime'] = time();
-        $data['email'] = $this->_post('email');
+        $data['email'] = I('post.email');
         $condition_email['email'] = array('eq', $data['email']);
         $condition_email['id'] = array('neq', $uid);
         //判断该邮箱是否存在
@@ -268,7 +268,7 @@ class IndexAction extends BaseuserAction {
         }
         $rs = $m->where($condition)->save($data);
         if ($rs == true) {
-            $this->success('操作成功', __GROUP__ . '/Index/email');
+            $this->success('操作成功', __MODULE__ . '/Index/email');
         } else {
             $this->error('操作失败，请重新操作！');
         }
@@ -296,12 +296,12 @@ class IndexAction extends BaseuserAction {
      */
     public function doChangePwd()
     {
-        $m = new MembersModel();
+        $m = D('Members');
         $uid = session('LOGIN_M_ID');
         $uname = session('LOGIN_M_NAME');
-        $oldpwd = $this->_post('oldpwd'); //原密码
-        $newpwd = $this->_post('newpwd'); //新密码1
-        $newpwd2 = $this->_post('newpwd2'); //新密码2
+        $oldpwd = I('post.oldpwd'); //原密码
+        $newpwd = I('post.newpwd'); //新密码1
+        $newpwd2 = I('post.newpwd2'); //新密码2
         if (empty($oldpwd) || empty($newpwd) || empty($newpwd2)) {
             $this->error('密码项不能为空！');
             exit;
@@ -312,17 +312,17 @@ class IndexAction extends BaseuserAction {
         }
         $condition['id'] = array('eq', $uid);
         $data_find = $m->field('password')->where($condition)->find();
-        $oldpwd = R('Api/News/getPwd', array($uname, $oldpwd));
+        $oldpwd = R('Common/System/getPwd', array($uname, $oldpwd));
         if ($oldpwd != $data_find['password']) {
             $this->error('原密码输入不正确，请重新输入！');
             exit;
         }
-        $password = R('Api/News/getPwd', array($uname, $newpwd));
+        $password = R('Common/System/getPwd', array($uname, $newpwd));
         $data['password'] = $password;
         $data['updatetime'] = time();
         $rs = $m->where($condition)->save($data);
         if ($rs == true) {
-            $this->success('操作成功', __GROUP__ . '/Index/changePwd');
+            $this->success('操作成功', __MODULE__ . '/Index/changePwd');
         } else {
             $this->error('操作失败，请重新操作！');
         }
@@ -337,7 +337,7 @@ class IndexAction extends BaseuserAction {
      */
     public function addressInsert()
     {
-        $m = new MembersAddressModel();
+        $m = D('MembersAddress');
         $uid = session('LOGIN_M_ID');
         $condition['members_id'] = array('eq', $uid);
         $count = $m->where($condition)->count();
@@ -354,7 +354,7 @@ class IndexAction extends BaseuserAction {
         $_POST['updatetime'] = time();
         $rs = $m->data($_POST)->add();
         if ($rs == true) {
-            $this->success('操作成功', __GROUP__ . '/Index/addressList');
+            $this->success('操作成功', __MODULE__ . '/Index/addressList');
         } else {
             $this->error('操作失败，请重新操作！');
         }
@@ -369,18 +369,18 @@ class IndexAction extends BaseuserAction {
      */
     public function addressUpdate()
     {
-        $m = new MembersAddressModel();
+        $m = D('MembersAddress');
         $uid = session('LOGIN_M_ID');
         $condition['members_id'] = array('eq', $uid);
         if ($_POST['is_default']) {
             $m->where($condition)->setField('is_default', 10);
             $_POST['is_default'] = 20;
         }
-        $condition['id'] = array('eq', $this->_post('id'));
+        $condition['id'] = array('eq', I('post.id'));
         $_POST['updatetime'] = time();
         $rs = $m->where($condition)->save($_POST);
         if ($rs == true) {
-            $this->success('操作成功', __GROUP__ . '/Index/addressList');
+            $this->success('操作成功', __MODULE__ . '/Index/addressList');
         } else {
             $this->error('操作失败，请重新操作！');
         }
@@ -395,13 +395,13 @@ class IndexAction extends BaseuserAction {
      */
     public function addressDelete()
     {
-        $m = new MembersAddressModel();
+        $m = D('MembersAddress');
         $uid = session('LOGIN_M_ID');
         $condition['members_id'] = array('eq', $uid);
-        $condition['id'] = array('eq', $this->_get('id'));
+        $condition['id'] = array('eq', I('get.id'));
         $rs = $m->where($condition)->delete();
         if ($rs == true) {
-            $this->success('操作成功', __GROUP__ . '/Index/addressList');
+            $this->success('操作成功', __MODULE__ . '/Index/addressList');
         } else {
             $this->error('操作失败，请重新操作！');
         }
@@ -416,9 +416,9 @@ class IndexAction extends BaseuserAction {
      */
     public function apiInsert()
     {
-        $m = new ApiListModel();
+        $m = D('ApiList');
         $uid = session('LOGIN_M_ID');
-        $apitoken = $this->_post('apitoken');
+        $apitoken = I('post.apitoken');
         if(empty($apitoken)){
             $this->error('token信息不能为空！');
             exit;
@@ -428,14 +428,14 @@ class IndexAction extends BaseuserAction {
         $_POST['updatetime'] = time();
         $_POST['status'] = 10;
         $_POST['apitoken'] = $apitoken;//API用户名
-        $secretkey = R('Api/News/guid');
-        $signature = R('Api/News/guid');
+        $secretkey = R('Common/System/guid');
+        $signature = R('Common/System/guid');
         $_POST['secretkey'] = md5($secretkey);//API密钥（自动生成）
         $_POST['signature'] = md5(sha1($signature));//签名（自动生成）
-        $_POST['domain'] = $this->_post('domain');
+        $_POST['domain'] = I('post.domain');
         $rs = $m->data($_POST)->add();
         if ($rs == true) {
-            $this->success('操作成功', __GROUP__ . '/Index/apiList');
+            $this->success('操作成功', __MODULE__ . '/Index/apiList');
         } else {
             $this->error('操作失败，请重新操作！');
         }
@@ -450,15 +450,15 @@ class IndexAction extends BaseuserAction {
      */
     public function apiUpdate()
     {
-        $m = new ApiListModel();
+        $m = D('ApiList');
         $uid = session('LOGIN_M_ID');
         $condition['members_id'] = array('eq', $uid);
-        $condition['id'] = array('eq', $this->_post('id'));
+        $condition['id'] = array('eq', I('post.id'));
         $_POST['updatetime'] = time();
         $_POST['status'] = '10';
         $rs = $m->where($condition)->save($_POST);
         if ($rs == true) {
-            $this->success('操作成功', __GROUP__ . '/Index/apiList');
+            $this->success('操作成功', __MODULE__ . '/Index/apiList');
         } else {
             $this->error('操作失败，请重新操作！');
         }
@@ -473,13 +473,13 @@ class IndexAction extends BaseuserAction {
      */
     public function apiDelete()
     {
-        $m = new ApiListModel();
+        $m = D('ApiList');
         $uid = session('LOGIN_M_ID');
         $condition['members_id'] = array('eq', $uid);
-        $condition['id'] = array('eq', $this->_get('id'));
+        $condition['id'] = array('eq', I('get.id'));
         $rs = $m->where($condition)->delete();
         if ($rs == true) {
-            $this->success('操作成功', __GROUP__ . '/Index/addressList');
+            $this->success('操作成功', __MODULE__ . '/Index/addressList');
         } else {
             $this->error('操作失败，请重新操作！');
         }
