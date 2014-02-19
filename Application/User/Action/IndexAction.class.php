@@ -150,7 +150,57 @@ class IndexAction extends BaseuserAction {
         $this->assign('data', $data);
         $this->theme($skin)->display(':address_edit');
     }
-
+    /**
+     * newsAdd
+     * 信息-添加
+     * @return display
+     * @version dogocms 1.0
+     * @todo 
+     */
+    public function newsAdd()
+    {
+        $skin = $this->getSkin(); //获取前台主题皮肤名称
+        $this->assign('title', '我要投稿');
+        $this->assign('sidebar_active', 'news_add');
+        $this->theme($skin)->display(':news_add');
+    }
+    /**
+     * newsList
+     * news列表信息
+     * @return display
+     * @version dogocms 1.0
+     * @todo 
+     */
+    public function newsList()
+    {
+        $m = D('Title');
+        $uid = session('LOGIN_M_ID');
+        $condition['members_id'] = array('eq', $uid);
+        $count = $m->where($condition)->count();
+        $page = new \Org\Util\QiuyunPage($count, 5); // 实例化分页类 传入总记录数和每页显示的记录数
+        $page->setConfig('header', '条记录');
+        $page->setConfig('theme', "%upPage% %downPage% %first% %prePage% %linkPage% %nextPage% %end% <li><span>%totalRow% %header% %nowPage%/%totalPage% 页</span></li>");
+        $show = $page->show(); // 分页显示输出
+        // 进行分页数据查询 注意limit方法的参数要使用Page类的属性
+        $list = $m->where($condition)
+                ->order('id desc')
+                ->limit($page->firstRow . ',' . $page->listRows)
+                ->select();
+        
+        foreach($list as $k=>$v){
+            if($v['status']=='20'){
+                $list[$k]['status'] = '可用';
+            }else{
+                $list[$k]['status'] = '禁用';
+            }
+        }
+        $skin = $this->getSkin(); //获取前台主题皮肤名称
+        $this->assign('title', '我的信息列表');
+        $this->assign('sidebar_active', 'news_list');
+        $this->assign('list', $list);
+        $this->assign('page', $show); // 赋值分页输出
+        $this->theme($skin)->display(':news_list');
+    }
     /**
      * apiList
      * api 接口列表信息

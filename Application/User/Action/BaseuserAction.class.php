@@ -25,6 +25,7 @@ class BaseuserAction extends Action {
         }
         $this->assign('count_address', $this->getAddressCount());
         $this->assign('count_apilist', $this->getApiListCount());
+        $this->assign('count_newslist', $this->getNewsListCount());
         $skin = $this->getSkin(); //获取前台主题皮肤名称
         $navhead = R('Common/System/getNav', array('header')); //导航菜单
         $this->assign('navhead', $navhead);
@@ -58,6 +59,20 @@ class BaseuserAction extends Action {
     public function getAddressCount()
     {
         $m = D('MembersAddress');
+        $uid = session('LOGIN_M_ID');
+        $condition['members_id'] = array('eq', $uid);
+        $count = $m->where($condition)->count();
+        return $count;
+    }
+    /*
+     * getNewsListCount
+     * 获取apiList数量
+     * 
+     */
+
+    public function getNewsListCount()
+    {
+        $m = D('Title');
         $uid = session('LOGIN_M_ID');
         $condition['members_id'] = array('eq', $uid);
         $count = $m->where($condition)->count();

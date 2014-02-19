@@ -18,7 +18,7 @@ class Dogocms extends TagLib {
         'pagelist' => array("attr" => "attr1,attr2", level => 3), //分页
         'ad' => array("attr" => "attr1,attr2", level => 3), //广告（包含幻灯）
         'page' => array("attr" => "attr1,attr2", level => 3), //广告（包含幻灯）
-        'block' => array("attr" => "typeid,limit,order", level => 3), //碎片
+        'block' => array('attr' => 'typeid,limit,order', level => 3, 'close' => 1), //碎片
         'member' => array("attr" => "attr1,attr2", level => 3), //会员信息(个人)
         'cfg' => array("attr" => "name", level => 3, 'close' => 0), //系统参数
         'links' => array("attr" => "typeid,limit,order", level => 3, 'close' => 1), //友情链接
@@ -41,7 +41,7 @@ class Dogocms extends TagLib {
     }
 
 //  头部和底部导航
-    public function _nav($tag)
+    public function _nav($tag,$content)
     {
         $name = $tag['name'];
         $limit = $tag['limit'];
@@ -68,7 +68,7 @@ class Dogocms extends TagLib {
         return $parsestr;
     }
 
-    public function _article($tag)
+    public function _article($tag,$content)
     {
         $typeid = trim($tag['typeid']); //分类id
         $type = strtoupper($tag['type']); //分类类型type:all
@@ -195,7 +195,7 @@ class Dogocms extends TagLib {
     }
 
     //文档分类
-    public function _sort($tag)
+    public function _sort($tag,$content)
     {
         $limit = $tag['limit'];
         $order = $tag['order']; //字符串加引号
@@ -222,7 +222,7 @@ class Dogocms extends TagLib {
     }
 
 //  头部和底部导航
-    public function _links($tag)
+    public function _links($tag,$content)
     {
         $typeid = $tag['typeid'];
         $limit = $tag['limit'];
@@ -250,7 +250,7 @@ class Dogocms extends TagLib {
     }
 
     //  block碎片标签 typeid,limit,order
-    public function _block($tag)
+    public function _block($tag,$content)
     {
         $typeid = $tag['typeid'];
         $limit = $tag['limit'];
