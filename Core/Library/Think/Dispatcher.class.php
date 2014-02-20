@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006-2013 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006-2014 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -21,7 +21,6 @@ class Dispatcher {
      * @return void
      */
     static public function dispatch() {
-        
         $varPath        =   C('VAR_PATHINFO');
         $varModule      =   C('VAR_MODULE');
         $varController  =   C('VAR_CONTROLLER');
@@ -78,7 +77,6 @@ class Dispatcher {
                     if($controller){
                         define('BIND_CONTROLLER',$controller);
                     }
-                    
                 }
                 if(isset($vars)) { // 传入参数
                     parse_str($vars,$parms);
@@ -150,6 +148,9 @@ class Dispatcher {
             // 加载应用模式对应的配置文件
             if('common' != APP_MODE && is_file(MODULE_PATH.'Conf/config_'.APP_MODE.'.php'))
                 C(include MODULE_PATH.'Conf/config_'.APP_MODE.'.php');
+            // 当前应用状态对应的配置文件
+            if(APP_STATUS && is_file(MODULE_PATH.'Conf/'.APP_STATUS.'.php'))
+                C(include MODULE_PATH.'Conf/'.APP_STATUS.'.php');
 
             // 加载模块别名定义
             if(is_file(MODULE_PATH.'Conf/alias.php'))
@@ -225,7 +226,7 @@ class Dispatcher {
 
         // 当前控制器的UR地址
         $controllerName    =   defined('CONTROLLER_ALIAS')? CONTROLLER_ALIAS : CONTROLLER_NAME;
-        define('__CONTROLLER__',__MODULE__.$depr.(defined('BIND_CONTROLLER')? '': ( C('URL_CASE_INSENSITIVE') ? strtolower($controllerName) : $controllerName )) );
+        define('__CONTROLLER__',__MODULE__.$depr.(defined('BIND_CONTROLLER')? '': ( C('URL_CASE_INSENSITIVE') ? parse_name($controllerName) : $controllerName )) );
 
         // 当前操作的URL地址
         define('__ACTION__',__CONTROLLER__.$depr.(defined('ACTION_ALIAS')?ACTION_ALIAS:ACTION_NAME));
