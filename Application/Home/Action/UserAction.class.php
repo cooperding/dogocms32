@@ -19,7 +19,6 @@ class UserAction extends BasehomeAction {
         $uid = I('get.uid');
         $m = D('Members'); //实例化会员信息表
         $t = D('Title');
-        import('ORG.Util.DingPage'); // 导入分页类
         $condition['t.status'] = array('eq', '12');
         $condition['t.members_id'] = array('eq', $uid);
         $count = $t->Table(C('DB_PREFIX') . 'title t')
@@ -27,7 +26,7 @@ class UserAction extends BasehomeAction {
                         ->where($condition)->count();
         $page = new \Org\Util\QiuyunPage($count, 5); // 实例化分页类 传入总记录数和每页显示的记录数
         $page->setConfig('header', '条记录');
-        $page->setConfig('theme', "%upPage% %downPage% %first% %prePage% %linkPage% %nextPage% %end% <li><span>%totalRow% %header% %nowPage%/%totalPage% 页</span></li>");
+        $page->setConfig('theme', "%UP_PAGE% %FIRST% %LINK_PAGE% %DOWN_PAGE% %END% <li><span>%TOTAL_ROW% %HEADER% %NOW_PAGE%/%TOTAL_PAGE% 页</span></li>");
         $show = $page->show(); // 分页显示输出
         // 进行分页数据查询 注意limit方法的参数要使用Page类的属性
         $list = $t->Table(C('DB_PREFIX') . 'title t')
@@ -47,7 +46,6 @@ class UserAction extends BasehomeAction {
         $this->assign('description', $data_members['username']);
         $this->assign('list', $list);
         $this->assign('members_data', $data_members);
-        $this->assign('page', $show); // 赋值分页输出
         $this->theme($skin)->display(':user');
     }
 

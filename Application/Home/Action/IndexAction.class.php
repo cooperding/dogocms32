@@ -29,7 +29,6 @@ class IndexAction extends BasehomeAction {
         $this->assign('title', $data_title['sys_value']);
         $this->assign('keywords', $data_keywords['sys_value']);
         $this->assign('description', $data_description['sys_value']);
-        $this->assign('page', $show); // 赋值分页输出
         $this->theme($skin)->display(':index');
     }
 
