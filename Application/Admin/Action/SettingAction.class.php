@@ -59,6 +59,7 @@ class SettingAction extends BaseAction {
         $id = intval($_GET['id']);
         $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
+        $data['sys_value'] = htmlspecialchars_decode($data['sys_value']);
         $radios = array(
             'text' => '文本',
             'radio' => '布尔型',
@@ -83,6 +84,7 @@ class SettingAction extends BaseAction {
         $m = D('Setting');
         $sys_name = I('post.sys_name');
         $sys_gid = I('post.sys_gid');
+        $_POST['sys_value'] = I('post.sys_value');
         if (empty($sys_gid) || empty($sys_name)) {//不为空说明存在，存在就不能添加
             $this->dmsg('1', '变量名或者所属分组不能为空！', false, true);
         }
@@ -116,6 +118,7 @@ class SettingAction extends BaseAction {
         $id = I('post.id');
         $sys_gid = I('post.sys_gid');
         $sys_name = I('post.sys_name');
+        $_POST['sys_value'] = I('post.sys_value');
         $condition['id'] = array('neq', $id);
         if (empty($sys_gid) || empty($sys_name)) {//不为空说明存在，存在就不能添加
             $this->dmsg('1', '变量名或者所属分组不能为空！', false, true);

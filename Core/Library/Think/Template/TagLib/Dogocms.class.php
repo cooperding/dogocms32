@@ -35,7 +35,7 @@ class Dogocms extends TagLib {
         $data = $m->where($condition)->find();
         $parseStr = '';
         if ($data) {
-            $parseStr = stripslashes($data['sys_value']);
+            $parseStr = htmlspecialchars_decode($data['sys_value']);
         }
         return $parseStr;
     }
