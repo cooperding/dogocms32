@@ -25,15 +25,22 @@ class SystemAction extends BaseApiAction {
      */
     public function sendEmail($email, $subject, $body)
     {
-        vendor('PHPMailer.PHPmail', '', '.class.php');
-        $mail = new PHPmail();
+        // 导入Vendor类库包 Library/Vendor/PHPMailer/PHPmail.class.php
+        //导入方式 import('Vendor.Zend.Server');
+        import('Vendor.PHPMailer.PHPmail');
+        $mail = new \PHPmail();
+        $host = $this->getCfg('cfg_email_host'); //发送邮件服务器
+        $username = $this->getCfg('cfg_email_username'); //账户名
+        $password = $this->getCfg('cfg_email_password'); //密码
+        $from = $this->getCfg('cfg_email_from'); //发送电子邮件地址
+        $fromname = $this->getCfg('cfg_email_fromname'); //发送邮件名称
         $option = array(
-            'host' => 'smtp.qq.com', //发送邮件服务器
-            'username' => '335499289@qq.com', //账户名
-            'password' => 'dingji850521F4DD', //密码
-            'from' => '335499289@qq.com', //发送电子邮件地址
-            'fromname' => 'www.qiuyuntech.com', //发送邮件名称
-            'reply' => '335499289@qq.com', //回复电子邮件地址
+            'host' => $host, //发送邮件服务器
+            'username' => $username, //账户名
+            'password' => $password, //密码
+            'from' => $from, //发送电子邮件地址
+            'fromname' => $fromname, //发送邮件名称
+            'reply' => $from, //回复电子邮件地址
         );
         $mail->set_smtp_config($option);
         $rs = $mail->send_mail($email, $subject, $body);
@@ -43,7 +50,8 @@ class SystemAction extends BaseApiAction {
             return false;
         }
     }
-     /**
+
+    /**
      * getPwd
      * 生成密码
      * @param string $uname 用户名
@@ -52,10 +60,11 @@ class SystemAction extends BaseApiAction {
      * @version dogocms 1.0
      * @todo 禁止随意修改
      */
-    public function getPwd($uname,$pwd)
+    public function getPwd($uname, $pwd)
     {
-        return $this->getPassword($uname,$pwd);
+        return $this->getPassword($uname, $pwd);
     }
+
     /*
      * getCfg
      * 获取站点配置
@@ -70,13 +79,14 @@ class SystemAction extends BaseApiAction {
         if ($name) {
             $condition['sys_name'] = array('eq', $name);
             $rs = $m->field('sys_value')->where($condition)->find();
-            if($rs){
+            if ($rs) {
                 return $rs['sys_value'];
             }
         } else {
             return false;
         }
     }
+
     /*
      * getNav
      * 获取导航菜单
@@ -84,24 +94,27 @@ class SystemAction extends BaseApiAction {
      * @param string $type footer 是底部导航菜单
      */
 
-    public function getNav($type='header')
+    public function getNav($type = 'header')
     {
-        if($type=='header'){
+        if ($type == 'header') {
             $m = D('NavHead');
-        }elseif($type=='footer'){
+        } elseif ($type == 'footer') {
             $m = D('NavFoot');
         }
-        $condition['status'] = array('eq',20);
+        $condition['status'] = array('eq', 20);
         $list = $m->where($condition)->select();
         $qiuyun = new \Org\Util\Qiuyun;
         $tree = $qiuyun->list_to_tree($list, 'id', 'parent_id', 'children');
         return $tree;
     }
+
     /*
      * guid
      * 生成uuid
      */
-    function guid() {
+
+    function guid()
+    {
         mt_srand((double) microtime() * 10000); //optional for php 4.2.0 and up.
         $charid = strtoupper(md5(uniqid(rand(), true)));
         $uuid = substr($charid, 0, 8)
@@ -111,4 +124,32 @@ class SystemAction extends BaseApiAction {
                 . substr($charid, 20, 12);
         return $uuid;
     }
+
+    /**
+     * uploadImg
+     * 上传图片
+     * @access public
+     * @return array
+     * @version dogocms 1.0
+     */
+    public function uploadImg()
+    {
+        $upload = new \Think\Upload(); // 实例化上传类
+        $upload->maxSize = 3145728; // 设置附件上传大小
+        $upload->exts = array('jpg', 'gif', 'png', 'jpeg'); // 设置附件上传类型
+        $upload->savePath = '/Images/'; // 设置附件上传目录
+        $upload->autoSub = true;
+        $upload->subName = array('date', 'Ymd');
+        $info = $upload->upload();
+        if (!$info) {// 上传错误提示错误信息
+            $msg = $upload->getError();
+            return array('error' => 1, 'message' => $msg);
+            exit;
+        } else {// 上传成功 获取上传文件信息
+            $url = '/Public/Uploads'.$info['imgFile']['savepath'] . $info['imgFile']['savename'];
+            $url = __ROOT__ . '/' . $url;
+            return array('error' => 0, 'url' => $url);
+        }
+    }
+
 }

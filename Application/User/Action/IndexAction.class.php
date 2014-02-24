@@ -150,6 +150,7 @@ class IndexAction extends BaseuserAction {
         $this->assign('data', $data);
         $this->theme($skin)->display(':address_edit');
     }
+
     /**
      * newsAdd
      * 信息-添加
@@ -164,6 +165,7 @@ class IndexAction extends BaseuserAction {
         $this->assign('sidebar_active', 'news_add');
         $this->theme($skin)->display(':news_add');
     }
+
     /**
      * newsList
      * news列表信息
@@ -179,18 +181,18 @@ class IndexAction extends BaseuserAction {
         $count = $m->where($condition)->count();
         $page = new \Org\Util\QiuyunPage($count, 5); // 实例化分页类 传入总记录数和每页显示的记录数
         $page->setConfig('header', '条记录');
-        $page->setConfig('theme', "%upPage% %downPage% %first% %prePage% %linkPage% %nextPage% %end% <li><span>%totalRow% %header% %nowPage%/%totalPage% 页</span></li>");
+        $page->setConfig('theme', "%UP_PAGE% %FIRST% %LINK_PAGE% %DOWN_PAGE% %END% <li><span>%TOTAL_ROW% %HEADER% %NOW_PAGE%/%TOTAL_PAGE% 页</span></li>");
         $show = $page->show(); // 分页显示输出
         // 进行分页数据查询 注意limit方法的参数要使用Page类的属性
         $list = $m->where($condition)
                 ->order('id desc')
                 ->limit($page->firstRow . ',' . $page->listRows)
                 ->select();
-        
-        foreach($list as $k=>$v){
-            if($v['status']=='20'){
+
+        foreach ($list as $k => $v) {
+            if ($v['status'] == '20') {
                 $list[$k]['status'] = '可用';
-            }else{
+            } else {
                 $list[$k]['status'] = '禁用';
             }
         }
@@ -201,6 +203,7 @@ class IndexAction extends BaseuserAction {
         $this->assign('page', $show); // 赋值分页输出
         $this->theme($skin)->display(':news_list');
     }
+
     /**
      * apiList
      * api 接口列表信息
@@ -214,10 +217,10 @@ class IndexAction extends BaseuserAction {
         $uid = session('LOGIN_M_ID');
         $condition['members_id'] = array('eq', $uid);
         $data = $m->where($condition)->select();
-        foreach($data as $k=>$v){
-            if($v['status']=='20'){
+        foreach ($data as $k => $v) {
+            if ($v['status'] == '20') {
                 $data[$k]['status'] = '可用';
-            }else{
+            } else {
                 $data[$k]['status'] = '禁用';
             }
         }
@@ -469,7 +472,7 @@ class IndexAction extends BaseuserAction {
         $m = D('ApiList');
         $uid = session('LOGIN_M_ID');
         $apitoken = I('post.apitoken');
-        if(empty($apitoken)){
+        if (empty($apitoken)) {
             $this->error('token信息不能为空！');
             exit;
         }
@@ -477,11 +480,11 @@ class IndexAction extends BaseuserAction {
         $_POST['members_id'] = $uid;
         $_POST['updatetime'] = time();
         $_POST['status'] = 10;
-        $_POST['apitoken'] = $apitoken;//API用户名
+        $_POST['apitoken'] = $apitoken; //API用户名
         $secretkey = R('Common/System/guid');
         $signature = R('Common/System/guid');
-        $_POST['secretkey'] = md5($secretkey);//API密钥（自动生成）
-        $_POST['signature'] = md5(sha1($signature));//签名（自动生成）
+        $_POST['secretkey'] = md5($secretkey); //API密钥（自动生成）
+        $_POST['signature'] = md5(sha1($signature)); //签名（自动生成）
         $_POST['domain'] = I('post.domain');
         $rs = $m->data($_POST)->add();
         if ($rs == true) {
@@ -533,6 +536,76 @@ class IndexAction extends BaseuserAction {
         } else {
             $this->error('操作失败，请重新操作！');
         }
+    }
+
+    /**
+     * newsInsert
+     * 添加信息
+     * @return display
+     * @version dogocms 1.0
+     * @todo 
+     */
+    public function newsInsert()
+    {
+        $m = D('Title');
+        $uid = session('LOGIN_M_ID');
+        $title = I('post.title');
+        $content = I('post.content');
+        if (empty($content)) {
+            $this->error('当真SHI内容不能为空！');
+            exit;
+        }
+        $_POST['addtime'] = time();
+        $_POST['members_id'] = $uid;
+        $_POST['updatetime'] = time();
+        $_POST['status'] = 10;
+        $rs = $m->data($_POST)->add();
+        $title_id = $m->getLastInsID();
+        if ($rs == true) {
+            $c = D('Content');
+            $_data['title_id'] = $title_id;
+            $_data['content'] = $content;
+            $c->data($_data)->add();
+            $email = R('Common/System/getCfg', array('cfg_email_remind'));
+            $time = date('Y-m-d H:i:s', time());
+            R('Common/System/sendEmail', array($email, '当真网--会员提交信息提醒-' . $time, $content));
+            $this->success('操作成功', __MODULE__ . '/Index/newsList');
+        } else {
+            $this->error('操作失败，请重新操作！');
+        }
+    }
+
+    /**
+     * uploadImg
+     * 上传图片
+     * @access public
+     * @return array
+     * @version dogocms 1.0
+     */
+    public function uploadImg()
+    {
+        $array = R('Common/System/uploadImg');
+        echo json_encode($array);
+        /*
+        $upload = new \Think\Upload(); // 实例化上传类
+        $upload->maxSize = 3145728; // 设置附件上传大小
+        $upload->exts = array('jpg', 'gif', 'png', 'jpeg'); // 设置附件上传类型
+        //$upload->rootPath = './Public/';
+        $upload->savePath = './Public/Uploads/Images/'; // 设置附件上传目录
+        $upload->autoSub = true;
+        $upload->subName = array('date', 'Ymd');
+        $info = $upload->upload();
+        if (!$info) {// 上传错误提示错误信息
+            $msg = $upload->getError();
+            echo json_encode(array('error' => 1, 'message' => $msg));
+            exit;
+        } else {// 上传成功 获取上传文件信息
+            $url = $info['imgFile']['savepath'] . $info['imgFile']['savename'];
+            $url = __ROOT__ . '/' . $url;
+            echo json_encode(array('error' => 0, 'url' => $url));
+        }
+         * 
+         */
     }
 
 }

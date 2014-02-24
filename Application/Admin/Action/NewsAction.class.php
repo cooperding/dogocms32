@@ -120,9 +120,6 @@ class NewsAction extends BaseAction {
         $c = D('Content');
         $title = I('post.title');
         $sort_id = I('post.sort_id');
-        if (empty($title)) {
-            $this->dmsg('1', '文章标题不能为空！', false, true);
-        }
         if ($sort_id == 0) {
             $this->dmsg('1', '请选择文档分类！', false, true);
         }
@@ -161,9 +158,6 @@ class NewsAction extends BaseAction {
         $cdata['title_id'] = array('eq', $id);
         $title = I('post.title');
         $sort_id = I('post.sort_id');
-        if (empty($title)) {
-            $this->dmsg('1', '文章标题不能为空！', false, true);
-        }
         if ($sort_id == 0) {
             $this->dmsg('1', '请选择文档分类！', false, true);
         }
@@ -327,7 +321,7 @@ class NewsAction extends BaseAction {
         new \Think\Page($count, $pageRows); // 导入分页类
         $firstRow = ($pageNumber - 1) * $pageRows;
         $data = $m->table(C('DB_PREFIX') . 'title t')
-                        ->join(C('DB_PREFIX') . 'news_sort nt on nt.id=t.sort_id')
+                        ->join('left join '.C('DB_PREFIX') . 'news_sort nt on nt.id=t.sort_id')
                         ->field('t.title,t.addtime,t.status,t.id,t.views,nt.text')
                         ->where($condition)->limit($firstRow . ',' . $pageRows)->order('t.id desc')->select();
         if ($data) {

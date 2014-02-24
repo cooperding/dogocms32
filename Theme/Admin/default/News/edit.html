@@ -1,12 +1,11 @@
 <form action="{:U('Admin/News/update')}" class="form_dogocms" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id" value="{$data.id}" />
-    <script charset="utf-8" src="__PUBLIC__/Kindeditor/kindeditor-min.js"></script>
     <div class="division">
         <table>
             <tbody>
                 <tr>
                     <th>文档标题：</th>
-                    <td><input type="text" name="title" value="{$data.title}" data-options="required:true" class="easyui-validatebox"/><span class="red">*</span></td>
+                    <td><input type="text" name="title" value="{$data.title}"/></td>
                 </tr>
                 <tr>
                     <th>文档副标题：</th>
