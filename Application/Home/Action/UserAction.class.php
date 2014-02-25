@@ -38,8 +38,7 @@ class UserAction extends BasehomeAction {
                 ->limit($page->firstRow . ',' . $page->listRows)
                 ->select();
         $condition_members['id'] = array('eq', $uid);
-        $data_members = $m->field('username')->where($condition_members)->find();
-
+        $data_members = $m->field('id,username,addtime')->where($condition_members)->find();
         $skin = $this->getSkin(); //获取前台主题皮肤名称
         $this->assign('title', $data_members['username']);
         $this->assign('keywords', $data_members['username']);

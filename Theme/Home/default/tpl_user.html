@@ -9,7 +9,8 @@
 
             </div>
             <div class="dogo-box-content">
-
+                <span class="glyphicon glyphicon-user"></span> {$members_data.username}
+                <span class="glyphicon glyphicon-time"></span> {$members_data.addtime|date="Y-m-d",###}
             </div><!--dogo-box-content-->
             <div class="dogo-box-footer">
 
@@ -19,15 +20,19 @@
 
         <aside class="dogo-box dogo-border-all dogo-pd515">
             <div class="dogo-box-header">
-
+                友情链接
             </div>
-            <div class="dogo-box-content">
-
+            <div class="dogo-box-content dogo-links">
+                
+                <dogocms:links >
+                    <a href="{$links.weburl}" target="_blank" title="{$links.webname}">{$links.webname}</a>
+                </dogocms:links>
             </div><!--dogo-box-content-->
             <div class="dogo-box-footer">
 
             </div><!--dogo-box-footer-->
         </aside><!--dogo-box-->
+        <div class="dogo-blank"></div>
     </div><!--col-md-->
 
     <div class="col-md-8">

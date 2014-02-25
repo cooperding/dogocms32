@@ -45,28 +45,19 @@
 
         <aside class="dogo-box dogo-border-all dogo-pd515">
             <div class="dogo-box-header">
-
-</div>
-            <div class="dogo-box-content">
-
+                友情链接
+            </div>
+            <div class="dogo-box-content dogo-links">
+                
+                <dogocms:links >
+                    <a href="{$links.weburl}" target="_blank" title="{$links.webname}">{$links.webname}</a>
+                </dogocms:links>
             </div><!--dogo-box-content-->
             <div class="dogo-box-footer">
 
             </div><!--dogo-box-footer-->
         </aside><!--dogo-box-->
         <div class="dogo-blank"></div>
-
-        <aside class="dogo-box dogo-border-all dogo-pd515">
-            <div class="dogo-box-header">
-
-            </div>
-            <div class="dogo-box-content">
-
-            </div><!--dogo-box-content-->
-            <div class="dogo-box-footer">
-
-            </div><!--dogo-box-footer-->
-        </aside><!--dogo-box-->
     </div><!--col-md-->
 </div><!--row-->
 <include file="$tpl_footer" />

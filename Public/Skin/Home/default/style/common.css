@@ -72,3 +72,9 @@ a:hover{text-decoration:none;color: #FF6347;}
 .dogo-modal-title .on{margin-left:20px;margin-right:20px;padding-left: 20px;padding-right: 20px;}
 .dogo-modal-title .noon{font-size: 13px;}
 .dogo-error-border{border:1px solid #f00;}
+
+.dogo-links{}
+.dogo-links a{margin: 0 5px;}
+
+
+

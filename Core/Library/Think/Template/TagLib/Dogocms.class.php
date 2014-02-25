@@ -178,8 +178,8 @@ class Dogocms extends TagLib {
         $limit = $tag['limit'];
         $order = $tag['order']; //字符串加引号
         $tag['where'] = ' (`status`=\'20\') '; //限制显示条件
-        if ($typeid) {
-            $tag['where'] = ' and (`sort_id` in(' . $typeid . ')) ';
+        if (!empty($typeid)) {
+            $tag['where'] .= ' and (`sort_id` in(' . $typeid . ')) ';
         }
         if (empty($limit)) {
             $tag['limit'] = '0,10';
@@ -193,8 +193,7 @@ class Dogocms extends TagLib {
         $key = !empty($tag['key']) ? $tag['key'] : 'i';
         $mod = isset($tag['mod']) ? $tag['mod'] : '2';
         //下面拼接输出语句
-        $parsestr = '<?php Load("extend"); ';
-        $parsestr .= '$_result=list_to_tree(' . $sql . ',"id", "parent_id", "children"); if ($_result): $' . $key . '=0;';
+        $parsestr = '<?php $_result=' . $sql . '; if ($_result): $' . $key . '=0;';
         $parsestr .= 'foreach($_result as $key=>$' . $result . '):';
         $parsestr .= '++$' . $key . ';$mod = ($' . $key . ' % ' . $mod . ' );?>';
         $parsestr .= $content; //解析在article标签中的内容
