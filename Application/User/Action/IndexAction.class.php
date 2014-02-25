@@ -167,6 +167,30 @@ class IndexAction extends BaseuserAction {
     }
 
     /**
+     * newsEdit
+     * 信息-编辑
+     * @return display
+     * @version dogocms 1.0
+     * @todo 
+     */
+    public function newsEdit()
+    {
+        $m = D('Title');
+        $uid = session('LOGIN_M_ID');
+        $condition['t.members_id'] = array('eq', $uid);
+        $condition['t.id'] = array('eq', I('get.id'));
+        $data = $m->Table(C('DB_PREFIX') . 'title t')
+                        ->field('t.*,c.content')
+                        ->join(C('DB_PREFIX') . 'content c ON c.title_id = t.id ')
+                        ->where($condition)->find();
+        $skin = $this->getSkin(); //获取前台主题皮肤名称
+        $this->assign('title', '修改信息');
+        $this->assign('sidebar_active', 'news_edit');
+        $this->assign('data', $data);
+        $this->theme($skin)->display(':news_edit');
+    }
+
+    /**
      * newsList
      * news列表信息
      * @return display
@@ -175,25 +199,32 @@ class IndexAction extends BaseuserAction {
      */
     public function newsList()
     {
-        $m = D('Title');
+        $t = D('Title');
         $uid = session('LOGIN_M_ID');
-        $condition['members_id'] = array('eq', $uid);
-        $count = $m->where($condition)->count();
-        $page = new \Org\Util\QiuyunPage($count, 5); // 实例化分页类 传入总记录数和每页显示的记录数
+        $condition['t.members_id'] = array('eq', $uid);
+        $count = $t->Table(C('DB_PREFIX') . 'title t')
+                        ->join(C('DB_PREFIX') . 'content c ON c.title_id = t.id ')
+                        ->where($condition)->count();
+        $page = new \Org\Util\QiuyunPage($count, 8); // 实例化分页类 传入总记录数和每页显示的记录数
         $page->setConfig('header', '条记录');
         $page->setConfig('theme', "%UP_PAGE% %FIRST% %LINK_PAGE% %DOWN_PAGE% %END% <li><span>%TOTAL_ROW% %HEADER% %NOW_PAGE%/%TOTAL_PAGE% 页</span></li>");
         $show = $page->show(); // 分页显示输出
         // 进行分页数据查询 注意limit方法的参数要使用Page类的属性
-        $list = $m->where($condition)
-                ->order('id desc')
+        $list = $t->Table(C('DB_PREFIX') . 'title t')
+                ->join(C('DB_PREFIX') . 'content c ON c.title_id = t.id ')
+                ->where($condition)
+                ->field('t.*,c.*')
+                ->order('t.id desc')
                 ->limit($page->firstRow . ',' . $page->listRows)
                 ->select();
 
         foreach ($list as $k => $v) {
-            if ($v['status'] == '20') {
-                $list[$k]['status'] = '可用';
-            } else {
-                $list[$k]['status'] = '禁用';
+            if ($v['status'] == '12') {
+                $list[$k]['status'] = '已审核';
+            } else if ($v['status'] == '11') {
+                $list[$k]['status'] = '未通过审核';
+            } else if ($v['status'] == '10') {
+                $list[$k]['status'] = '待审核';
             }
         }
         $skin = $this->getSkin(); //获取前台主题皮肤名称
@@ -586,26 +617,6 @@ class IndexAction extends BaseuserAction {
     {
         $array = R('Common/System/uploadImg');
         echo json_encode($array);
-        /*
-        $upload = new \Think\Upload(); // 实例化上传类
-        $upload->maxSize = 3145728; // 设置附件上传大小
-        $upload->exts = array('jpg', 'gif', 'png', 'jpeg'); // 设置附件上传类型
-        //$upload->rootPath = './Public/';
-        $upload->savePath = './Public/Uploads/Images/'; // 设置附件上传目录
-        $upload->autoSub = true;
-        $upload->subName = array('date', 'Ymd');
-        $info = $upload->upload();
-        if (!$info) {// 上传错误提示错误信息
-            $msg = $upload->getError();
-            echo json_encode(array('error' => 1, 'message' => $msg));
-            exit;
-        } else {// 上传成功 获取上传文件信息
-            $url = $info['imgFile']['savepath'] . $info['imgFile']['savename'];
-            $url = __ROOT__ . '/' . $url;
-            echo json_encode(array('error' => 0, 'url' => $url));
-        }
-         * 
-         */
     }
 
 }
