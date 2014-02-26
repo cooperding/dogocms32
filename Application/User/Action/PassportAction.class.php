@@ -199,8 +199,8 @@ class PassportAction extends Action {
     {
         $m = D('Members');
         $v_code = I('post.v_code');
-        $verify = session('verify_member');
-        if (empty($v_code) || md5($v_code) != $verify) {
+        $verify_status = $this->check_verify($v_code);
+        if (!$verify_status) {
             $this->error('验证码为空或者输入错误！');
             exit;
         }
@@ -247,9 +247,9 @@ class PassportAction extends Action {
     {
         $m = D('Members');
         $v_code = I('post.v_code');
-        $verify = session('verify_member');
+        $verify_status = $this->check_verify($v_code);
         $type = I('post.type');
-        if (empty($v_code) || md5($v_code) != $verify) {
+        if (!$verify_status) {
             if ($type == '10') {
                 $array = array('status' => 1, 'msg' => '验证码为空或者输入错误！');
                 echo json_encode($array);
