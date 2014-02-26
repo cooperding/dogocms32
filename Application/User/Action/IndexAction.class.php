@@ -367,7 +367,28 @@ class IndexAction extends BaseuserAction {
      */
     public function authEmail()
     {
-        $array = array('status' => 1, 'msg' => 'ceshi');
+        $m = D('Members');
+        $uuid = R('Common/System/guid'); //获取uuid
+        $key = md5($uuid);
+        $uid = session('LOGIN_M_ID');
+        $domain = $_SERVER['SERVER_NAME'];
+        $url = 'http://' . $domain . '/User/Passport/checkEmail/key/' . $key . '/uid/' . $uid;
+        $condition['id'] = array('eq', $uid);
+        $data = $m->where($condition)->field('email')->find();
+        $email = $data['email'];
+        $html = 'Hi,亲爱的'.$email.':<br/> 请点击链接地址验证邮箱<br/>' .
+                '<a href="' . $url . '">' . $url . '</a><br/>'
+                . '谢谢！<br/>'.date("Y-m-d", time());
+        $web_name = R('Common/System/getCfg',array('cfg_sitename'));
+        $status = R('Common/System/sendEmail',array($email,'邮箱验证-'.$web_name,$html));
+        if($status){
+            $_data['email_key'] = $key;
+            $_data['email_sendtime'] = time();
+            $m->where($condition)->save($_data);
+            $array = array('status' => 0, 'msg' => '邮件发送成功！');
+        }else{
+            $array = array('status' => 1, 'msg' => '邮件发送失败，请重试或联系管理员！');
+        }
         echo json_encode($array);
     }
 
