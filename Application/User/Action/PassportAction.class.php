@@ -311,7 +311,7 @@ class PassportAction extends Action {
         }
         $condition_email['email'] = array('eq', $email);
         $rs_email = $m->where($condition_email)->find();
-        if ($rs_uname) {
+        if ($rs_email) {
             if ($type == '10') {
                 $array = array('status' => 1, 'msg' => '邮箱已经存在！');
                 echo json_encode($array);
