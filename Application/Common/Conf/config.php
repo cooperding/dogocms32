@@ -10,14 +10,7 @@ return array(
     'URL_CASE_INSENSITIVE' => false, // 默认false 表示URL区分大小写 true则表示不区分大小写
     'MULTI_MODULE' => true, // true开启多模块访问，false关闭多模块访问
     'URL_MODEL' => '2', //URL模式
-    //完整域名部署
-//    'APP_SUB_DOMAIN_DEPLOY' => 1, // 开启子域名配置
-//    'APP_SUB_DOMAIN_RULES' => array(
-//        'admin.domain1.com' => 'Admin', // admin.domain1.com域名指向Admin模块
-//        'test.domain2.com' => 'Test', // test.domain2.com域名指向Test模块
-//    ),
-//    
-    //'URL_404_REDIRECT' => 'hhhhhhh', // 404 跳转页面 部署模式有效
+    'URL_MODULE_MAP' => array('admin' => 'admin'), //模块映射的模块必须使用小写定义
     'URL_HTML_SUFFIX' => 'html', // URL伪静态后缀设置
     'URL_DENY_SUFFIX' => 'ico|png|gif|jpg', // URL禁止访问的后缀设置
     'READ_DATA_MAP' => true, //字段映射,在数据获取的时候自动处理的话
@@ -29,7 +22,7 @@ return array(
     'TAGLIB_PRE_LOAD' => 'cx,html,dogocms', //扩展标签dogocms
     'DEFAULT_TIMEZONE' => 'PRC', //默认时区
     'VIEW_PATH' => './Theme/',
-    'HTML_CACHE_ON'     =>    true, // 开启静态缓存
-    'HTML_CACHE_TIME'   =>    60,   // 全局静态缓存有效期（秒）
-    'HTML_FILE_SUFFIX'  =>    '.html', // 设置静态缓存文件后缀
+    'HTML_CACHE_ON' => false, // 开启静态缓存
+    'HTML_CACHE_TIME' => 60, // 全局静态缓存有效期（秒）
+    'HTML_FILE_SUFFIX' => '.html', // 设置静态缓存文件后缀
 );

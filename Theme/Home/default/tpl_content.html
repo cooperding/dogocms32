@@ -5,10 +5,12 @@
 
         <article class="dogo-box dogo-border-all dogo-pd515">
             <div class="dogo-box-header">
-                <h4><span class="glyphicon glyphicon-hand-right"></span> {$data.title}</h4>
+                <if condition="$data.title neq ''">
+                    <h4><span class="glyphicon glyphicon-hand-right"></span> {$data.title}</h4>
+                </if>
                 <p>
                     <span class="glyphicon glyphicon-user"></span> <a href="{:U('Home/User/index',array('uid'=>$data['members_id']))}">{$data.username} </a>
-                      
+
                 </p>
             </div>
             <div class="dogo-box-content">
@@ -100,7 +102,7 @@
                 友情链接
             </div>
             <div class="dogo-box-content dogo-links">
-                
+
                 <dogocms:links >
                     <a href="{$links.weburl}" target="_blank" title="{$links.webname}">{$links.webname}</a>
                 </dogocms:links>

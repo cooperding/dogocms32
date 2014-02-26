@@ -73,8 +73,7 @@ class NewsSortAction extends BaseAction {
         }
         $en_name = I('post.en_name');
         if (empty($en_name)) {
-            import("ORG.Util.Pinyin");
-            $pinyin = new Pinyin();
+            $pinyin = new \Org\Util\Pinyin;
             $_POST['en_name'] = $pinyin->output($text);
         }
         if ($parent_id != 0) {
@@ -133,8 +132,7 @@ class NewsSortAction extends BaseAction {
         }
         $en_name = I('post.en_name');
         if (empty($en_name)) {
-            import("ORG.Util.Pinyin");
-            $pinyin = new Pinyin();
+            $pinyin = new \Org\Util\Pinyin;
             $text = I('post.text');
             $_POST['en_name'] = $pinyin->output($text);
         }
