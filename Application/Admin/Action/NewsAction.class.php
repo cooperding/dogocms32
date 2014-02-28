@@ -58,14 +58,14 @@ class NewsAction extends BaseAction {
             'p' => ' 图片[p] ',
             'j' => ' 跳转[j] '
         );
-        $radios = array(
+        $status = array(
             '12' => ' 审核 ',
             '10' => ' 未审核 ',
             '11' => ' 未通过审核 '
         );
         $this->assign('id', $id);
         $this->assign('flag', $flag);
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->display();
     }
 
@@ -93,7 +93,7 @@ class NewsAction extends BaseAction {
             'p' => ' 图片[p] ',
             'j' => ' 跳转[j] '
         );
-        $radios = array(
+        $status = array(
             '12' => ' 审核 ',
             '10' => ' 未审核 ',
             '11' => ' 未通过审核 '
@@ -102,7 +102,7 @@ class NewsAction extends BaseAction {
         $this->assign('filed', $data_filed);
         $this->assign('datafiled', $data_ms);
         $this->assign('flag', $flag);
-        $this->assign('radios', $radios);
+        $this->assign('status', $status);
         $this->assign('v_status', $data['status']);
         $this->display();
     }
