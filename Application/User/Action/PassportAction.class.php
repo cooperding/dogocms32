@@ -433,20 +433,24 @@ class PassportAction extends Action {
         $condition['email_key'] = array('eq', $key);
         $data = $m->where($condition)->find();
         if ($data) {
-            $time = (int) time() - (int) $data['email_sendtime'];
-            if ($time > 60 * 60 * 24 * 2) {//两天
-                $array = array('status' => 1, 'msg' => '验证无效，验证时间超时！');
+            if ($data['email_status'] == '20') {//验证改邮箱是否曾验证成功
+                $array = array('status' => 0, 'msg' => '邮箱已验证成功！');
             } else {
-                $_data['email_key'] = '';
-                $_data['email_authtime'] = time();
-                $_data['email_status'] = '20';
-                $rs = $m->where($condition)->save($_data);
-                if ($rs) {
-                    $array = array('status' => 0, 'msg' => '邮箱验证成功！');
+                $time = (int) time() - (int) $data['email_sendtime'];
+                if ($time > 60 * 60 * 24 * 2) {//两天
+                    $array = array('status' => 1, 'msg' => '验证无效，验证时间超时！');
                 } else {
-                    $array = array('status' => 1, 'msg' => '验证失败，请重新发送验证邮件！');
-                }
-            }//if
+                    $_data['email_key'] = '';
+                    $_data['email_authtime'] = time();
+                    $_data['email_status'] = '20';
+                    $rs = $m->where($condition)->save($_data);
+                    if ($rs) {
+                        $array = array('status' => 0, 'msg' => '邮箱验证成功！');
+                    } else {
+                        $array = array('status' => 1, 'msg' => '验证失败，请重新发送验证邮件！');
+                    }
+                }//if
+            }
         } else {
             $array = array('status' => 1, 'msg' => '验证失败，请重新发送验证邮件！');
         }

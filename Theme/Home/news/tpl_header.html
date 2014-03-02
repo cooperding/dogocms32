@@ -19,12 +19,14 @@
             <div class="container">
                 <header class="dogo-header">
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="dogo-top">
-                                <hgroup>
-                                    <h1>当真是，当真事？！！！</h1>
-                                </hgroup>
-                            </div>
+                        <div class="col-md-2">
+                            <img src="__PUBLIC__{$style}/images/logo.gif" class="img-responsive"/>
+                        </div>
+                        <div class="col-md-7">
+                            
+                        </div>
+                        <div class="col-md-3">
+                            
                         </div>
                     </div><!--row-->
                     <div class="row">
@@ -61,14 +63,16 @@
                                         <li id="fat-menu" class="dropdown">
                                             <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">会员中心<b class="caret"></b></a>
                                             <ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
-                                                <li role="presentation"><a role="menuitem" href="{:U('User/Index/index')}">我的主页</a></li>
-                                                <li role="presentation"><a role="menuitem" href="">我的订单</a></li>
-                                                <li role="presentation"><a role="menuitem" href="">修改密码</a></li>
-                                                <li role="presentation"><a role="menuitem" href="{:U('User/Passport/login')}" title="登录"> <span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
-                                                <li role="presentation"><a role="menuitem" href="{:U('User/Passport/signup')}" title="注册">注册</a></li>
-                                                <li role="presentation"><a role="menuitem" href="{:U('User/Passport/resetPassword')}">忘记密码</a></li>
-                                                <li role="presentation" class="divider"></li>
-                                                <li role="presentation"><a role="menuitem" href="javascript:void(0)" class="dogo-click-logout"> <span class="glyphicon glyphicon-log-out"></span> 退出登录</a></li>
+                                                <php>if(session('LOGIN_M_STATUS')=='TRUE'){</php>
+                                                <li><a role="menuitem" href="{:U('User/Index/index')}"> <span class="glyphicon glyphicon-home"></span> 我的主页</a></li>
+                                                <li><a role="menuitem" href="{:U('User/Index/changePwd')}"> <span class="glyphicon glyphicon-edit"></span> 修改密码</a></li>
+                                                <li class="divider"></li>
+                                                <li><a role="menuitem" href="javascript:void(0)" class="dogo-click-logout"> <span class="glyphicon glyphicon-log-out"></span> 退出登录</a></li>
+                                                <php>}else{</php>
+                                                <li><a role="menuitem" href="{:U('User/Passport/login')}" title="登录"> <span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+                                                <li><a role="menuitem" href="{:U('User/Passport/signup')}" title="注册"><span class="glyphicon glyphicon-plus-sign"></span>注册</a></li>
+                                                <li><a role="menuitem" href="{:U('User/Passport/resetPassword')}"> <span class="glyphicon glyphicon-question-sign"></span> 忘记密码</a></li>
+                                                <php>}</php>
                                             </ul>
                                         </li>
                                     </ul>

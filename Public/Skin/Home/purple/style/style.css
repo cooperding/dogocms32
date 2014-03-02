@@ -1,0 +1,78 @@
+/*page*/
+.dogo-page {height:auto;background: url(../images/bg-purple.jpg) no-repeat;margin: 0 auto -120px;
+            background-attachment: fixed;
+            background-size: cover;
+            padding-bottom: 5%;}
+
+
+
+/*header
+.dogo-header .navbar{background-image: -webkit-linear-gradient(top,#343742 0,#343742 100%);
+background-image: linear-gradient(to bottom,#343742 0,#343742 100%);box-shadow: 0 3px 3px rgba(0, 0, 0, 0.7);}
+*/
+.dogo-header .dogo-header-navbar{
+    background: rgba(0, 0, 0, 0.69);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2F323A', endColorstr='rgba(0, 0, 0, 0.69)', GradientType=0);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border: inset 1px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0 0 1px rgba(255,255,255,0.8);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,0.8);
+    box-shadow: 0 0 1px rgba(255,255,255,0.8);
+}
+.dogo-header .dogo-header-navbar a,.dogo-header .dogo-header-navbar .navbar-nav>li>a{color: #fff;text-shadow: 0 1px 0 rgba(255,255,255,.25);}
+.dogo-header-navbar a:hover,.dogo-header-navbar .navbar-nav>li>a:hover,.dogo-header-navbar .navbar-nav>li>a:focus{color: #fff;}
+
+.navbar-default .navbar-nav>.open>a, 
+.navbar-default .navbar-nav>.open>a:hover, 
+.navbar-default .navbar-nav>.open>a:focus{background: rgba(199, 66, 250, 0.69);color: #fff;}
+.dropdown-menu {background: rgba(199, 66, 250, 0.69);}
+
+.dogo-test2{height: 800px;background: #096;margin-top: 80px;}
+.dogo-test3{height: 800px;background: #066;margin-top: 80px;}
+
+.dogo-bg{background: #333;background: url('../images/transparent.png') repeat;}
+
+.dogo-test-input{margin: 10px;padding-top: 15px;color: #fff;}
+.dogo-test-input .dogo-test4{background: rgba(24, 20, 20, 0.23);color: #fff;border: 1px solid #fff;
+
+}
+.dogo-border-search{margin: 10px;border: 1px solid #fff;
+-webkit-border-radius: 4px 4px 4px 4px;
+-moz-border-radius: 4px 4px 4px 4px;
+-o-border-radius: 4px 4px 4px 4px;
+border-radius: 4px 4px 4px 4px;
+color: #fff;
+padding: 10px;
+}
+.dogo-border-search ul{}
+.dogo-border-search li{line-height: 25px;}
+.dogo-border-search li a{color: #fff;display: block;}
+.dogo-border-search li a:hover{}
+
+
+
+
+
+
+
+
+@media (min-width: 1200px){
+    .container {width: 100%;}
+}
+@media(min-width:768px){
+
+}
+@media(max-width:768px){
+
+}
+
+@media(min-width:768px){
+
+}
+@media(max-width:768px){
+
+}
+
+
+

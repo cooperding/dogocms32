@@ -1,0 +1,163 @@
+<include file="$tpl_header" />
+<div class="row">
+    <div class="col-md-8">
+
+
+        <article class="dogo-box dogo-border-all dogo-pd515">
+            <div class="dogo-box-header">
+                <h4><span class="glyphicon glyphicon-hand-right"></span> {$data.title}</h4>
+                <p>
+                    <span class="glyphicon glyphicon-user"></span> <a href="{:U('User/index',array('uid'=>$data['members_id']))}">{$data.username} </a>
+                      
+                </p>
+            </div>
+            <div class="dogo-box-content">
+                <p>
+                    {$data.content}
+                <if condition="$data.titlepic neq ''">
+                    <br/>
+                    <img src="{$data.titlepic}"/>
+                </if>
+                </p>
+            </div><!--dogo-box-content-->
+            <div class="dogo-box-footer">
+                <div class="row">
+                    <div class="col-md-6">
+                        <span type="button" class="btn btn-default dogo-click-up disabled_{$data.id}" data-row-id="{$data.id}" title="顶"> <span class="glyphicon glyphicon-thumbs-up"></span> <span class="num_up_{$data.id}">{$data.num_top}</span></span>
+                        <span type="button" class="btn btn-default dogo-click-down disabled_{$data.id}" data-row-id="{$data.id}" title="踩"> <span class="glyphicon glyphicon-thumbs-down"></span> <span class="num_down_{$data.id}">{$data.num_beat}</span></span>
+                    </div>
+                    <div class="col-md-6 dogo-align">
+                        <span type="button" class="btn btn-default" title="评论"> <span class="glyphicon glyphicon-comment"></span> <span class="num_comment_{$data.id}">{$data.num_comment}</span></span>
+                        <span type="button" class="btn btn-default"> <span class="glyphicon glyphicon-share"></span> 分享</span>
+                    </div>
+                </div><!--row-->
+            </div><!--dogo-box-footer-->
+        </article><!--dogo-box-->
+        <div class="dogo-blank"></div>
+
+
+
+        <section class="dogo-box dogo-border-all dogo-pd515">
+            <div class="dogo-box-header">
+
+            </div>
+            <div class="dogo-box-content">
+
+            </div><!--dogo-box-content-->
+            <div class="dogo-box-footer">
+
+            </div><!--dogo-box-footer-->
+        </section><!--dogo-box-->
+        <div class="dogo-blank"></div>
+
+
+
+
+
+        <section class="dogo-box dogo-border-all dogo-pd515">
+            <div class="dogo-box-header">
+                <h5><span class="glyphicon glyphicon-hand-right"></span> 评论</h5>
+            </div>
+            <div class="dogo-box-content dogo-list-comment">
+                <ul>
+                    <foreach name="list_comment" item="vo">
+                        <li><span class="glyphicon glyphicon-user"></span> 
+                            <a href="{:U('Home/User/index',array('uid'=>$vo['members_id']))}">{$vo.username} </a>
+                            {$vo.content}
+                            <span class="dogo-frt">#{$vo.floor}</span>
+                        </li>
+                    </foreach>
+                </ul>
+            </div><!--dogo-box-content-->
+            <div class="dogo-box-footer">
+                <input type="hidden" name="data-id" value="{$data.id}"/>
+                <textarea name="content-comment" class="form-control disabled" rows="3"></textarea>
+                <br/>
+                <button type="button" class="btn btn-info dogo-click-submit">发表评论</button>
+            </div><!--dogo-box-footer-->
+        </section><!--dogo-box-->
+        <div class="dogo-blank"></div>
+
+        <section class="dogo-box dogo-border-all dogo-pd515">
+            <div class="dogo-box-header">
+
+            </div>
+            <div class="dogo-box-content">
+
+            </div><!--dogo-box-content-->
+            <div class="dogo-box-footer">
+
+            </div><!--dogo-box-footer-->
+        </section><!--dogo-box-->
+
+
+    </div><!--col-md-->
+    <div class="col-md-4">
+        <div class="dogo-blank"></div>
+
+        <aside class="dogo-box dogo-border-all dogo-pd515">
+            <div class="dogo-box-header">
+
+            </div>
+            <div class="dogo-box-content">
+
+            </div><!--dogo-box-content-->
+            <div class="dogo-box-footer">
+
+            </div><!--dogo-box-footer-->
+        </aside><!--dogo-box-->
+        <div class="dogo-blank"></div>
+
+        <aside class="dogo-box dogo-border-all dogo-pd515">
+            <div class="dogo-box-header">
+
+            </div>
+            <div class="dogo-box-content">
+
+            </div><!--dogo-box-content-->
+            <div class="dogo-box-footer">
+
+            </div><!--dogo-box-footer-->
+        </aside><!--dogo-box-->
+    </div><!--col-md-->
+</div><!--row-->
+<include file="$tpl_footer" />
+</div><!--container-->
+</div><!--dogo-page-->
+<script>
+    $(function() {
+        $('.dogo-click-submit').click(function() {
+            var content = $('textarea[name="content-comment"]').val();
+            content = $.trim(content);
+            if (!content) {
+                Alertify.dialog.alert('评论内容不能为空，请填写评论信息！');
+                Alertify.log.error('评论内容不能为空，请填写评论信息！', 3000);
+                $('textarea[name="content-comment"]').val('');
+                return false;
+            }
+            var row_id = $('input[name="data-id"]').val();
+            var url = "{:U('Home/Ajax/commemt')}";
+            $.ajax({
+                type: "POST",
+                url: url,
+                dataType: "json",
+                data: {key_id: row_id, content: content},
+                success: function(data) {
+                    if (data.status == 0) {
+                        Alertify.log.success(data.msg, 3000);
+                        $('textarea[name="content-comment"]').val('');
+                        $('.num_comment_' + row_id).text(data.num);
+                    } else if (data.status == 1) {
+                        Alertify.log.error(data.msg, 3000);
+                    } else if (data.status == 3) {
+                        $('.dogo-dialog-login').modal('show');
+                        Alertify.log.error(data.msg, 3000);
+                    }
+                }//success
+            });
+        });
+
+    });
+</script>
+</body>
+</html>

@@ -1,11 +1,16 @@
 /*page*/
-.dogo-page {}
+.dogo-page {height:1000px;
+            background: -webkit-linear-gradient(to right, rgba(163,0,255,1) 0%,rgba(0,255,246,1) 100%);
+            background: linear-gradient(to right, rgba(163,0,255,1) 0%,rgba(0,255,246,1) 100%);
+ackground-attachment: fixed;
+            background-size: cover;
+            padding-bottom: 5%;}
 
 /*header
 .dogo-header .navbar{background-image: -webkit-linear-gradient(top,#343742 0,#343742 100%);
 background-image: linear-gradient(to bottom,#343742 0,#343742 100%);box-shadow: 0 3px 3px rgba(0, 0, 0, 0.7);}
 */
-
+.dogo-header .navbar-default{border: 1px solid #ff7171;}
 
 /*dogo-top*/
 .dogo-top{height:170px; }
@@ -24,3 +29,5 @@ background-image: linear-gradient(to bottom,#343742 0,#343742 100%);box-shadow: 
     .dogo-box-footer .dogo-align{text-align: left;margin: 5px 0;}
 }
 .dogo-list-comment ul li{border: dotted 1px #EEE8E8;margin: 5px 0;padding: 5px;overflow: hidden;}
+
+

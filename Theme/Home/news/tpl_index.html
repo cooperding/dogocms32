@@ -11,6 +11,7 @@
         <link rel="stylesheet" type="text/css" href="__PUBLIC__{$style_common}/v3.1.1/css/bootstrap-theme.min.css"/>
         <link rel="stylesheet" type="text/css" href="__PUBLIC__{$style_common}/css/alertify.css"/>
         <link rel="stylesheet" type="text/css" href="__PUBLIC__{$style_common}/css/alertify.default.css"/>
+        <link rel="stylesheet" type="text/css" href="__PUBLIC__{$style_common}/css/jquery.bxslider.css"/>
         <link rel="stylesheet" type="text/css" href="__PUBLIC__{$style}/style/common.css"/>
         <link rel="stylesheet" type="text/css" href="__PUBLIC__{$style}/style/index.css"/>
     </head>
@@ -20,10 +21,14 @@
                 <div class="container">
                     <div class="dogo-home-top">
                         <h1>{ / }</h1>
-                        <h2><a href="#lemon">互联网</a><span>/</span>
+                        <h2>站长先生</h2>
+                        <div class="dogo-blank"></div>
+                        <div class="dogo-blank"></div>
+                        <div class="dogo-blank"></div>
+                        <div class="dogo-blank"></div>
+                        <h4><a href="#lemon">互联网</a><span>/</span>
                             <a href="#lemon">物联网</a><span>/</span>
-                            <a href="#lemon">移动互联网</a></h2>
-
+                            <a href="#lemon">移动互联网</a></h4>
                         <h4><span>©</span>2013-2014 秋允技术 QiuYunTech.com</h4>
                         <h3>Qiu Yun Code</h3>
                     </div>
@@ -40,11 +45,12 @@
                                     <div class="dogo-thumb-title">
                                         <h4 class="dogo-align-center"><a href="{$block.url}">{$block.title}</a></h4>
                                         <p>{$block.description}</p>
-                                        <span class="dogo-align-center"><a href="{$block.url}">查看信息>></a></span>
+                                        <span class="dogo-align-center">
+                                            <a id="section6Btn" href="#section6">查看信息>></a></span>
                                     </div>
                                 </div>
                             </div><!--col-md-->
-                        
+
                         </dogocms:block>
                     </div><!--row-->
                 </div><!--container-->
@@ -53,145 +59,401 @@
 
             <section class="dogo-section dogo-rgba-gray">
                 <div class="container">
-                    <div class="dogo-home-top">
-                        <h1>{ / }</h1>
-                        <h2><a href="#lemon">互联网</a><span>/</span>
-                            <a href="#lemon">物联网</a><span>/</span>
-                            <a href="#lemon">移动互联网</a></h2>
 
-                        <h4><span>©</span>2013-2014 秋允技术 QiuYunTech.com</h4>
-                        <h3>Qiu Yun Code</h3>
-                    </div>
+                    <div class="dogo-box dogo-test">
+                        <div class="dogo-box-header"></div>
+                        <div class="dogo-box-content">
+                            <div class="row">
+                                <div class="col-md-4 dogo-te">
+                                    <div>
+                                        <ul class="bxslider">
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492291.png" title="Funky roots"/></li>
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492308.jpg" title="Funky roots"/></li>
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492427.jpg" title="Funky roots"/></li>
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492355.jpg" title="Funky roots"/></li>
+                                        </ul>
+                                    </div>
+                                    <div class="dogo-text">
+                                        <ul class="dogo-text-onelines">
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-5">
+
+                                    <div class="dogo-text">
+                                        <div class="dogo-text-header">
+                                            <h3><a href="">酷站欣赏提供最新韩国酷站展示,欧美酷站、中国酷站展示及发布</a></h3>
+                                            <p>酷站欣赏频道是一个收集了大量韩国、欧美及国内众多优秀设计的网站截图及网址欣赏频道，
+                                                为广大网站设计爱好者提供优秀网站作品参考借鉴。</p>
+                                        </div>
+
+                                        <ul class=" dogo-text-onelines">
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                        </ul>
+
+
+                                    </div><!--//dogo-text-->
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="dogo-text">
+                                        <div class="dogo-text-header">
+                                            <h3><a href="">CSS3</a></h3>
+                                        </div>
+                                        <ul class="dogo-text-onelines">
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                        </ul>
+                                    </div><!--//dogo-text-->
+                                </div>
+                            </div>
+                        </div><!--//dogo-box-content-->
+                        <div class="dogo-box-footer"></div>
+                    </div><!--dogo-box-->
+
                 </div><!--container-->
             </section>
 
 
-            <section class="dogo-section dogo-rgba-gray">
-                <div class="container">
-                    <div class="dogo-home-top">
-                        <h1>{ / }</h1>
-                        <h2><a href="#lemon">互联网</a><span>/</span>
-                            <a href="#lemon">物联网</a><span>/</span>
-                            <a href="#lemon">移动互联网</a></h2>
 
-                        <h4><span>©</span>2013-2014 秋允技术 QiuYunTech.com</h4>
-                        <h3>Qiu Yun Code</h3>
-                    </div>
-                </div><!--container-->
-            </section>
 
             <section class="dogo-section dogo-rgba-blue">
                 <div class="container">
-                    <div class="dogo-home-top">
-                        <h1>{ / }</h1>
-                        <h2><a href="#lemon">互联网</a><span>/</span>
-                            <a href="#lemon">物联网</a><span>/</span>
-                            <a href="#lemon">移动互联网</a></h2>
 
-                        <h4><span>©</span>2013-2014 秋允技术 QiuYunTech.com</h4>
-                        <h3>Qiu Yun Code</h3>
-                    </div>
+                    <div class="dogo-box dogo-test">
+                        <div class="dogo-box-header"></div>
+                        <div class="dogo-box-content">
+                            <div class="row">
+                                <div class="col-md-4 dogo-te">
+                                    <div>
+                                        <ul class="bxslider">
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492291.png" title="Funky roots"/></li>
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492308.jpg" title="Funky roots"/></li>
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492427.jpg" title="Funky roots"/></li>
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492355.jpg" title="Funky roots"/></li>
+                                        </ul>
+                                    </div>
+                                    <div class="dogo-text">
+                                        <ul class="dogo-text-onelines">
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-5">
+
+                                    <div class="dogo-text">
+                                        <div class="dogo-text-header">
+                                            <h3><a href="">酷站欣赏提供最新韩国酷站展示,欧美酷站、中国酷站展示及发布</a></h3>
+                                            <p>酷站欣赏频道是一个收集了大量韩国、欧美及国内众多优秀设计的网站截图及网址欣赏频道，
+                                                为广大网站设计爱好者提供优秀网站作品参考借鉴。</p>
+                                        </div>
+
+                                        <ul class=" dogo-text-onelines">
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                        </ul>
+
+
+                                    </div><!--//dogo-text-->
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="dogo-text">
+                                        <div class="dogo-text-header">
+                                            <h3><a href="">CSS3</a></h3>
+                                        </div>
+                                        <ul class="dogo-text-onelines">
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                        </ul>
+                                    </div><!--//dogo-text-->
+                                </div>
+                            </div>
+                        </div><!--//dogo-box-content-->
+                        <div class="dogo-box-footer"></div>
+                    </div><!--dogo-box-->
+
                 </div><!--container-->
             </section>
 
             <section class="dogo-section dogo-pink">
                 <div class="container">
-                    <div class="dogo-home-top">
-                        <h1>{ / }</h1>
-                        <h2><a href="#lemon">互联网</a><span>/</span>
-                            <a href="#lemon">物联网</a><span>/</span>
-                            <a href="#lemon">移动互联网</a></h2>
+                    <div class="dogo-box dogo-test">
+                        <div class="dogo-box-header"></div>
+                        <div class="dogo-box-content">
+                            <div class="row">
+                                <div class="col-md-4 dogo-te">
+                                    <div>
+                                        <ul class="bxslider">
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492291.png" title="Funky roots"/></li>
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492308.jpg" title="Funky roots"/></li>
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492427.jpg" title="Funky roots"/></li>
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492355.jpg" title="Funky roots"/></li>
+                                        </ul>
+                                    </div>
+                                    <div class="dogo-text">
+                                        <ul class="dogo-text-onelines">
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                        </ul>
+                                    </div>
 
-                        <h4><span>©</span>2013-2014 秋允技术 QiuYunTech.com</h4>
-                        <h3>Qiu Yun Code</h3>
-                    </div>
+                                </div>
+                                <div class="col-md-5">
+
+                                    <div class="dogo-text">
+                                        <div class="dogo-text-header">
+                                            <h3><a href="">酷站欣赏提供最新韩国酷站展示,欧美酷站、中国酷站展示及发布</a></h3>
+                                            <p>酷站欣赏频道是一个收集了大量韩国、欧美及国内众多优秀设计的网站截图及网址欣赏频道，
+                                                为广大网站设计爱好者提供优秀网站作品参考借鉴。</p>
+                                        </div>
+
+                                        <ul class=" dogo-text-onelines">
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                        </ul>
+
+
+                                    </div><!--//dogo-text-->
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="dogo-text">
+                                        <div class="dogo-text-header">
+                                            <h3><a href="">CSS3</a></h3>
+                                        </div>
+                                        <ul class="dogo-text-onelines">
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                        </ul>
+                                    </div><!--//dogo-text-->
+                                </div>
+                            </div>
+                        </div><!--//dogo-box-content-->
+                        <div class="dogo-box-footer"></div>
+                    </div><!--dogo-box-->
+
                 </div><!--container-->
             </section>
 
 
-            <section class="dogo-section dogo-rgba-lemon">
+            <section class="dogo-section dogo-rgba-lemon" id="section6">
                 <div class="container">
-                    <div class="dogo-home-top">
-                        <h1>{ / }</h1>
-                        <h2><a href="#lemon">互联网</a><span>/</span>
-                            <a href="#lemon">物联网</a><span>/</span>
-                            <a href="#lemon">移动互联网</a></h2>
+                    <div class="dogo-box dogo-test">
+                        <div class="dogo-box-header"></div>
+                        <div class="dogo-box-content">
+                            <div class="row">
+                                <div class="col-md-4 dogo-te">
+                                    <div>
+                                        <ul class="bxslider">
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492291.png" title="Funky roots"/></li>
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492308.jpg" title="Funky roots"/></li>
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492427.jpg" title="Funky roots"/></li>
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492355.jpg" title="Funky roots"/></li>
+                                        </ul>
+                                    </div>
+                                    <div class="dogo-text">
+                                        <div class="dogo-text-header">
+                                            <h3><a href="">CSS3</a></h3>
+                                        </div>
+                                        <ul class="dogo-text-onelines">
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                        </ul>
+                                    </div>
 
-                        <h4><span>©</span>2013-2014 秋允技术 QiuYunTech.com</h4>
-                        <h3>Qiu Yun Code</h3>
-                    </div>
+                                </div>
+                                <div class="col-md-5">
+
+                                    <div class="dogo-text">
+                                        <div class="dogo-text-header">
+                                            <h3><a href="">酷站欣赏提供最新韩国酷站展示,欧美酷站、中国酷站展示及发布</a></h3>
+                                            <p>酷站欣赏频道是一个收集了大量韩国、欧美及国内众多优秀设计的网站截图及网址欣赏频道，
+                                                为广大网站设计爱好者提供优秀网站作品参考借鉴。</p>
+                                        </div>
+
+                                        <ul class=" dogo-text-onelines">
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                        </ul>
+
+
+                                    </div><!--//dogo-text-->
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="dogo-text">
+                                        <div class="dogo-text-header">
+                                            <h3><a href="">CSS3</a></h3>
+                                        </div>
+                                        <ul class="dogo-text-onelines">
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                        </ul>
+                                    </div><!--//dogo-text-->
+                                </div>
+                            </div>
+                        </div><!--//dogo-box-content-->
+                        <div class="dogo-box-footer"></div>
+                    </div><!--dogo-box-->
+
                 </div><!--container-->
             </section>
 
-            <section class="dogo-section dogo-rgba-blue">
-                <div class="container">
-                    <div class="dogo-home-top">
-                        <h1>{ / }</h1>
-                        <h2><a href="#lemon">互联网</a><span>/</span>
-                            <a href="#lemon">物联网</a><span>/</span>
-                            <a href="#lemon">移动互联网</a></h2>
 
-                        <h4><span>©</span>2013-2014 秋允技术 QiuYunTech.com</h4>
-                        <h3>Qiu Yun Code</h3>
-                    </div>
-                </div><!--container-->
-            </section>
-            <section class="dogo-section dogo-rgba-gray">
-                <div class="container">
-                    <div class="dogo-home-top">
-                        <h1>{ / }</h1>
-                        <h2><a href="#lemon">互联网</a><span>/</span>
-                            <a href="#lemon">物联网</a><span>/</span>
-                            <a href="#lemon">移动互联网</a></h2>
-
-                        <h4><span>©</span>2013-2014 秋允技术 QiuYunTech.com</h4>
-                        <h3>Qiu Yun Code</h3>
-                    </div>
-                </div><!--container-->
-            </section>
             <section class="dogo-section dogo-rgba-purple">
                 <div class="container">
-                    <div class="dogo-home-top">
-                        <h1>{ / }</h1>
-                        <h2><a href="#lemon">互联网</a><span>/</span>
-                            <a href="#lemon">物联网</a><span>/</span>
-                            <a href="#lemon">移动互联网</a></h2>
+                    <div class="dogo-box dogo-test">
+                        <div class="dogo-box-header"></div>
+                        <div class="dogo-box-content">
+                            <div class="row">
+                                <div class="col-md-4 dogo-te">
+                                    <div>
+                                        <ul class="bxslider">
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492291.png" title="Funky roots"/></li>
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492308.jpg" title="Funky roots"/></li>
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492427.jpg" title="Funky roots"/></li>
+                                            <li><img src="http://localhost/dogocms/Public/Uploads/Images/20131103/1383492355.jpg" title="Funky roots"/></li>
+                                        </ul>
+                                    </div>
+                                    <div class="dogo-text">
+                                        <div class="dogo-text-header">
+                                            <h3><a href="">CSS3</a></h3>
+                                        </div>
+                                        <ul class="dogo-text-onelines">
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                        </ul>
+                                    </div>
 
-                        <h4><span>©</span>2013-2014 秋允技术 QiuYunTech.com</h4>
-                        <h3>Qiu Yun Code</h3>
-                    </div>
+                                </div>
+                                <div class="col-md-5">
+
+                                    <div class="dogo-text">
+                                        <div class="dogo-text-header">
+                                            <h3><a href="">酷站欣赏提供最新韩国酷站展示,欧美酷站、中国酷站展示及发布</a></h3>
+                                            <p>酷站欣赏频道是一个收集了大量韩国、欧美及国内众多优秀设计的网站截图及网址欣赏频道，
+                                                为广大网站设计爱好者提供优秀网站作品参考借鉴。</p>
+                                        </div>
+
+                                        <ul class=" dogo-text-onelines">
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                        </ul>
+
+
+                                    </div><!--//dogo-text-->
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="dogo-text">
+                                        <div class="dogo-text-header">
+                                            <h3><a href="">CSS3</a></h3>
+                                        </div>
+                                        <ul class="dogo-text-onelines">
+                                            <li><a href="#">一步一步学android之控件篇——ListView自定义显示数据格式</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ListView基本使用</a></li>
+                                            <li><a href="#">一步一步学android之控件篇——ScrollView</a></li>
+                                            <li><a href="#">一步一步学android之事件篇——触摸事件</a></li>
+                                        </ul>
+                                    </div><!--//dogo-text-->
+                                </div>
+                            </div>
+                        </div><!--//dogo-box-content-->
+                        <div class="dogo-box-footer"></div>
+                    </div><!--dogo-box-->
+
                 </div><!--container-->
             </section>
-            <section class="dogo-section dogo-rgba-blue">
-                <div class="container">
-                    <div class="dogo-home-top">
-                        <h1>{ / }</h1>
-                        <h2><a href="#lemon">互联网</a><span>/</span>
-                            <a href="#lemon">物联网</a><span>/</span>
-                            <a href="#lemon">移动互联网</a></h2>
 
-                        <h4><span>©</span>2013-2014 秋允技术 QiuYunTech.com</h4>
-                        <h3>Qiu Yun Code</h3>
-                    </div>
-                </div><!--container-->
-            </section>
 
             <section class="dogo-section dogo-rgba-gray">
                 <div class="container">
                     <div class="row dogo-index-row">
-                        <dogocms:block typeid="4" limit="12">
-                            <div class="col-md-2 dogo-pd0">
-                                <div class="dogo-index-thumb">
-                                    <div class="dogo-thumb-pic"><img src="{$block.title_img}" class="img-responsive"/></div>
-                                    <div class="dogo-thumb-title">
-                                        <h4 class="dogo-align-center"><a href="{$block.url}">{$block.title}</a></h4>
-                                        <p>{$block.description}</p>
-                                        <span class="dogo-align-center"><a href="{$block.url}">查看信息>></a></span>
-                                    </div>
+                        <div class="col-md-12 dogo-pd0">
+                            <div class="dogo-text">
+                                <div class="dogo-text-header">
+                                    <h3>友情链接</h3>
                                 </div>
-                            </div><!--col-md-->
-                        
-                        </dogocms:block>
+
+                                <div class="dogo-text-links">
+                                    <dogocms:links >
+                                        <a href="{$links.weburl}" target="_blank" title="{$links.webname}">{$links.webname}</a>
+                                        <a href="{$links.weburl}" target="_blank" title="{$links.webname}">{$links.webname}</a>
+                                        <a href="{$links.weburl}" target="_blank" title="{$links.webname}">{$links.webname}</a>
+                                        <a href="{$links.weburl}" target="_blank" title="{$links.webname}">{$links.webname}</a>
+                                        <a href="{$links.weburl}" target="_blank" title="{$links.webname}">{$links.webname}</a>
+                                        <a href="{$links.weburl}" target="_blank" title="{$links.webname}">{$links.webname}</a>
+                                        <a href="{$links.weburl}" target="_blank" title="{$links.webname}">{$links.webname}</a>
+                                        <a href="{$links.weburl}" target="_blank" title="{$links.webname}">{$links.webname}</a>
+                                        <a href="{$links.weburl}" target="_blank" title="{$links.webname}">{$links.webname}</a>
+                                        <a href="{$links.weburl}" target="_blank" title="{$links.webname}">{$links.webname}</a>
+                                        <a href="{$links.weburl}" target="_blank" title="{$links.webname}">{$links.webname}</a>
+                                        <a href="{$links.weburl}" target="_blank" title="{$links.webname}">{$links.webname}</a>
+                                    </dogocms:links>
+                                </div>
+                            </div><!--//dogo-text-->
+                        </div><!--col-md-->
+
                     </div><!--row-->
                 </div><!--container-->
             </section>
