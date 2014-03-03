@@ -26,6 +26,14 @@
                     <input type="button" id="image1" value="选择图片" />
                 </td>
             </tr>
+            <if condition="($data['pic'] neq '')">
+                <tr>
+                    <th></th>
+                    <td>
+                        <img src="{$data.pic}" style="max-width: 200px;"/>
+                    </td>
+                </tr>
+            </if>
             <tr>
                 <th>文字简介：</th>
                 <td><input type="text" name="remark" value="{$data.remark}" /></td>

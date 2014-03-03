@@ -1,5 +1,5 @@
 /*page*/
-.dogo-page {height:auto;background: url(../images/wrapper.jpg) no-repeat;margin: 0 auto -120px;
+.dogo-page {height:auto;background: url(../images/wrapper.jpg) no-repeat;
             background-attachment: fixed;
             background-size: cover;
             padding-bottom: 5%;}
@@ -11,7 +11,7 @@
 background-image: linear-gradient(to bottom,#343742 0,#343742 100%);box-shadow: 0 3px 3px rgba(0, 0, 0, 0.7);}
 */
 .dogo-header .dogo-header-navbar{
-    background: rgba(0, 0, 0, 0.16);
+    background: rgba(10, 144, 219, 0.21);
     background-repeat: repeat-x;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2F323A', endColorstr='rgba(0, 0, 0, 0.69)', GradientType=0);
     border-bottom: 1px solid rgba(0,0,0,0.1);
@@ -25,9 +25,9 @@ background-image: linear-gradient(to bottom,#343742 0,#343742 100%);box-shadow: 
 
 .navbar-default .navbar-nav>.open>a, 
 .navbar-default .navbar-nav>.open>a:hover, 
-.navbar-default .navbar-nav>.open>a:focus{background: rgba(255,255,255,.25);color: #fff;}
+.navbar-default .navbar-nav>.open>a:focus{background: rgba(89, 212, 243, 0.66);color: #fff;}
 
-.dropdown-menu {background: rgba(255,255,255,.25);}
+.dropdown-menu {background: rgba(89, 212, 243, 0.66);}
 .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus {
     color: #fff;
     background-image: -webkit-linear-gradient(top,#0796C3 0,#0796C3 100%);
@@ -60,8 +60,8 @@ background-image: linear-gradient(to bottom,#343742 0,#343742 100%);box-shadow: 
 .dogo-border-search li a{color: #fff;display: block;}
 .dogo-border-search li a:hover{color: #fff;font-weight: 800;}
 
-
-
+/*内容页*/
+.dogo-view>p{background: none;color: #fff;}
 
 
 

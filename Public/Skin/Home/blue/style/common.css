@@ -54,6 +54,7 @@ a:hover{text-decoration:none;color: #FF6347;}
 .dogo-box{height: auto;}
 .dogo-box-header{ margin: 5px 0;line-height: 30px;color: #fff;}
 .dogo-box-header a{color: #fff;}
+.dogo-box-header a:hover{color: #e6e6e6;}
 .dogo-box-header h5{}
 .dogo-box-content{color: #fff;}
 .dogo-box-content p{font-size: 14px;}
