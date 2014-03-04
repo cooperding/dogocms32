@@ -139,6 +139,9 @@ ul.dogo-text-onelines li{height: 25px;line-height: 25px;overflow: hidden;text-ov
 ul.dogo-text-onelines li a{color: #000;font-size: 14px;}
 ul.dogo-text-onelines li a:hover{color: #FF6347;}
 
+ul.dogo-text-more{height: auto;overflow: hidden;}
+ul.dogo-text-more li{display: block;float: left;margin: 5px 8px;}
+
 .dogo-text-twolines{}
 
 .dogo-text-links a{margin: 0 5px;line-height: 28px;}

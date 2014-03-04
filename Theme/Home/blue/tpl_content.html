@@ -16,8 +16,8 @@
                     <br/>
                     <img class="img-responsive" src="{$data.titlepic}"/>
                 </if>
-                    {$data.content}
-                
+                {$data.content}
+
                 </p>
             </div><!--dogo-box-content-->
             <div class="dogo-box-footer">
@@ -100,7 +100,19 @@
 
             </div>
             <div class="dogo-box-content">
-
+                <div class="dogo-text">
+                    <div class="dogo-text-header">
+                        <h3><a href="javascript:void(0);">栏目分类</a></h3>
+                    </div>
+                    <ul class="dogo-text-more">
+                        <dogocms:sort typeid="0">
+                            <li><a href="#">{$sort.text}</a></li>
+                            <volist name="sort.children" id="vo">
+                                <li><a href="#">{$vo.text}</a></li>
+                            </volist>
+                        </dogocms:sort>
+                    </ul>
+                </div><!--dogo-text-->
             </div><!--dogo-box-content-->
             <div class="dogo-box-footer">
 
@@ -113,7 +125,16 @@
 
             </div>
             <div class="dogo-box-content">
-
+                <div class="dogo-text">
+                    <div class="dogo-text-header">
+                        <h3><a href="">CSS3</a></h3>
+                    </div>
+                    <ul class="dogo-text-onelines">
+                        <dogocms:article type="all" limit="10">
+                            <li><a href="{:U('Home/Content/index',array('id'=>$article['id']))}">{$article.title}</a></li>
+                        </dogocms:article>
+                    </ul>
+                </div>
             </div><!--dogo-box-content-->
             <div class="dogo-box-footer">
 

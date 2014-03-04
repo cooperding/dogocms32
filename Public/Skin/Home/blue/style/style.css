@@ -38,28 +38,14 @@ background-image: linear-gradient(to bottom,#343742 0,#343742 100%);box-shadow: 
 }
 
 
-.dogo-test2{height: 800px;background: #096;margin-top: 100px;}
-.dogo-test3{height: 800px;background: #066;margin-top: 100px;}
-
 .dogo-bg{background: rgba(255, 255, 255, 0);}
 
-.dogo-test-input{margin: 10px;padding-top: 15px;color: #fff;}
-.dogo-test-input .dogo-test4{background: rgba(255, 255, 255, 0);color: #fff;border: 1px solid rgba(255, 255, 255, 0.4);;
+/*侧栏页*/
+aside .dogo-text{background: none;padding: 0;margin: 0;border:none;}
+aside .dogo-text .dogo-text-header a{color: #fff;}
+aside .dogo-text li a{color: #fff;}
 
-}
-.dogo-border-search{margin: 10px;border: 1px solid rgba(255, 255, 255, 0.4);;
-                    -webkit-border-radius: 4px 4px 4px 4px;
-                    -moz-border-radius: 4px 4px 4px 4px;
-                    -o-border-radius: 4px 4px 4px 4px;
-                    border-radius: 4px 4px 4px 4px;
-                    color: #fff;
-                    padding: 10px;
-}
-.dogo-border-search ul{}
-.dogo-border-search li{line-height: 25px;}
-.dogo-border-search li a{color: #fff;display: block;}
-.dogo-border-search li a:hover{color: #fff;font-weight: 800;}
-
+aside ul.dogo-text-more li a:hover{color: #EEE9E9;}
 /*内容页*/
 .dogo-view>p{background: none;color: #fff;}
 

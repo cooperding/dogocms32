@@ -35,6 +35,11 @@ class NewsSortAction extends BaseAction {
      */
     public function add()
     {
+        $status = array(
+            '20' => ' 开启 ',
+            '10' => ' 禁用 '
+        );
+        $this->assign('status', $status);
         $this->display();
     }
 
@@ -51,7 +56,13 @@ class NewsSortAction extends BaseAction {
         $id = I('get.id');
         $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
+        $status = array(
+            '20' => ' 开启 ',
+            '10' => ' 禁用 '
+        );
+        $this->assign('status', $status);
         $this->assign('data', $data);
+        $this->assign('v_status', $data['status']);
         $this->display();
     }
 
@@ -68,6 +79,7 @@ class NewsSortAction extends BaseAction {
         $m = D('NewsSort');
         $parent_id = I('post.parent_id');
         $text = I('post.text');
+        $_POST['status'] = $_POST['status']['0'];
         if (empty($text)) {
             $this->dmsg('1', '分类名不能为空！', false, true);
         }
@@ -106,6 +118,7 @@ class NewsSortAction extends BaseAction {
         $id = I('post.id');
         $parent_id = I('post.parent_id');
         $tbname = 'NewsSort'; //可修改为相应的表名
+        $_POST['status'] = $_POST['status']['0'];
         if ($parent_id != 0) {//不为0时判断是否为子分类
             if ($id == $parent_id) {
                 $this->dmsg('1', '不能选择自身分类为父级分类！', false, true);

@@ -11,7 +11,7 @@ class Dogocms extends TagLib {
         // 'test' => array('attr' => "attr1,attr2", level => 3),
         'nav' => array('attr' => 'id,limit,type,order,name,key,mod', level => 3), //网站导航 type:top,son,all;name:head,foot
         'article' => array('attr' => 'typeid,type,tid,limit,flag,order,keywords', 'level' => 3), //文章内容
-        'sort' => array('attr' => 'id,limit,type,order,name,key,mod', level => 3), //栏目分类
+        'sort' => array('attr' => 'typeid,order,key,mod', level => 3), //栏目分类
         'message' => array('attr' => 'attr1,attr2', level => 3), //咨询留言
         'comment' => array('attr' => 'attr1,attr2', level => 3), //评论
         'list' => array('attr' => 'attr1,attr2', level => 3), //列表页内容
@@ -24,7 +24,33 @@ class Dogocms extends TagLib {
         'links' => array('attr' => 'typeid,limit,order', level => 3, 'close' => 1), //友情链接
     );
 
-//  block碎片标签 typeid,limit,order
+//文档分类
+    public function _sort($tag, $content)
+    {
+        $typeid = $tag['typeid']; //分类ID，ID为0时调用全部分类
+        $order = $tag['order']; //排序
+        $tag['where'] = ' (`status`=\'20\') ';
+        if ($typeid != '0') {//ID为0时调用全部分类
+            $tag['where'] .= ' and (`path` like \'%' . $typeid . '%\') ';
+        }
+        $sql = "M('NewsSort')->";
+        $sql .= ($order) ? "order(\"{$order}\")->" : '';
+        $sql .= ($tag['where']) ? "where(\"{$tag['where']}\")->" : '';   //被重新处理过了
+        $sql .= "select()";
+        $result = 'sort'; //定义数据查询的结果存放变量
+        $key = !empty($tag['key']) ? $tag['key'] : 'i';
+        $mod = isset($tag['mod']) ? $tag['mod'] : '2';
+        //下面拼接输出语句
+        $parsestr = '<?php $qiuyun = new \Org\Util\Qiuyun; ';
+        $parsestr .= '$_result=$qiuyun->list_to_tree(' . $sql . ',"id", "parent_id", "children"); if ($_result): $' . $key . '=0;';
+        $parsestr .= 'foreach($_result as $key=>$' . $result . '):';
+        $parsestr .= '++$' . $key . ';$mod = ($' . $key . ' % ' . $mod . ' );?>';
+        $parsestr .= $content; //解析在article标签中的内容
+        $parsestr .= '<?php endforeach; endif;?>';
+        return $parsestr;
+    }
+
+//  ads广告标签 typeid,limit,order
     public function _ads($tag, $content)
     {
         $typeid = $tag['typeid'];
@@ -167,36 +193,6 @@ class Dogocms extends TagLib {
         $sql .= "select()";
         //下面拼接输出语句
         $parsestr = '<?php $_result=' . $sql . '; if ($_result): $' . $key . '=0;';
-        $parsestr .= 'foreach($_result as $key=>$' . $result . '):';
-        $parsestr .= '++$' . $key . ';$mod = ($' . $key . ' % ' . $mod . ' );?>';
-        $parsestr .= $content; //解析在article标签中的内容
-        $parsestr .= '<?php endforeach; endif;?>';
-        return $parsestr;
-    }
-
-    //文档分类
-    public function _sort($tag, $content)
-    {
-        $limit = $tag['limit'];
-        $order = $tag['order']; //字符串加引号
-        $type = $tag['type'];
-        $id = $tag['id'];
-        $tag['name'] = ucfirst($tag['name']);
-        if (empty($limit)) {
-            $tag['limit'] = '0,10';
-        }
-        $sql = "M('NewsSort')->";
-        $sql .= ($order) ? "order(\"{$order}\")->" : '';
-        $sql .= ($tag['limit']) ? "limit({$tag['limit']})->" : '';
-        //$sql .= ($tag['type']) ? "order({$tag['type']})->" : '';
-        $sql .= ($tag['where']) ? "where(\"{$tag['where']}\")->" : '';   //被重新处理过了
-        $sql .= "select()";
-        $result = 'sort'; //定义数据查询的结果存放变量
-        $key = !empty($tag['key']) ? $tag['key'] : 'i';
-        $mod = isset($tag['mod']) ? $tag['mod'] : '2';
-        //下面拼接输出语句
-        $parsestr = '<?php Load("extend"); ';
-        $parsestr .= '$_result=list_to_tree(' . $sql . ',"id", "parent_id", "children"); if ($_result): $' . $key . '=0;';
         $parsestr .= 'foreach($_result as $key=>$' . $result . '):';
         $parsestr .= '++$' . $key . ';$mod = ($' . $key . ' % ' . $mod . ' );?>';
         $parsestr .= $content; //解析在article标签中的内容

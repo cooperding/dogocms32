@@ -12,6 +12,10 @@
                     <td><input name="parent_id" class="easyui-combotree combotree" data-options="url:'{:U('Admin/NewsSort/jsonTree')}',required:true," value="{$data.parent_id}"  style="width:200px;"/></td>
                 </tr>
                 <tr>
+                    <th>审核状态：</th>
+                    <td><html:radio name="status" radios="status" checked="v_status"/></td>
+            </tr>
+                <tr>
                     <th>{:L("keywords")}：</th>
                     <td><input type="text" name="keywords" value="{$data.keywords}" /></td>
                 </tr>
