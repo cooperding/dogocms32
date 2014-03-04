@@ -1,8 +1,6 @@
 /*page*/
-.dogo-page {height:auto;background: url(../images/wrapper.jpg) no-repeat;
-            background-attachment: fixed;
-            background-size: cover;
-            padding-bottom: 5%;}
+.dogo-page {height:auto;background: url(../images/wrapper.jpg) repeat 0 0;
+            }
 
 
 
