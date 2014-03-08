@@ -1,0 +1,274 @@
+<footer class="dogo-footer">
+    <div class="dogo-blank"></div>
+
+
+
+
+
+    <div class="row">
+        <div class="col-md-12 dogo-align-center">
+            <p><dogocms:cfg name="cfg_copyright"/></p>
+        </div><!--col-md-->
+    </div><!--row-->
+</footer>
+
+<!-- Modal Login-->
+<div class="modal fade dogo-dialog-modal dogo-dialog-login" tabindex="-1" role="dialog" aria-labelledby="dialog_emailauth" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header dogo-modal-title">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title "><span class="on">登录</span> <span class="dogo-click-signup cursor noon">注册</span></h4>
+            </div>
+            <div class="modal-body form-horizontal">
+                <div class="form-group">
+                    <label for="inputLoginEmail" class="col-sm-3 control-label input-lg">邮箱：</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="emailLogin" class="form-control input-lg" id="inputLoginEmail" placeholder="输入绑定的邮箱" value="{$data.username}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputLoginPwd" class="col-sm-3 control-label input-lg">密码：</label>
+                    <div class="col-sm-9">
+                        <input type="password" name="pwdLogin" class="form-control input-lg" id="inputLoginPwd" placeholder="密码" value="{$data.username}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputLoginYzm" class="col-sm-3 control-label input-lg">验证码：</label>
+                    <div class="col-sm-5">
+                        <input type="text" name="yzmLogin" class="form-control input-lg" id="inputLoginYzm" placeholder="验证码" value="{$data.username}">
+                    </div>
+                    <div class="col-sm-4">
+                        <span class="dogo-click-yzmurl cursor"><img style="width: 100%;" src="{:U('User/Passport/verify')}" title="看不清？点击更换另一个验证码。"/>换一张</span>
+                    </div>
+                </div>
+
+
+            </div><!--modal-body-->
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-info dogo-click-sublogin" >提交登录</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal --> 
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade dogo-dialog-modal dogo-dialog-signup" tabindex="-1" role="dialog" aria-labelledby="dialog_emailauth" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header dogo-modal-title">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><span class="on">注册</span><span class="dogo-click-login cursor noon">登录</span> </h4>
+            </div>
+            <div class="modal-body form-horizontal">
+                <div class="form-group">
+                    <label for="inputSignupUsername" class="col-sm-3 control-label input-lg">用户名：</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="usernameSignup" class="form-control input-lg" id="inputSignupUsername" placeholder="用户名" value="{$data.username}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputSignupEmail" class="col-sm-3 control-label input-lg">邮箱：</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="emailSignup" class="form-control input-lg" id="inputSignupEmail" placeholder="邮箱" value="{$data.username}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputSignupPwd" class="col-sm-3 control-label input-lg">密码：</label>
+                    <div class="col-sm-9">
+                        <input type="password" name="pwdSignup" class="form-control input-lg" id="inputSignupPwd" placeholder="密码" value="{$data.username}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputSignupPwd2" class="col-sm-3 control-label input-lg">确认密码：</label>
+                    <div class="col-sm-9">
+                        <input type="password" name="pwd2Signup" class="form-control input-lg" id="inputSignupPwd2" placeholder="确认密码" value="{$data.username}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputSignupYzm" class="col-sm-3 control-label input-lg">验证码：</label>
+                    <div class="col-sm-5">
+                        <input type="text" name="yzmSignup" class="form-control input-lg" id="inputSignupYzm" placeholder="验证码" value="{$data.username}">
+                    </div>
+                    <div class="col-sm-4">
+                        <span class="dogo-click-yzmurl cursor"><img style="width: 100%;" src="{:U('User/Passport/verify')}" title="看不清？点击更换另一个验证码。"/>换一张</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info dogo-click-subsignup">提交注册</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal --> 
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="__PUBLIC__{$style_common}/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__{$style_common}/v3.1.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__{$style_common}/js/alertify.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__{$style_common}/js/jquery.cookie.js"></script>
+
+<script>
+    $(function() {
+        $('.dogo-click-sublogin').click(function() {
+            var email = $('input[name="emailLogin"]').val();
+            var pwd = $('input[name="pwdLogin"]').val();
+            var yzm = $('input[name="yzmLogin"]').val();
+            var url = "{:U('User/Passport/checkLogin')}";
+            var type = '10';
+            //Alertify.dialog.alert(email);
+            $.ajax({
+                type: "POST",
+                url: url,
+                dataType: "json",
+                data: {email: email, pwd: pwd, v_code: yzm, type: type},
+                success: function(data) {
+                    if (data.status == 0) {
+                        setTimeout("$('.dogo-dialog-login').modal('hide')", 2000);
+                        Alertify.log.success(data.msg, 3000);
+                    } else if (data.status == 1) {
+                        Alertify.log.error(data.msg, 3000);
+                    }
+                }//success
+            });
+        });
+        $('.dogo-click-subsignup').click(function() {
+            var name = $('input[name="usernameSignup"]').val();
+            var email = $('input[name="emailSignup"]').val();
+            var pwd = $('input[name="pwdSignup"]').val();
+            var pwd2 = $('input[name="pwd2Signup"]').val();
+            var yzm = $('input[name="yzmSignup"]').val();
+            var url = "{:U('User/Passport/register')}";
+            var type = '10';
+            //Alertify.dialog.alert(email);
+            $.ajax({
+                type: "POST",
+                url: url,
+                dataType: "json",
+                data: {uname: name, email: email, pwd: pwd, pwd2: pwd2, v_code: yzm, type: type},
+                success: function(data) {
+                    if (data.status == 0) {
+                        setTimeout("$('.dogo-dialog-signup').modal('hide')", 2000);
+                        setTimeout("$('.dogo-dialog-login').modal('show')", 2000);
+                        Alertify.log.success(data.msg, 3000);
+                    } else if (data.status == 1) {
+                        Alertify.log.error(data.msg, 3000);
+                    }
+                }//success
+            });
+        });
+        $('.dogo-click-logout').click(function() {
+            var url = "{:U('User/Passport/logout')}";
+            var type = '10';
+            //Alertify.dialog.alert(email);
+            $.ajax({
+                type: "POST",
+                url: url,
+                dataType: "json",
+                data: {type: type},
+                success: function(data) {
+                    if (data.status == 0) {
+                        Alertify.log.success(data.msg, 3000);
+                    } else if (data.status == 1) {
+                        Alertify.log.error(data.msg, 3000);
+                    }
+                }//success
+            });
+        });
+        $('.dogo-click-yzmurl').click(function() {
+            var url = "{:U('User/Passport/verify')}?tm=" + Math.random();
+            $('.dogo-click-yzmurl img').attr('src', url);
+        });
+        $('.dogo-click-login').click(function() {
+            $('.dogo-dialog-login').modal('show');
+            $('.dogo-dialog-signup').modal('hide');
+        });
+        $('.dogo-click-signup').click(function() {
+            $('.dogo-dialog-login').modal('hide');
+            $('.dogo-dialog-signup').modal('show');
+        });
+        $('.dogo-click-up').each(function() {
+            var row_id = $(this).attr('data-row-id');
+            var cookieid = $.cookie('row_id_' + row_id);
+            if (cookieid == row_id) {
+                $('.disabled_' + row_id).addClass('disabled');
+            }
+        });
+        $('.dogo-box-content img').each(function() {
+            $(this).addClass('img-responsive');
+        });
+        $('.dogo-click-up').click(function() {
+            var row_id = $(this).attr('data-row-id');
+            var url = "{:U('Home/Ajax/vote')}";
+            var type = '10';
+            var cookieid = $.cookie('row_id_' + row_id);
+            if (cookieid == row_id) {
+                alert('您已赞过该信息！');
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                url: url,
+                dataType: "json",
+                data: {key_id: row_id, type: type},
+                success: function(data) {
+                    if (data.status == 0) {
+                        $('.num_up_' + row_id).text(data.num);
+                        $('.disabled_' + row_id).addClass('disabled');
+                        $.cookie('row_id_' + row_id, row_id, {expires: 1});
+                        Alertify.log.success("成功赞了一下", 3000);
+                    } else if (data.status == 1) {
+                        Alertify.log.error(data.msg, 3000);
+                    } else if (data.status == 3) {
+                        $('.dogo-dialog-login').modal('show');
+                        Alertify.log.error(data.msg, 3000);
+                    }
+                }//success
+            });
+        });
+        $('.dogo-click-down').click(function() {
+            var row_id = $(this).attr('data-row-id');
+            var url = "{:U('Home/Ajax/vote')}";
+            var type = '11';
+            var cookieid = $.cookie('row_id_' + row_id);
+            if (cookieid == row_id) {
+                alert('您已踩过该信息！');
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                url: url,
+                dataType: "json",
+                data: {key_id: row_id, type: type},
+                success: function(data) {
+                    if (data.status == 0) {
+                        $('.num_down_' + row_id).text(data.num);
+                        $('.disabled_' + row_id).addClass('disabled');
+                        $.cookie(row_id, row_id, {expires: 1});
+                        Alertify.log.success(data.msg, 3000);
+                    } else if (data.status == 1) {
+                        Alertify.log.error(data.msg, 3000);
+                    } else if (data.status == 3) {
+                        $('.dogo-dialog-login').modal('show');
+                        Alertify.log.error(data.msg, 3000);
+                    }
+                }//success
+            });
+        });
+    });
+</script>
