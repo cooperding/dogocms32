@@ -1,5 +1,5 @@
 /*page*/
-.dogo-page {height:auto;background: url(../images/bg-purple.jpg) no-repeat;margin: 0 auto -120px;
+.dogo-page {height:auto;background:rgba(212, 36, 236, 0.53) url(../images/bg-purple.jpg) no-repeat;margin: 0 auto -120px;
             background-attachment: fixed;
             background-size: cover;
             padding-bottom: 5%;}
@@ -112,8 +112,8 @@ background-image: linear-gradient(to bottom,#343742 0,#343742 100%);box-shadow: 
 
 
 
-
-
+.dogo-list-box{height: 300px;margin: 5px 0;background: rgba(255, 255, 255, 0.95);}
+.dogo-list{margin-top: 80px;}
 
 
 

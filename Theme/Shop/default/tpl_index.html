@@ -1,69 +1,97 @@
 <include file="$tpl_header" />
-<div class="row">
-    <div class="col-md-8">
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="dogo-box dogo-box-bg ">
+                <ul class="bxslider">
+                    <dogocms:ads typeid="1">
+                        <li><a href="" title="{$ads.name}"><img src="{$ads.pic}" title="{$ads.name}"/></a></li>
+                    </dogocms:ads>
+                </ul>
+            </div>
+        </div>
 
-        <dogocms:article type="all" limit="10">
-            <section class="dogo-box dogo-border-all dogo-pd515">
+        <div class="col-md-3">
+            <aside>
+                <div class="dogo-box dogo-box-bg dogo-border-all dogo-bg">
+                    <div class="dogo-box-header">
+                        <div class="form-group dogo-test-input">
+                            <input type="email" class="form-control dogo-test4" id="exampleInputEmail1" placeholder="Enter email">
+                        </div>
+                    </div>
+                    <div class="dogo-box-content dogo-border-search">
+                        <ul>
+                            <li><a href="#">丁继才</a></li>
+                            <li><a href="#">丁继才</a></li>
+                            <li><a href="#">丁继才</a></li>
+                            <li><a href="#">丁继才</a></li>
+                        </ul>
+                    </div>
+                    <div class="dogo-box-footer">
+
+                    </div>
+                </div><!--dogo-box-->
+            </aside>
+        </div>
+
+
+    </div><!--row-->
+</div><!--container-->
+
+
+
+<div class="container">
+    <div class="row dogo-index-row">
+
+        <div class="dogo-box dogo-box-bg " style="margin-top: 0px;">
+            <section class="dogo-section dogo-rgba-blue">
+
+                <dogocms:block typeid="4" limit="12">
+                    <div class="col-md-3">
+                        <div class="dogo-index-thumb">
+                            <div class="dogo-thumb-pic"><img src="{$block.title_img}" class="img-responsive"/></div>
+                            <div class="dogo-thumb-title">
+                                <h4 class="dogo-align-center"><a href="{$block.url}">{$block.title}</a></h4>
+                                <p>{$block.description}</p>
+                                <span class="dogo-align-center">
+                                    <a id="section6Btn" href="{$block.url}">查看信息>></a></span>
+                            </div>
+                        </div>
+                    </div><!--col-md-->
+
+                </dogocms:block>
+
+            </section>
+
+        </div>
+
+    </div><!--row-->
+</div><!--container-->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <aside class="dogo-box dogo-border-all dogo-pd515 dogo-bg-white">
                 <div class="dogo-box-header">
-                    <if condition="$article.title neq ''">
-                        <h4><span class="glyphicon glyphicon-hand-right"></span> <a href="{:U('Home/Content/index',array('id'=>$article['id']))}">{$article.title}</a></h4>
-                    </if>
-                    <p>
-                        <span class="glyphicon glyphicon-user"></span> <a href="{:U('Home/User/index',array('uid'=>$article['members_id']))}">{$article.username} </a>
-                        <a href="{:U('Home/Content/index',array('id'=>$article['id']))}" title="在新页面打开" target="_blank">
-                            <span class="glyphicon glyphicon-share"></span> 点击围观真SHI
-                        </a>&nbsp;&nbsp;
-                    </p>
+                    友情链接
                 </div>
-                <div class="dogo-box-content">
-                    <p>
-                        {$article.content}
-                    <if condition="$article.titlepic neq ''">
-                        <br/>
-                        <a href="{:U('Home/Content/index',array('id'=>$article['id']))}"><img class="img-responsive" src="{$article.titlepic}"/></a>
-                    </if>
-                    </p>
+                <div class="dogo-box-content dogo-links">
+
+                    <dogocms:links >
+                        <a href="{$links.weburl}" target="_blank" title="{$links.webname}">{$links.webname}</a>
+                    </dogocms:links>
+
                 </div><!--dogo-box-content-->
                 <div class="dogo-box-footer">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <span type="button" class="btn btn-default dogo-click-up disabled_{$vo.id}" data-row-id="{$article.id}" title="顶"> <span class="glyphicon glyphicon-thumbs-up"></span> <span class="num_up_{$article.id}">{$article.num_top}</span></span>
-                            <span type="button" class="btn btn-default dogo-click-down disabled_{$vo.id}" data-row-id="{$article.id}" title="踩"> <span class="glyphicon glyphicon-thumbs-down"></span> <span class="num_down_{$article.id}">{$article.num_beat}</span></span>
-                        </div>
-                        <div class="col-md-6 dogo-align">
-                            <a href="{:U('Home/Content/index',array('id'=>$article['id']))}"><span type="button" class="btn btn-default" title="评论"> <span class="glyphicon glyphicon-comment"></span> {$article.num_comment}</span></a>
-                            <span type="button" class="btn btn-default"> <span class="glyphicon glyphicon-share"></span> 分享</span>
-                        </div>
-                    </div><!--row-->
+
                 </div><!--dogo-box-footer-->
-            </section><!--dogo-box-->
-            <div class="dogo-blank"></div>
-        </dogocms:article>
-    </div><!--col-md-->
-    <div class="col-md-4">
-        <div class="dogo-blank"></div>
-
-        <aside class="dogo-box dogo-border-all dogo-pd515">
-            <div class="dogo-box-header">
-                友情链接
-            </div>
-            <div class="dogo-box-content dogo-links">
-
-                <dogocms:links >
-                    <a href="{$links.weburl}" target="_blank" title="{$links.webname}">{$links.webname}</a>
-                </dogocms:links>
-            </div><!--dogo-box-content-->
-            <div class="dogo-box-footer">
-
-            </div><!--dogo-box-footer-->
-        </aside><!--dogo-box-->
-        <div class="dogo-blank"></div>
-
-
-    </div><!--col-md-->
-</div><!--row-->
-<include file="$tpl_footer" />
+            </aside><!--dogo-box-->
+        </div><!--col-md-->
+    </div><!--row-->
 </div><!--container-->
+<div class="dogo-blank"></div>
+<include file="$tpl_footer" />
+
 </div><!--dogo-page-->
 
 </body>

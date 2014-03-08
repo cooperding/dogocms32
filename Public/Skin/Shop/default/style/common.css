@@ -42,10 +42,10 @@ a:hover{text-decoration:none;color: #FF6347;}
 /*border*/
 .dogo-border-notop{border: 1px solid #ccc;border-top: none;-webkit-border-radius: 0 0px 4px 4px;-moz-border-radius: 0px 0px 4px 4px;border-radius: 0px 0px 4px 4px;}
 .dogo-border-nobottom{border: 1px solid #ccc;border-bottom: none;-webkit-border-radius: 4px 4px 0 0;-moz-border-radius: 4px 4px 0 0;border-radius: 4px 4px 0 0;}
-.dogo-border-all{border: 1px solid #e7e7e7;-webkit-border-radius: 4px 4px 4px 4px;-moz-border-radius: 4px 4px 4px 4px;border-radius: 4px 4px 4px 4px;}
+.dogo-border-all{-webkit-border-radius: 4px 4px 4px 4px;-moz-border-radius: 4px 4px 4px 4px;border-radius: 4px 4px 4px 4px;}
 .dogo-border-all{
-    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.15),0 1px 5px rgba(0,0,0,0.075);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.15),0 1px 5px rgba(0,0,0,0.075);}
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,0.6);
+    box-shadow: 0 0 1px rgba(255,255,255,0.6);}
 
 
 /*dogo-box*/
@@ -77,4 +77,4 @@ a:hover{text-decoration:none;color: #FF6347;}
 .dogo-links a{margin: 0 5px;}
 
 
-
+.dogo-bg-white{background: #fff;}
