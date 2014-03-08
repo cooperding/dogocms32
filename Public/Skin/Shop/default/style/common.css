@@ -44,8 +44,8 @@ a:hover{text-decoration:none;color: #FF6347;}
 .dogo-border-nobottom{border: 1px solid #ccc;border-bottom: none;-webkit-border-radius: 4px 4px 0 0;-moz-border-radius: 4px 4px 0 0;border-radius: 4px 4px 0 0;}
 .dogo-border-all{-webkit-border-radius: 4px 4px 4px 4px;-moz-border-radius: 4px 4px 4px 4px;border-radius: 4px 4px 4px 4px;}
 .dogo-border-all{
-    -webkit-box-shadow: 0 0 1px rgba(255,255,255,0.6);
-    box-shadow: 0 0 1px rgba(255,255,255,0.6);}
+    -webkit-box-shadow: 0 0 1px rgba(255, 0, 0, 1);
+    box-shadow: 0 0 1px rgba(255, 0, 0, 1);}
 
 
 /*dogo-box*/
