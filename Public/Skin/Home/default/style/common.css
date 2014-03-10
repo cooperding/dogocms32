@@ -1,8 +1,8 @@
 /**gongong**/
 body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,table,td,th,form,fieldset,img,dl,dt,dd,input,select,bottom{margin:0;padding:0;}
-body{font-family: arial,"宋体B8B\4F53";font-size: 13px;text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);}
+body{font-family: arial,"宋体B8B\4F53";font-size: 13px;}/*text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);*/
 li{list-style: none;}
-a{text-decoration:none;color: #3E3E3E;text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);}
+a{text-decoration:none;color: #3E3E3E;}/*text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);*/
 a:hover{text-decoration:none;color: #FF6347;}
 
 /*img,input,li{ vertical-align:middle;}*/
@@ -52,9 +52,11 @@ a:hover{text-decoration:none;color: #FF6347;}
 .dogo-box{height: auto;}
 .dogo-box-header{ margin: 5px 0;line-height: 30px;}
 .dogo-box-header h5{}
-.dogo-box-content{color: #706C6C;}
+.dogo-box-content{color: #2B2424}
 .dogo-box-content p{font-size: 14px;}
 .dogo-box-footer{margin: 10px 5px;height: auto;line-height: 20px;}
+
+.dogo-box-header h4 a{font-weight: 800;}
 
 
 .pagination .current{color: #ff7171;}
