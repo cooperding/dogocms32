@@ -48,7 +48,7 @@
 <script>
     $(function() {
         $('.dogo-click-yzmurl').click(function() {
-            var url = "{:U('Admin/Passport/verify')}?tm=" + Math.random();
+            var url = "{:U('User/Passport/verify')}?tm=" + Math.random();
             $('.dogo-click-yzmurl img').attr('src', url);
         });
     });
