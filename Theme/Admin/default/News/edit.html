@@ -74,16 +74,16 @@
         KindEditor.create('#content', {
             themeType: 'simple',
             allowFileManager: true,
-            uploadJson: '__GROUP__/Upload/uploadImg',
-            fileManagerJson: '__GROUP__/Upload/fileManagerJson',
+            uploadJson: '{:U("Admin/Upload/uploadImg")}',
+            fileManagerJson: '{:U("Admin/Upload/fileManagerJson")}',
             afterBlur: function() {
                 this.sync();
             }
         });
         var editor = KindEditor.editor({
             allowFileManager: true,
-            uploadJson: '__GROUP__/Upload/uploadImg',
-            fileManagerJson: '__GROUP__/Upload/fileManagerJson'
+            uploadJson: '{:U("Admin/Upload/uploadImg")}',
+            fileManagerJson: '{:U("Admin/Upload/fileManagerJson")}'
         });
         KindEditor('#image1').click(function() {
             editor.loadPlugin('image', function() {
