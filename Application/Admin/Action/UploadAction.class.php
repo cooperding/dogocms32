@@ -24,70 +24,8 @@ class UploadAction extends BaseAction {
     public function uploadImg()
     {
 
-        import('ORG.Net.UploadFile');
-        $upload = new UploadFile(); // 实例化上传类
-        $upload->maxSize = 3145728; // 设置附件上传大小
-        $upload->allowExts = array('jpg', 'gif', 'png', 'jpeg'); // 设置附件上传类型
-        $upload->savePath = './Public/Uploads/Images/'; // 设置附件上传目录
-        $upload->autoSub = true;
-        $upload->subType = 'date';
-        $upload->dateFormat = 'Ymd';
-        //$upload->allowTypes = array();//允许上传的文件类型
-        //$dir = date('Ymd',time());
-        //$upload->dateFormat = 'Y-m-d';
-        $upload->saveRule = 'time';
-        if (!$upload->upload()) {// 上传错误提示错误信息
-            $msg = $upload->getErrorMsg();
-            echo json_encode(array('error' => 1, 'message' => $msg));
-            exit;
-        } else {// 上传成功 获取上传文件信息
-            $result_file = $upload->getUploadFileInfo();
-            if (count($result_file) == 1) {
-                $url = $result_file[0]['savepath'] . $result_file[0]['savename'];
-                //$url = $result_file[0]['savepath'];
-            }
-            echo json_encode(array('error' => 0, 'url' => $url));
-            //exit;
-            //$info = $upload->getUploadFileInfo();
-        }
-
-        /*
-         * echo '<pre>';
-          echo count($result_file);
-          echo '<br/>';
-          print_r($result_file);
-          exit;
-
-         * //判断上传是否成功
-          if(!$upload->upload()){
-          $this->error($upload->getErrorMsg());
-          }else{
-          $info = $upload->getUploadFileInfo();   //获取图片的相关信息
-          //dump($info); exit();    //可以输出看下$info类型
-          }
-
-          //保存表单数据 包括附件数据
-          /*如果单个图片上传，把for循环去掉，$info["$i"]["savename"];改成$info[0]["savename"]; */
-        /*
-          for($i=0;$i<count($info);$i++){
-          $File = D('File');
-          $File->create();
-          $File->filename = $info["$i"]["savename"];
-          $File->add();
-          }
-          $this->success('Mysql success!');
-          echo json_encode(array('error' => 1, 'message' => 'dddddddddddd'));
-          exit;
-          // 保存表单数据 包括附件数据
-          $User = M('User'); // 实例化User对象
-          $User->create(); // 创建数据对象
-          $User->photo = $info[0][“savename”]; // 保存上传的照片根据需要自行组装
-          $User->add(); // 写入用户数据到数据库
-          $this->success(“数据保存成功！”);
-          echo json_encode(array('error' => 1, 'message' => 'dddddddddddd'));
-          exit;
-         *
-         */
+        $array = R('Common/System/uploadImg');
+        echo json_encode($array);
     }
 
     /**
