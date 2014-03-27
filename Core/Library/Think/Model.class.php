@@ -305,10 +305,14 @@ class Model {
             if($insertId) {
                 // 自增主键返回插入ID
                 $data[$this->getPk()]  = $insertId;
-                $this->_after_insert($data,$options);
+                if(false === $this->_after_insert($data,$options)) {
+                    return false;
+                }
                 return $insertId;
             }
-            $this->_after_insert($data,$options);
+            if(false === $this->_after_insert($data,$options)) {
+                return false;
+            }
         }
         return $result;
     }
@@ -382,6 +386,11 @@ class Model {
         }
         // 数据处理
         $data       =   $this->_facade($data);
+        if(empty($data)){
+            // 没有数据则不执行
+            $this->error    =   L('_DATA_TYPE_INVALID_');
+            return false;
+        }
         // 分析表达式
         $options    =   $this->_parseOptions($options);
         $pk         =   $this->getPk();
@@ -442,9 +451,14 @@ class Model {
         }
         // 分析表达式
         $options =  $this->_parseOptions($options);
+        if(empty($options['where'])){
+            // 如果条件为空 不进行删除操作 除非设置 1=1
+            return false;
+        }        
         if(is_array($options['where']) && isset($options['where'][$pk])){
             $pkValue            =  $options['where'][$pk];
         }
+
         if(false === $this->_before_delete($options)) {
             return false;
         }        
@@ -543,8 +557,7 @@ class Model {
             // 指定数据表 则重新获取字段列表 但不支持类型检测
             $fields             =   $this->getDbFields();
         }
-        // 查询过后清空sql表达式组装 避免影响下次查询
-        $this->options  =   array();
+
         // 数据表别名
         if(!empty($options['alias'])) {
             $options['table']  .=   ' '.$options['alias'];
@@ -566,7 +579,8 @@ class Model {
                 }
             }
         }
-
+        // 查询过后清空sql表达式组装 避免影响下次查询
+        $this->options  =   array();
         // 表达式过滤
         $this->_options_filter($options);
         return $options;
@@ -905,7 +919,7 @@ class Model {
         // 支持使用token(false) 关闭令牌验证
         if(isset($this->options['token']) && !$this->options['token']) return true;
         if(C('TOKEN_ON')){
-            $name   = C('TOKEN_NAME');
+            $name   = C('TOKEN_NAME', null, '__hash__');
             if(!isset($data[$name]) || !isset($_SESSION[$name])) { // 令牌数据无效
                 return false;
             }
@@ -1225,7 +1239,7 @@ class Model {
             $parse  =   array_map(array($this->db,'escapeString'),$parse);
             $sql    =   vsprintf($sql,$parse);
         }else{
-            $sql    =   strtr($sql,array('__TABLE__'=>$this->getTableName(),'__PREFIX__'=>C('DB_PREFIX')));
+            $sql    =   strtr($sql,array('__TABLE__'=>$this->getTableName(),'__PREFIX__'=>$this->tablePrefix));
         }
         $this->db->setModel($this->name);
         return $sql;

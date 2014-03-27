@@ -29,7 +29,7 @@ function C($name=null, $value=null,$default=null) {
     // 优先执行设置获取或赋值
     if (is_string($name)) {
         if (!strpos($name, '.')) {
-            $name = strtolower($name);
+            $name = strtoupper($name);
             if (is_null($value))
                 return isset($_config[$name]) ? $_config[$name] : $default;
             $_config[$name] = $value;
@@ -37,7 +37,7 @@ function C($name=null, $value=null,$default=null) {
         }
         // 二维数组设置和获取支持
         $name = explode('.', $name);
-        $name[0]   =  strtolower($name[0]);
+        $name[0]   =  strtoupper($name[0]);
         if (is_null($value))
             return isset($_config[$name[0]][$name[1]]) ? $_config[$name[0]][$name[1]] : $default;
         $_config[$name[0]][$name[1]] = $value;
@@ -45,10 +45,38 @@ function C($name=null, $value=null,$default=null) {
     }
     // 批量设置
     if (is_array($name)){
-        $_config = array_merge($_config, array_change_key_case($name));
+        $_config = array_merge($_config, array_change_key_case($name,CASE_UPPER));
         return;
     }
     return null; // 避免非法参数
+}
+
+/**
+ * 加载配置文件 支持格式转换 仅支持一级配置
+ * @param string $file 配置文件名
+ * @param string $parse 配置解析方法 有些格式需要用户自己解析
+ * @return void
+ */
+function load_config($file,$parse=CONF_PARSE){
+    $ext  = pathinfo($file,PATHINFO_EXTENSION);
+    switch($ext){
+        case 'php':
+            return include $file;
+        case 'ini':
+            return parse_ini_file($file);
+        case 'yaml':
+            return yaml_parse_file($file);
+        case 'xml': 
+            return (array)simplexml_load_file($file);
+        case 'json':
+            return json_decode(file_get_contents($file), true);
+        default:
+            if(function_exists($parse)){
+                return $parse($file);
+            }else{
+                E(L('_NOT_SUPPERT_').':'.$ext);
+            }
+    }
 }
 
 /**
@@ -223,9 +251,10 @@ function T($template='',$layer=''){
  * @param string $name 变量的名称 支持指定类型
  * @param mixed $default 不存在的时候默认值
  * @param mixed $filter 参数过滤方法
+ * @param mixed $datas 要获取的额外数据源
  * @return mixed
  */
-function I($name,$default='',$filter=null) {
+function I($name,$default='',$filter=null,$datas=null) {
     if(strpos($name,'.')) { // 指定参数来源
         list($method,$name) =   explode('.',$name,2);
     }else{ // 默认为自动判断
@@ -247,11 +276,19 @@ function I($name,$default='',$filter=null) {
                     $input  =  $_GET;
             }
             break;
+        case 'path'    :   
+            $input  =   array();
+            if(!empty($_SERVER['PATH_INFO'])){
+                $depr   =   C('URL_PATHINFO_DEPR');
+                $input  =   explode($depr,trim($_SERVER['PATH_INFO'],$depr));            
+            }
+            break;
         case 'request' :   $input =& $_REQUEST;   break;
         case 'session' :   $input =& $_SESSION;   break;
         case 'cookie'  :   $input =& $_COOKIE;    break;
         case 'server'  :   $input =& $_SERVER;    break;
         case 'globals' :   $input =& $GLOBALS;    break;
+        case 'data'    :   $input =& $datas;      break;
         default:
             return NULL;
     }
@@ -449,7 +486,7 @@ function vendor($class, $baseUrl = '', $ext='.php') {
 }
 
 /**
- * D函数用于实例化模型类 格式 [资源://][模块/]模型
+ * 实例化模型类 格式 [资源://][模块/]模型
  * @param string $name 资源地址
  * @param string $layer 模型层名称
  * @return Model
@@ -480,7 +517,7 @@ function D($name='',$layer='') {
 }
 
 /**
- * M函数用于实例化一个没有模型文件的Model
+ * 实例化一个没有模型文件的Model
  * @param string $name Model名称 支持指定基础模型 例如 MongoModel:User
  * @param string $tablePrefix 表前缀
  * @param mixed $connection 数据库连接信息
@@ -535,7 +572,33 @@ function parse_res_name($name,$layer,$level=1){
 }
 
 /**
- * A函数用于实例化控制器 格式：[资源://][模块/]控制器
+ * 用于实例化访问控制器
+ * @param string $name 控制器名
+ * @param string $path 控制器命名空间（路径）
+ * @return Controller|false
+ */
+function controller($name,$path=''){
+    $layer  =   C('DEFAULT_C_LAYER');
+    if(!C('APP_USE_NAMESPACE')){
+        $class  =   parse_name($name, 1);
+        import(MODULE_NAME.'/'.$layer.'/'.$class.$layer);
+    }else{
+        $class  =   MODULE_NAME.'\\'.($path?$path.'\\':'').$layer;
+        $array  =   explode('/',$name);
+        foreach($array as $name){
+            $class  .=   '\\'.parse_name($name, 1);
+        }
+        $class .=   $layer;
+    }
+    if(class_exists($class)) {
+        return new $class();
+    }else {
+        return false;
+    }
+}
+
+/**
+ * 实例化多层控制器 格式：[资源://][模块/]控制器
  * @param string $name 资源地址
  * @param string $layer 控制层名称
  * @param integer $level 控制器层次
@@ -547,6 +610,7 @@ function A($name,$layer='',$level='') {
     $level  =   $level? : ($layer == C('DEFAULT_C_LAYER')?C('CONTROLLER_LEVEL'):1);
     if(isset($_action[$name.$layer]))
         return $_action[$name.$layer];
+    
     $class  =   parse_res_name($name,$layer,$level);
     if(class_exists($class)) {
         $action             =   new $class();
@@ -1205,7 +1269,7 @@ function cookie($name, $value='', $option=null) {
         }
         return;
     }
-    $name = $config['prefix'] . $name;
+    $name = $config['prefix'] . str_replace('.', '_', $name);
     if ('' === $value) {
         if(isset($_COOKIE[$name])){
             $value =    $_COOKIE[$name];
@@ -1251,9 +1315,9 @@ function load_ext_file($path) {
     if($configs = C('LOAD_EXT_CONFIG')) {
         if(is_string($configs)) $configs =  explode(',',$configs);
         foreach ($configs as $key=>$config){
-            $file   = $path.'Conf/'.$config.'.php';
+            $file   = $path.'Conf/'.$config.CONF_EXT;
             if(is_file($file)) {
-                is_numeric($key)?C(include $file):C($key,include $file);
+                is_numeric($key)?C(load_config($file)):C($key,load_config($file));
             }
         }
     }
