@@ -18,7 +18,10 @@ class BaseAction extends Action {
     //初始化
     function _initialize()
     {
-        $skin = $this->getSkin(); //获取前台主题皮肤名称
+        $skin = R('Common/System/getCfg', array('cfg_skin_shop'));//获取前台主题皮肤名称
+        if (!$skin) {
+            $skin = C('DEFAULT_THEME');
+        }
         $navhead = R('Common/System/getNav', array('header')); //导航菜单
         $this->assign('navhead', $navhead);
         
@@ -26,21 +29,6 @@ class BaseAction extends Action {
         $this->assign('style', '/Skin/Shop/' . $skin);
         $this->assign('tpl_header', './Theme/Shop/' . $skin . '/tpl_header.html');
         $this->assign('tpl_footer', './Theme/Shop/' . $skin . '/tpl_footer.html');
-    }
-
-    /*
-     * getSkin
-     * 获取站点设置的主题名称
-     * @todo 使用程序读取主题皮肤名称
-     */
-
-    public function getSkin()
-    {
-        $skin = R('Common/System/getCfg', array('cfg_skin_shop'));
-        if (!$skin) {
-            $skin = C('DEFAULT_THEME');
-        }
-        return $skin;
     }
 
 }

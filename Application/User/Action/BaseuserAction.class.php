@@ -26,7 +26,10 @@ class BaseuserAction extends Action {
         $this->assign('count_address', $this->getAddressCount());
         $this->assign('count_apilist', $this->getApiListCount());
         $this->assign('count_newslist', $this->getNewsListCount());
-        $skin = $this->getSkin(); //获取前台主题皮肤名称
+        $skin = R('Common/System/getCfg', array('cfg_member_skin'));//获取前台主题皮肤名称
+        if(!$skin){
+            $skin = C('DEFAULT_THEME');
+        }
         $navhead = R('Common/System/getNav', array('header')); //导航菜单
         $this->assign('navhead', $navhead);
         $this->assign('style_common', '/Common');
@@ -34,21 +37,6 @@ class BaseuserAction extends Action {
         $this->assign('tpl_header', './Theme/User/' . $skin . '/tpl_header.html');
         $this->assign('tpl_footer', './Theme/User/' . $skin . '/tpl_footer.html');
         $this->assign('tpl_sidebar', './Theme/User/' . $skin . '/tpl_sidebar.html');
-    }
-
-    /*
-     * getSkin
-     * 获取站点设置的主题名称
-     * @todo 使用程序读取主题皮肤名称
-     */
-
-    public function getSkin()
-    {
-        $skin = R('Common/System/getCfg', array('cfg_member_skin'));
-        if(!$skin){
-            $skin = C('DEFAULT_THEME');
-        }
-        return $skin;
     }
     /*
      * getAddressCount
