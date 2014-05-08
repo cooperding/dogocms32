@@ -57,7 +57,7 @@ class Model {
     // 是否批处理验证
     protected $patchValidate    =   false;
     // 链操作方法列表
-    protected $methods          =   array('order','alias','having','group','lock','distinct','auto','filter','validate','result','token');
+    protected $methods          =   array('order','alias','having','group','lock','distinct','auto','filter','validate','result','token','index');
 
     /**
      * 架构函数
@@ -251,6 +251,9 @@ class Model {
             }        
             foreach ($data as $key=>$val){
                 if(!in_array($key,$fields,true)){
+                    if(APP_DEBUG){
+                        E(L('_DATA_TYPE_INVALID_').':['.$key.'=>'.$val.']');
+                    }                    
                     unset($data[$key]);
                 }elseif(is_scalar($val)) {
                     // 字段类型检查 和 强制转换
@@ -519,6 +522,18 @@ class Model {
         }
         $resultSet  =   array_map(array($this,'_read_data'),$resultSet);
         $this->_after_select($resultSet,$options);
+        if(isset($options['index'])){ // 对数据集进行索引
+            $index  =   explode(',',$options['index']);
+            foreach ($resultSet as $result){
+                $_key   =  $result[$index[0]];
+                if(isset($index[1]) && isset($result[$index[1]])){
+                    $cols[$_key] =  $result[$index[1]];
+                }else{
+                    $cols[$_key] =  $result;
+                }
+            }
+            $resultSet  =   $cols;         
+        }
         if(isset($cache)){
             S($key,$resultSet,$cache);
         }           
@@ -575,6 +590,9 @@ class Model {
                         $this->_parseType($options['where'],$key);
                     }
                 }elseif(!is_numeric($key) && '_' != substr($key,0,1) && false === strpos($key,'.') && false === strpos($key,'(') && false === strpos($key,'|') && false === strpos($key,'&')){
+                    if(APP_DEBUG){
+                        E(L('_ERROR_QUERY_EXPRESS_').':['.$key.'=>'.$val.']');
+                    } 
                     unset($options['where'][$key]);
                 }
             }
@@ -795,7 +813,7 @@ class Model {
                     if(2==$count) {
                         $cols[$name]   =  $result[$key2];
                     }else{
-                        $cols[$name]   =  is_string($sepa)?implode($sepa,$result):$result;
+                        $cols[$name]   =  is_string($sepa)?implode($sepa,array_slice($result,1)):$result;
                     }
                 }
                 if(isset($cache)){
@@ -1240,6 +1258,8 @@ class Model {
             $sql    =   vsprintf($sql,$parse);
         }else{
             $sql    =   strtr($sql,array('__TABLE__'=>$this->getTableName(),'__PREFIX__'=>$this->tablePrefix));
+            $prefix =   $this->tablePrefix;
+            $sql    =   preg_replace_callback("/__([A-Z_-]+)__/sU", function($match) use($prefix){ return $prefix.strtolower($match[1]);}, $sql);
         }
         $this->db->setModel($this->name);
         return $sql;
@@ -1288,7 +1308,7 @@ class Model {
      */
     public function getModelName() {
         if(empty($this->name)){
-            $name = substr(get_class($this),0,-5);
+            $name = substr(get_class($this),0,-strlen(C('DEFAULT_M_LAYER')));
             if ( $pos = strrpos($name,'\\') ) {//有命名空间
                 $this->name = substr($name,$pos+1);
             }else{

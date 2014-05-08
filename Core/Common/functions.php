@@ -214,8 +214,12 @@ function T($template='',$layer=''){
     $auto   =   C('AUTOLOAD_NAMESPACE');
     if($auto && isset($auto[$extend])){ // 扩展资源
         $baseUrl    =   $auto[$extend].$module.$layer.'/';
-    }elseif(C('VIEW_PATH')){ // 指定视图目录
-        $baseUrl    =   C('VIEW_PATH').$module.'/';
+    }elseif(C('VIEW_PATH')){ 
+        // 改变模块视图目录
+        $baseUrl    =   C('VIEW_PATH');
+    }elseif(defined('TMPL_PATH')){ 
+        // 指定全局视图目录
+        $baseUrl    =   TMPL_PATH.$module;
     }else{
         $baseUrl    =   APP_PATH.$module.$layer.'/';
     }
@@ -231,11 +235,7 @@ function T($template='',$layer=''){
     }elseif(false === strpos($file, '/')){
         $file = CONTROLLER_NAME . $depr . $file;
     }elseif('/' != $depr){
-        if(substr_count($file,'/')>1){
-            $file   =   substr_replace($file,$depr,strrpos($file,'/'),1);
-        }else{
-            $file   =   str_replace('/', $depr, $file);
-        }
+        $file   =   substr_count($file,'/')>1 ? substr_replace($file,$depr,strrpos($file,'/'),1) : str_replace('/', $depr, $file);
     }
     return $baseUrl.($theme?$theme.'/':'').$file.C('TMPL_TEMPLATE_SUFFIX');
 }
@@ -292,12 +292,14 @@ function I($name,$default='',$filter=null,$datas=null) {
         default:
             return NULL;
     }
-    if(empty($name)) { // 获取全部变量
+    if(''==$name) { // 获取全部变量
         $data       =   $input;
         array_walk_recursive($data,'filter_exp');
         $filters    =   isset($filter)?$filter:C('DEFAULT_FILTER');
         if($filters) {
-            $filters    =   explode(',',$filters);
+            if(is_string($filters)){
+                $filters    =   explode(',',$filters);
+            }
             foreach($filters as $filter){
                 $data   =   array_map_recursive($filter,$data); // 参数过滤
             }
@@ -307,7 +309,12 @@ function I($name,$default='',$filter=null,$datas=null) {
         is_array($data) && array_walk_recursive($data,'filter_exp');
         $filters    =   isset($filter)?$filter:C('DEFAULT_FILTER');
         if($filters) {
-            $filters    =   explode(',',$filters);
+            if(is_string($filters)){
+                $filters    =   explode(',',$filters);
+            }elseif(is_int($filters)){
+                $filters    =   array($filters);
+            }
+            
             foreach($filters as $filter){
                 if(function_exists($filter)) {
                     $data   =   is_array($data)?array_map_recursive($filter,$data):$filter($data); // 参数过滤
@@ -1135,7 +1142,7 @@ function data_to_xml($data, $item='item', $id='id') {
  * @param mixed $value session值
  * @return mixed
  */
-function session($name,$value='') {
+function session($name='',$value='') {
     $prefix   =  C('SESSION_PREFIX');
     if(is_array($name)) { // session初始化 在session_start 之前调用
         if(isset($name['prefix'])) C('SESSION_PREFIX',$name['prefix']);
@@ -1171,7 +1178,10 @@ function session($name,$value='') {
         // 启动session
         if(C('SESSION_AUTO_START'))  session_start();
     }elseif('' === $value){ 
-        if(0===strpos($name,'[')) { // session 操作
+        if(''===$name){
+            // 获取全部的session
+            return $prefix ? $_SESSION[$prefix] : $_SESSION;
+        }elseif(0===strpos($name,'[')) { // session 操作
             if('[pause]'==$name){ // 暂停session
                 session_write_close();
             }elseif('[start]'==$name){ // 启动session
@@ -1237,13 +1247,14 @@ function session($name,$value='') {
  * @param mixed $options cookie参数
  * @return mixed
  */
-function cookie($name, $value='', $option=null) {
+function cookie($name='', $value='', $option=null) {
     // 默认设置
     $config = array(
         'prefix'    =>  C('COOKIE_PREFIX'), // cookie 名称前缀
         'expire'    =>  C('COOKIE_EXPIRE'), // cookie 保存时间
         'path'      =>  C('COOKIE_PATH'), // cookie 保存路径
         'domain'    =>  C('COOKIE_DOMAIN'), // cookie 有效域名
+        'httponly'  =>  C('COOKIE_HTTPONLY'), // httponly设置
     );
     // 参数设置(会覆盖黙认设置)
     if (!is_null($option)) {
@@ -1252,6 +1263,9 @@ function cookie($name, $value='', $option=null) {
         elseif (is_string($option))
             parse_str($option, $option);
         $config     = array_merge($config, array_change_key_case($option));
+    }
+    if(!empty($config['httponly'])){
+        ini_set("session.cookie_httponly", 1);
     }
     // 清除指定前缀的所有cookie
     if (is_null($name)) {
@@ -1268,6 +1282,9 @@ function cookie($name, $value='', $option=null) {
             }
         }
         return;
+    }elseif('' === $name){
+        // 获取全部的cookie
+        return $_COOKIE;
     }
     $name = $config['prefix'] . str_replace('.', '_', $name);
     if ('' === $value) {

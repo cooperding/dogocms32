@@ -21,7 +21,7 @@ return array(
     'TAGLIB_BUILD_IN' => 'cx,html',
     'TAGLIB_PRE_LOAD' => 'cx,html,dogocms', //扩展标签dogocms
     'DEFAULT_TIMEZONE' => 'PRC', //默认时区
-    'VIEW_PATH' => './Theme/',
+    //'VIEW_PATH' => './Theme/',
     'HTML_CACHE_ON' => false, // 开启静态缓存
     'HTML_CACHE_TIME' => 60, // 全局静态缓存有效期（秒）
     'HTML_FILE_SUFFIX' => '.html', // 设置静态缓存文件后缀

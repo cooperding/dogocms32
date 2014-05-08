@@ -11,4 +11,5 @@ return array(
 //        '__UPLOAD__' => '/Uploads', // 增加新的上传路径替换规则
 //    )
     'DEFAULT_LANG' =>'zh-cn',//默认语言
+    
 );
