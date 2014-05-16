@@ -17,7 +17,7 @@ class OperatorsModel extends Model {
     protected $tableName = 'operators';
     //_pk 表示主键字段名称 
     protected $fields = array(
-        'id', 'username', 'password', 'creat_time', 'is_recycle', 'status', '_pk' => 'id'
+        'id', 'username', 'password', 'creat_time', 'is_recycle', 'status','updatetime', '_pk' => 'id'
     );
 
     /*

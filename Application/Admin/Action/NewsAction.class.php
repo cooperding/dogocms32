@@ -117,23 +117,31 @@ class NewsAction extends BaseAction {
     public function insert()
     {
         $t = D('Title');
-        $c = D('Content');
-        $title = I('post.title');
-        $sort_id = I('post.sort_id');
-        if ($sort_id == 0) {
+        $data['title'] = I('post.title');
+        $data['sort_id'] = I('post.sort_id');
+        if ($data['sort_id'] == 0) {
             $this->dmsg('1', '请选择文档分类！', false, true);
         }
-        $_POST['flag'] = implode(',', $_POST['flag']);
         //开始写入信息
-        $_POST['addtime'] = time();
-        $_POST['updatetime'] = time();
-        $_POST['op_id'] = session('LOGIN_UID');
-        $_POST['status'] = $_POST['status']['0'];
-        $rs = $t->add($_POST);
+        $data['addtime'] = time();
+        $data['updatetime'] = time();
+        $data['op_id'] = session('LOGIN_UID');
+        $data['status'] = I('post.status')['0'];
+        $data['subtitle'] = I('post.subtitle');
+        $data['flag'] = implode(',', I('post.flag'));
+        
+        $data['titlepic'] = I('post.titlepic');
+        $data['keywords'] = I('post.keywords');
+        $data['description'] = I('post.description');
+        
+        
+        $rs = $t->add($data);
         $last_id = $t->getLastInsID();
         if ($rs == true) {
-            $_POST['title_id'] = intval($last_id);
-            $rsc = $c->data($_POST)->add();
+            $c = D('Content');
+            $data_c['title_id'] = intval($last_id);
+            $data_c['content'] = I('post.content');
+            $rsc = $c->data($data_c)->add();
             if ($rs == true || $rsc == true) {
                 $this->dmsg('2', ' 操作成功！', true);
             }
@@ -154,19 +162,27 @@ class NewsAction extends BaseAction {
         $t = D('Title');
         $c = D('Content');
         $id = I('post.id');
-        $data['id'] = array('eq', $id);
-        $cdata['title_id'] = array('eq', $id);
-        $title = I('post.title');
-        $sort_id = I('post.sort_id');
-        if ($sort_id == 0) {
+        $condition['id'] = array('eq', $id);//title表更新条件
+        $condition_c['title_id'] = array('eq', $id);//content表更新条件
+        
+        $data['title'] = I('post.title');
+        $data['subtitle'] = I('post.subtitle');
+        $data['flag'] = implode(',', I('post.flag'));
+        $data['sort_id'] = I('post.sort_id');
+        if ($data['sort_id'] == 0) {
             $this->dmsg('1', '请选择文档分类！', false, true);
         }
-        $_POST['flag'] = implode(',', $_POST['flag']);
-        $_POST['updatetime'] = time();
-        $_POST['op_id'] = session('LOGIN_UID');
-        $_POST['status'] = $_POST['status']['0'];
-        $rs = $t->where($data)->save($_POST);
-        $rsc = $c->where($cdata)->save($_POST);
+        $data['titlepic'] = I('post.titlepic');
+        $data['keywords'] = I('post.keywords');
+        $data['description'] = I('post.description');
+        
+        $data['updatetime'] = time();
+        $data['op_id'] = session('LOGIN_UID');
+        $data['status'] = I('post.status')['0'];
+        
+        $data_c['content'] = I('post.content');
+        $rs = $t->where($condition)->save($data);
+        $rsc = $c->where($condition_c)->save($data_c);
         if ($rs == true || $rsc == true) {
             $this->dmsg('2', '更新成功！', true);
         } else {
@@ -185,11 +201,11 @@ class NewsAction extends BaseAction {
     {
         $t = D('Title');
         $id = I('post.id');
-        $data['id'] = array('in', $id);
-        if (empty($data['id'])) {
+        $condition['id'] = array('in', $id);
+        if (empty($condition['id'])) {
             $this->dmsg('1', '未有id值，操作失败！', false, true);
         }
-        $rs = $t->where($data)->setField('is_recycle', '11');
+        $rs = $t->where($condition)->setField('is_recycle', '11');
         if ($rs == true) {
             $this->dmsg('2', '操作成功！', true);
         } else {
@@ -248,11 +264,11 @@ class NewsAction extends BaseAction {
     {
         $t = D('Title');
         $id = I('post.id');
-        $data['id'] = array('in', $id);
-        if (empty($data['id'])) {
+        $condition['id'] = array('in', $id);
+        if (empty($condition['id'])) {
             $this->dmsg('1', '未有id值，操作失败！', false, true);
         }
-        $rs = $t->where($data)->setField('is_recycle', '10');
+        $rs = $t->where($condition)->setField('is_recycle', '10');
         if ($rs == true) {
             $this->dmsg('2', '操作成功！', true);
         } else {

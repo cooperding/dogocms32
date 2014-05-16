@@ -5,46 +5,30 @@
     $(function() {
         var classId = 'comment';
         var urljson = '{:U("Admin/Comment/jsonList")}';
+        var hrefadd = '{:U("Admin/Comment/add")}';
         var hrefedit = '{:U("Admin/Comment/edit")}';
         var hrefcancel = '{:U("Admin/Comment/delete")}';
-        var height = $('.indexcenter').height();
+        openDatagrid(classId, urljson, hrefadd, hrefedit, hrefcancel);
         $('#datagrid_' + classId).datagrid({
-            url: urljson,
-            idField: 'id',
-            pagination: true,
-            rownumbers: true,
-            fitColumns: true,
-            checkbox: true,
-            height: height - 50,
             columns: [[
                     {field: 'id', title: '编号', width: 30},
-                    {field: 'post_name', title: '评论人', width: 50},
                     {field: 'title', title: '标题', width: 200},
+                    {field: 'username', title: '会员', width: 50},
                     {field: 'addtime', title: '评论时间', width: 100},
-                    {field: 'replycontent', title: '回复内容', width: 200},
-                    {field: 'replytime', title: '回复时间', width: 100},
                     {field: 'status', title: '状态', width: 50},
                     {
                         field: 'action',
-                        title: '动作',
+                        title: '操作',
                         width: 50,
                         formatter: function(value, row, index) {
-                            //alert(row.id);
-                            //return row.index;
-                            return '<img src="__PUBLIC__/Easyui/themes/icons/pencil.png" width="16" height="16" onclick="admin_news_editFun(\'' + row.id + '\')"  title="回复"/>&nbsp;\n\
-<img src="__PUBLIC__/Easyui/themes/icons/cancel.png" width="16" height="16" onclick="admin_news_cancelFun(\'' + row.id + '\')" title=" 删除"/>&nbsp;';
+                            return '<img class="btn_do" src="__PUBLIC__/Easyui/themes/icons/pencil.png" onclick="ding_edit(\'' + hrefedit + '?id=' + row.id + '\',\'' + classId + '\')"  title="编辑"/>&nbsp;\n\
+<img class="btn_do" src="__PUBLIC__/Easyui/themes/icons/cancel.png" onclick="ding_cancel(\'' + row.id + '\',\'' + hrefcancel + '\',\'' + classId + '\')" title=" 删除"/>&nbsp;';
                         }
-                    }
-                ]],
-            frozenColumns: [[
-                    {
-                        field: 'ck',
-                        checkbox: true
                     }
                 ]],
             toolbar: [{
                     id: 'btnedit_' + classId,
-                    text: '回复留言',
+                    text: '回复评论',
                     iconCls: 'icon-edit',
                     handler: function() {
                         var ids = [];
@@ -59,7 +43,6 @@
                             $.messager.alert('信息提示', '请选择一个要操作的项', 'error');
                             return false;
                         }
-
                         var href = hrefedit + '?id=' + ids;
                         var title = '编辑信息';
                         openDialog(classId, href, title);
@@ -69,17 +52,22 @@
                     text: '删除',
                     iconCls: 'icon-cancel',
                     handler: function() {
-                        var selected = $('#datagrid_' + classId).datagrid('getSelected');
-                        if (!selected) {
+                        var ids = [];
+                        var rows = $('#datagrid_' + classId).datagrid('getSelections');
+                        for (var i = 0; i < rows.length; i++) {
+                            ids.push(rows[i].id);
+                        }
+                        if (ids == '') {
                             $.messager.alert('信息提示', '请选择要操作的项', 'error');
                             return false;
                         }
-                        var id = selected.id;
                         var href = hrefcancel;
                         var title = '删除信息';
-                        dogoDelete(id, title, href, classId);
+                        dogoDelete(ids,title,href,classId);
+
+
                     }
-                }//
+                }
             ]//toolbar
         });
     });

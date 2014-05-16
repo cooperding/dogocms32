@@ -1,15 +1,14 @@
 <?php
 
 /**
- * LinkPageAction.class.php
- * 联动模型
- * 核心文件，关联内容模型
+ * PagesAction.class.php联动模型
+ * 单页文档
  * @author 正侠客 <lookcms@gmail.com>
  * @copyright 2012- http://www.dingcms.com http://www.dogocms.com All rights reserved.
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @version dogocms 1.0 2013-2-11 20:09
  * @package  Controller
- * @todo 联动模型其他操作
+ * @todo 
  */
 namespace Admin\Action;
 use Think\Action;
@@ -17,7 +16,7 @@ class PagesAction extends BaseAction {
 
     /**
      * index
-     * 广告列表页
+     * 单页列表页
      * @access public
      * @return array
      * @version dogocms 1.0
@@ -77,18 +76,21 @@ class PagesAction extends BaseAction {
     public function insert()
     {
         $m = D('Pages');
-        $ename = I('post.ename');
-        $sort_id = I('post.sort_id');
-        if (empty($ename)) {
+        $data['ename'] = I('post.ename');
+        $data['sort_id'] = I('post.sort_id');
+        if (empty($data['ename'])) {
             $this->dmsg('1', '单页名不能为空！', false, true);
         }
-        if ($sort_id == 0) {
+        if ($data['sort_id'] == 0) {
             $this->dmsg('1', '请选择所属分类！', false, true);
         }
-        $_POST['addtime'] = time();
-        $_POST['updatetime'] = time();
-        $_POST['status'] = $_POST['status']['0'];
-        if ($m->create($_POST)) {
+        $data['addtime'] = time();
+        $data['updatetime'] = time();
+        $data['status'] = I('post.status')['0'];
+        $data['keywords'] = I('post.keywords');
+        $data['description'] = I('post.description');
+        $data['content'] = I('post.content');
+        if ($m->create($data)) {
             $rs = $m->add();
             if ($rs == true) {
                 $this->dmsg('2', ' 操作成功！', true);
@@ -110,19 +112,23 @@ class PagesAction extends BaseAction {
     public function update()
     {
         $m = D('Pages');
-        $ename = I('post.ename');
-        $sort_id = I('post.sort_id');
+        $data['ename'] = I('post.ename');
+        $data['sort_id'] = I('post.sort_id');
         $id = I('post.id');
-        $data['id'] = array('eq', $id);
-        if (empty($ename)) {
+        $condition['id'] = array('eq', $id);
+        if (empty($data['ename'])) {
             $this->dmsg('1', '单页名不能为空！', false, true);
         }
-        if ($sort_id == 0) {
+        if ($data['sort_id'] == 0) {
             $this->dmsg('1', '请选择所属分类！', false, true);
         }
-        $_POST['updatetime'] = time();
-        $_POST['status'] = $_POST['status']['0'];
-        $rs = $m->where($data)->save($_POST);
+        $data['updatetime'] = time();
+        $data['status'] = I('post.status')['0'];
+        $data['keywords'] = I('post.keywords');
+        $data['description'] = I('post.description');
+        $data['content'] = I('post.content');
+        
+        $rs = $m->where($condition)->save($data);
         if ($rs == true) {
             $this->dmsg('2', ' 操作成功！', true);
         } else {
@@ -219,19 +225,23 @@ class PagesAction extends BaseAction {
         }
         $en_name = I('post.en_name');
         if (empty($en_name)) {
-            import("ORG.Util.Pinyin");
-            $pinyin = new Pinyin();
-            $_POST['en_name'] = $pinyin->output($en_name);
+            $pinyin = new \Org\Util\Pinyin();
+            $data_up['en_name'] = $pinyin->output($en_name);
         }
         if ($parent_id != 0) {
             $condition_pid['id'] = array('eq', $parent_id);
             $data = $m->where($condition_pid)->find();
-            $_POST['path'] = $data['path'] . $parent_id . ',';
+            $data_up['path'] = $data['path'] . $parent_id . ',';
         }
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
-        if ($m->create($_POST)) {
-            $rs = $m->add($_POST);
+        $data_up['status'] = I('post.status')['0'];
+        $data_up['updatetime'] = time();
+        $data_up['parent_id'] = $parent_id;
+        $data_up['ename'] = $ename;
+        $data_up['myorder'] = I('post.myorder');
+        $data_up['keywords'] = I('post.keywords');
+        $data_up['description'] = I('post.description');
+        if ($m->create($data_up)) {
+            $rs = $m->add();
             if ($rs) {
                 $this->dmsg('2', '操作成功！', true);
             } else {
@@ -250,43 +260,54 @@ class PagesAction extends BaseAction {
     public function sortupdate()
     {
         $m = D('PagesSort');
-        $d = D('CommonSort');
         $id = I('post.id');
         $parent_id = I('post.parent_id');
         $tbname = 'PagesSort';
+        $ename = I('post.ename');
+        if (empty($ename)) {
+            $this->dmsg('1', '分类名不能为空！', false, true);
+        }
         if ($parent_id != 0) {//不为0时判断是否为子分类
             if ($id == $parent_id) {
                 $this->dmsg('1', '不能选择自身分类为父级分类！', false, true);
             }
-            $condition_path['path'] = array('like', '%,' . $id . ',%');
-            $condition_path['id'] = array('eq', $parent_id);
-            $cun = $m->field('id')->where($condition_path)->find(); //判断id选择是否为其的子类
+            $condition_sort['id'] = array('eq', $parent_id);
+            $condition_sort['path'] = array('like', '%,' . $id . ',%');
+            $cun = $m->field('id')->where($condition_sort)->find(); //判断id选择是否为其的子类
             if ($cun) {
                 $this->dmsg('1', '不能选择当前分类的子类为父级分类！', false, true);
             }
+            //获取父级path
             $condition_pid['id'] = array('eq', $parent_id);
             $data = $m->field('path')->where($condition_pid)->find();
             $sort_path = $data['path'] . $parent_id . ','; //取得不为0时的path
-            $_POST['path'] = $data['path'] . $parent_id . ',';
-            $d->updatePath($id, $sort_path, $tbname);
+            $data_up['path'] = $data['path'] . $parent_id . ',';
+            updatePath($id, $sort_path, $tbname);//用于批量更新
         } else {//为0，path为,
             $condition_id['id'] = array('eq', $id);
             $data = $m->field('parent_id')->where($condition_id)->find();
             if ($data['parent_id'] != $parent_id) {//相同不改变
                 $sort_path = ','; //取得不为0时的path
-                $d->updatePath($id, $sort_path, $tbname);
+                updatePath($id, $sort_path, $tbname);//用于批量更新
             }
-            $_POST['path'] = ','; //应该是这个
+            $data_up['path'] = ','; //应该是这个
         }
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
+        $data_up['status'] = I('post.status')['0'];
+        $data_up['updatetime'] = time();
+        $data_up['parent_id'] = $parent_id;
+        $data_up['ename'] = $ename;
+        $data_up['myorder'] = I('post.myorder');
+        $data_up['keywords'] = I('post.keywords');
+        $data_up['description'] = I('post.description');
+        
         $en_name = I('post.en_name');
         if (empty($en_name)) {
             import("ORG.Util.Pinyin");
-            $pinyin = new Pinyin();
-            $_POST['en_name'] = $pinyin->output($en_name);
+            $pinyin = new \Org\Util\Pinyin();
+            $data_up['en_name'] = $pinyin->output($en_name);
         }
-        $rs = $m->save($_POST);
+        $condition['id'] = array('eq',$id);
+        $rs = $m->where($condition)->save($data_up);
         if ($rs == true) {
             $this->dmsg('2', '操作成功！', true);
         } else {
@@ -350,7 +371,7 @@ class PagesAction extends BaseAction {
      */
     public function jsonTree()
     {
-        $qiuyun = new \Org\Util\Qiuyun;
+        $qiuyun = new \Org\Util\Qiuyun();
         $m = D('PagesSort');
         $tree = $m->field(array('id', 'parent_id', 'ename' => 'text'))->select();
         $tree = $qiuyun->list_to_tree($tree, 'id', 'parent_id', 'children');

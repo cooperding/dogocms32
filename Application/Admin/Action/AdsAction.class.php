@@ -90,18 +90,22 @@ class AdsAction extends BaseAction {
     public function insert()
     {
         $m = D('Ads');
-        $name = I('post.name');
-        $sort_id = I('post.sort_id');
-        if (empty($name)) {
+        $data['name'] = I('post.name');
+        $data['sort_id'] = I('post.sort_id');
+        if (empty($data['name'])) {
             $this->dmsg('1', '广告名称不能为空！', false, true);
         }
-        if ($sort_id == 0) {
+        if ($data['sort_id'] == 0) {
             $this->dmsg('1', '请选择所属广告分类！', false, true);
         }
-        $_POST['addtime'] = time();
-        $_POST['updatetime'] = time();
-        $_POST['status'] = $_POST['status']['0'];
-        if ($m->create($_POST)) {
+        $data['url'] = I('post.url');
+        $data['status'] = I('post.status')['0'];
+        $data['pic'] = I('post.pic');
+        $data['remark'] = I('post.remark');
+        $data['myorder'] = I('post.myorder');
+        $data['addtime'] = time();
+        $data['updatetime'] = time();
+        if ($m->create($data)) {
             $rs = $m->add();
             if ($rs == true) {
                 $this->dmsg('2', ' 操作成功！', true);
@@ -123,18 +127,23 @@ class AdsAction extends BaseAction {
     public function update()
     {
         $m = D('Ads');
-        $id = I('post.id');
-        $name = I('post.name');
-        $sort_id = I('post.sort_id');
-        if (empty($name)) {
+        $condition['id'] = array('eq',I('post.id'));
+        $data['name'] = I('post.name');
+        $data['sort_id'] = I('post.sort_id');
+        if (empty($data['name'])) {
             $this->dmsg('1', '广告名称不能为空！', false, true);
         }
-        if ($sort_id == 0) {
+        if ($data['sort_id'] == 0) {
             $this->dmsg('1', '请选择所属广告分类！', false, true);
         }
-        $_POST['updatetime'] = time();
-        $_POST['status'] = $_POST['status']['0'];
-        $rs = $m->where($data)->save($_POST);
+        $data['url'] = I('post.url');
+        $data['status'] = I('post.status')['0'];
+        $data['pic'] = I('post.pic');
+        $data['remark'] = I('post.remark');
+        $data['myorder'] = I('post.myorder');
+        $data['addtime'] = time();
+        $data['updatetime'] = time();
+        $rs = $m->where($condition)->save($data);
         if ($rs == true) {
             $this->dmsg('2', ' 操作成功！', true);
         } else {
@@ -200,8 +209,8 @@ class AdsAction extends BaseAction {
      */
     public function sortedit()
     {
-        $id = I('get.id');
         $m = D('AdsSort');
+        $id = I('get.id');
         $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
         $status = array(
@@ -224,15 +233,15 @@ class AdsAction extends BaseAction {
     public function sortinsert()
     {
         $m = D('AdsSort');
-        $ename = I('post.ename');
-        $condition['ename'] = array('eq', $ename);
-        if (empty($ename)) {
+        $data['ename'] = I('post.ename');
+        $condition['ename'] = array('eq', $data['ename']);
+        if (empty($data['ename'])) {
             $this->dmsg('1', '请将信息输入完整！', false, true);
         }
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
+        $data['status'] = I('post.status')['0'];
+        $data['updatetime'] = time();
         if ($m->create()) {
-            $rs = $m->add($_POST);
+            $rs = $m->add($data);
             if ($rs) {//存在值
                 $this->dmsg('2', '操作成功！', true);
             } else {
@@ -254,18 +263,19 @@ class AdsAction extends BaseAction {
     {
         $m = D('AdsSort');
         $id = I('post.id');
-        $ename = I('post.ename');
+        $data['ename'] = I('post.ename');
         $condition['ename'] = array('eq', $ename);
         $condition['id'] = array('neq', $id);
-        if (empty($ename)) {
+        if (empty($data['ename'])) {
             $this->dmsg('1', '请将信息输入完整！', false, true);
         }
         if ($m->field('id')->where($condition)->find()) {
             $this->dmsg('1', '您输入的名称' . $ename . '已经存在！', false, true);
         }
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
-        $rs = $m->save($_POST);
+        $condition_id['id'] = array('eq',$id);
+        $data['status'] = I('post.status')['0'];
+        $data['updatetime'] = time();
+        $rs = $m->where($condition_id)->save($data);
         if ($rs == true) {
             $this->dmsg('2', '操作成功！', true);
         } else {

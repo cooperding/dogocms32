@@ -84,8 +84,8 @@ class AccountAction extends BaseAction
         if($password!=$rs['password']){
             $this->dmsg('1', '原密码输入不正确，请确认输入！', false, true);
         }
-        $_POST['password'] = $this->changePassword($username, $newpwd);
-        $rs = $m->where($condition)->save($_POST);
+        $data['password'] = $this->changePassword($username, $newpwd);
+        $rs = $m->where($condition)->save($data);
         if ($rs == true) {
             $this->dmsg('2', '操作成功！', true);
         } else {

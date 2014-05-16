@@ -17,7 +17,7 @@ class GoodsSortModel extends Model {
     protected $tableName = 'goods_sort';
     //_pk 表示主键字段名称 _autoinc 表示主键是否自动增长类型
     protected $fields = array(
-        'id', 'parent_id', 'text', 'en_name', 'model_id','keywords','description','path','myorder','status','_pk' => 'id'
+        'id', 'parent_id', 'text', 'en_name', 'model_id', 'keywords', 'description', 'path', 'myorder', 'status', 'updatetime', '_pk' => 'id'
     );
 
 }

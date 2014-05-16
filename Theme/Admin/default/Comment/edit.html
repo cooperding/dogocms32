@@ -4,21 +4,29 @@
         <table>
             <tbody>
                 <tr>
-                    <th>评论人：</th>
-                    <td><input type="text" name="post_name" value="{$data.post_name}" data-options="required:true" class="easyui-validatebox"/><span class="red">*</span></td>
+                    <th>标题名称：</th>
+                    <td>{$data.title}</td>
                 </tr>
                 <tr>
                     <th>留言内容：</th>
-                    <td><textarea name="msgcontent" rows="3" cols="30">{$data.msgcontent}</textarea></td>
+                    <td>{$data.content}</td>
                 </tr>
                 <tr>
                     <th>状态：</th>
-                    <td><html:radio name="status" radios="radios" checked="v_status" /></td>
+                    <td><html:radio name="status" radios="status" checked="v_status" /></td>
             </tr>
-            <tr>
-                <th>回复内容：</th>
-                <td><textarea id="content" name="replycontent" style="width:720px;height:400px;visibility:hidden;">{$data.replycontent|stripslashes}</textarea></td>
-            </tr>
+             <tr>
+                    <th>IP：</th>
+                    <td>{$data.ip}</td>
+                </tr>
+                <tr>
+                    <th>评论时间：</th>
+                    <td>{$data.addtime}</td>
+                </tr>
+                <tr>
+                    <th>举报数量：</th>
+                    <td>{$data.num_warn}</td>
+                </tr>
             
 
             </tbody>

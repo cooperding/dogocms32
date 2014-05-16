@@ -37,8 +37,12 @@ class CommentAction extends BaseAction {
     {
         $m = D('Comment');
         $id = I('get.id');
-        $condition['id'] = array('eq', $id);
-        $data = $m->where($condition)->find();
+        $condition['c.id'] = array('eq', $id);
+        $data = $m->field(array('c.*', 't.title', 'm.username'))->Table(C('DB_PREFIX') . 'comment c')
+                        ->join(C('DB_PREFIX') . 'title t ON t.id=c.title_id')
+                        ->join(C('DB_PREFIX') . 'members m ON m.id=c.members_id')
+                        ->limit($firstRow . ',' . $pageRows)->order('c.id desc')
+                        ->where($condition)->find();
         $status = array(
             '20' => ' 是 ',
             '10' => ' 否 '
@@ -60,11 +64,10 @@ class CommentAction extends BaseAction {
     {
         $m = D('Comment');
         $id = I('post.id');
-        $data['id'] = array('eq', $id);
-        $_POST['replaytime'] = time();
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
-        $rs = $m->where($data)->save($_POST);
+        $condition['id'] = array('eq', $id);
+        $data['updatetime'] = time();
+        $data['status'] = I('post.status')['0'];
+        $rs = $m->where($condition)->save($data);
         if ($rs == true) {
             $this->dmsg('2', ' 操作成功！', true);
         } else {
@@ -109,8 +112,9 @@ class CommentAction extends BaseAction {
         $count = $m->count();
         new \Think\Page($count, $pageRows); // 导入分页类
         $firstRow = ($pageNumber - 1) * $pageRows;
-        $data = $m->field(array('c.*', 't.title'))->Table(C('DB_PREFIX') . 'comment c')
+        $data = $m->field(array('c.*', 't.title', 'm.username'))->Table(C('DB_PREFIX') . 'comment c')
                         ->join(C('DB_PREFIX') . 'title t ON t.id=c.title_id')
+                        ->join(C('DB_PREFIX') . 'members m ON m.id=c.members_id')
                         ->limit($firstRow . ',' . $pageRows)->order('c.id desc')->select();
         $array = array();
         if ($data) {

@@ -86,12 +86,18 @@ class NavFootAction extends BaseAction {
         if ($parent_id != 0) {
             $condition['id'] = array('eq', $parent_id);
             $data = $m->field('path')->where($condition)->find();
-            $_POST['path'] = $data['path'] . $parent_id . ',';
+            $data_up['path'] = $data['path'] . $parent_id . ',';
         }
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
-        if ($m->create($_POST)) {
-            $rs = $m->add($_POST);
+        $data_up['text'] = I('post.text');
+        $data_up['status'] = I('post.status')['0'];
+        $data_up['updatetime'] = time();
+        $data_up['parent_id'] = $parent_id;
+        $data_up['url'] = I('post.url');
+        $data_up['keywords'] = I('post.keywords');
+        $data_up['description'] = I('post.description');
+        $data_up['myorder'] = I('post.myorder');
+        if ($m->create($data_up)) {
+            $rs = $m->add();
             if ($rs) {
                 $this->dmsg('2', '操作成功！', true);
             } else {
@@ -112,10 +118,13 @@ class NavFootAction extends BaseAction {
     public function update()
     {
         $m = D('NavFoot');
-        $d = D('CommonSort');
         $id = I('post.id');
         $parent_id = I('post.parent_id');
         $tbname = 'NavFoot';
+        $text = I('post.text');
+        if (empty($text)) {
+            $this->dmsg('1', '分类名不能为空！', false, true);
+        }
         if ($parent_id != 0) {//不为0时判断是否为子分类
             if ($id == $parent_id) {
                 $this->dmsg('1', '不能选择自身分类为父级分类！', false, true);
@@ -126,23 +135,31 @@ class NavFootAction extends BaseAction {
             if ($cun) {
                 $this->dmsg('1', '不能选择当前分类的子类为父级分类！', false, true);
             }
+            //获取父级path
             $condition_pid['id'] = array('eq', $parent_id);
             $data = $m->field('path')->where($condition_pid)->find();
             $sort_path = $data['path'] . $parent_id . ','; //取得不为0时的path
-            $_POST['path'] = $data['path'] . $parent_id . ',';
-            $d->updatePath($id, $sort_path, $tbname);
+            $data_up['path'] = $data['path'] . $parent_id . ',';
+            updatePath($id, $sort_path, $tbname);//用于批量更新
         } else {//为0，path为,
             $condition_id['id'] = array('eq', $id);
             $data = $m->field('parent_id')->where($condition_id)->find();
             if ($data['parent_id'] != $parent_id) {//相同不改变
                 $sort_path = ','; //取得不为0时的path
-                $d->updatePath($id, $sort_path, $tbname);
+                updatePath($id, $sort_path, $tbname);//用于批量更新
             }
-            $_POST['path'] = ','; //应该是这个
+            $data_up['path'] = ','; //应该是这个
         }
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
-        $rs = $m->save($_POST);
+        $data_up['text'] = $text;
+        $data_up['status'] = I('post.status')['0'];
+        $data_up['updatetime'] = time();
+        $data_up['parent_id'] = $parent_id;
+        $data_up['url'] = I('post.url');
+        $data_up['keywords'] = I('post.keywords');
+        $data_up['description'] = I('post.description');
+        $data_up['myorder'] = I('post.myorder');
+        $condition['id'] = array('eq',$id);
+        $rs = $m->where($condition)->save($data_up);
         if ($rs == true) {
             $this->dmsg('2', '操作成功！', true);
         } else {

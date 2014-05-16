@@ -53,7 +53,7 @@ class AttributeSortAction extends BaseAction {
     public function edit()
     {
         $m = D('AttributeSort');
-        $id = intval($_GET['id']);
+        $id = I('get.id');
         $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
         $status = array(
@@ -76,13 +76,14 @@ class AttributeSortAction extends BaseAction {
     public function insert()
     {
         $m = D('AttributeSort');
-        $ename = $_POST['cat_name'];
-        if (empty($ename)) {
+        $data['cat_name'] = I('post.cat_name');
+        if (empty($data['cat_name'])) {
             $this->dmsg('1', '商品类型名称不能为空！', false, true);
         }
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
-        if ($m->create($_POST)) {
+        $data['status'] = I('post.status')['0'];
+        $data['updatetime'] = time();
+        $data['attr_group'] = I('post.attr_group');
+        if ($m->create($data)) {
             $rs = $m->add();
             if ($rs == true) {
                 $this->dmsg('2', ' 操作成功！', true);
@@ -104,14 +105,15 @@ class AttributeSortAction extends BaseAction {
     public function update()
     {
         $m = D('AttributeSort');
-        $ename = $_POST['cat_name'];
-        $data['id'] = array('eq', intval($_POST['id']));
-        if (empty($ename)) {
+        $data['cat_name'] = I('post.cat_name');
+        $condition['id'] = array('eq', I('post.id'));
+        if (empty($data['cat_name'])) {
             $this->dmsg('1', '商品类型名称不能为空！', false, true);
         }
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
-        $rs = $m->where($data)->save($_POST);
+        $data['status'] = I('post.status')['0'];
+        $data['updatetime'] = time();
+        $data['attr_group'] = I('post.attr_group');
+        $rs = $m->where($condition)->save($data);
         if ($rs == true) {
             $this->dmsg('2', ' 操作成功！', true);
         } else {
@@ -128,8 +130,8 @@ class AttributeSortAction extends BaseAction {
      */
     public function delete()
     {
-        $id = intval($_POST['id']);
         $m = D('AttributeSort');
+        $id = I('post.id');
         $condition['id'] = array('eq', $id);
         $del = $m->where($condition)->delete();
         if ($del == true) {

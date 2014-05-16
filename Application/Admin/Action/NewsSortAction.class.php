@@ -79,23 +79,28 @@ class NewsSortAction extends BaseAction {
         $m = D('NewsSort');
         $parent_id = I('post.parent_id');
         $text = I('post.text');
-        $_POST['status'] = $_POST['status']['0'];
         if (empty($text)) {
             $this->dmsg('1', '分类名不能为空！', false, true);
         }
-        $en_name = I('post.en_name');
-        if (empty($en_name)) {
-            $pinyin = new \Org\Util\Pinyin;
-            $_POST['en_name'] = $pinyin->output($text);
+        $data_up['en_name'] = I('post.en_name');
+        if (empty($data_up['en_name'])) {
+            $pinyin = new \Org\Util\Pinyin();
+            $data_up['en_name'] = $pinyin->output($text);
         }
         if ($parent_id != 0) {
             $condition['id'] = array('eq', $parent_id);
             $data = $m->field('path')->where($condition)->find();
-            $_POST['path'] = $data['path'] . $parent_id . ',';
+            $data_up['path'] = $data['path'] . $parent_id . ',';
         }
-        $_POST['updatetime'] = time();
-        if ($m->create($_POST)) {
-            $rs = $m->add($_POST);
+        $data_up['updatetime'] = time();
+        $data_up['text'] = $text;
+        $data_up['status'] = I('post.status')['0'];
+        $data_up['parent_id'] = $parent_id;
+        $data_up['keywords'] = I('post.keywords');
+        $data_up['description'] = I('post.description');
+        $data_up['myorder'] = I('post.myorder');
+        if ($m->create($data_up)) {
+            $rs = $m->add();
             if ($rs) {
                 $this->dmsg('2', '操作成功！', true);
             } else {
@@ -114,11 +119,9 @@ class NewsSortAction extends BaseAction {
     public function update()
     {
         $m = D('NewsSort');
-        $d = D('CommonSort'); //该调用不可修改
         $id = I('post.id');
         $parent_id = I('post.parent_id');
         $tbname = 'NewsSort'; //可修改为相应的表名
-        $_POST['status'] = $_POST['status']['0'];
         if ($parent_id != 0) {//不为0时判断是否为子分类
             if ($id == $parent_id) {
                 $this->dmsg('1', '不能选择自身分类为父级分类！', false, true);
@@ -132,25 +135,32 @@ class NewsSortAction extends BaseAction {
             $condition_pid['id'] = array('eq', $parent_id);
             $data = $m->field('path')->where($condition_pid)->find();
             $sort_path = $data['path'] . $parent_id . ','; //取得不为0时的path
-            $_POST['path'] = $data['path'] . $parent_id . ',';
-            $d->updatePath($id, $sort_path, $tbname);
+            $data_up['path'] = $data['path'] . $parent_id . ',';
+            updatePath($id, $sort_path, $tbname);
         } else {//为0，path为,
             $condition_id['id'] = array('eq', $id);
             $data = $m->field('parent_id')->where($condition_id)->find();
             if ($data['parent_id'] != $parent_id) {//相同不改变
                 $sort_path = ','; //取得不为0时的path
-                $d->updatePath($id, $sort_path, $tbname);
+                updatePath($id, $sort_path, $tbname);
             }
-            $_POST['path'] = ','; //应该是这个
+            $data_up['path'] = ','; //应该是这个
         }
-        $en_name = I('post.en_name');
-        if (empty($en_name)) {
-            $pinyin = new \Org\Util\Pinyin;
-            $text = I('post.text');
-            $_POST['en_name'] = $pinyin->output($text);
+        $text = I('post.text');
+        $data_up['en_name'] = I('post.en_name');
+        if (empty($data_up['en_name'])) {
+            $pinyin = new \Org\Util\Pinyin();
+            $data_up['en_name'] = $pinyin->output($text);
         }
-        $_POST['updatetime'] = time();
-        $rs = $m->save($_POST);
+        $data_up['updatetime'] = time();
+        $data_up['text'] = $text;
+        $data_up['status'] = I('post.status')['0'];
+        $data_up['parent_id'] = $parent_id;
+        $data_up['keywords'] = I('post.keywords');
+        $data_up['description'] = I('post.description');
+        $data_up['myorder'] = I('post.myorder');
+        $condition_sortid['id'] = array('eq', $id);
+        $rs = $m->where($condition_sortid)->save($data_up);
         if ($rs == true) {
             $this->dmsg('2', '操作成功！', true);
         } else {
@@ -177,7 +187,7 @@ class NewsSortAction extends BaseAction {
         if (is_array($data)) {
             $this->dmsg('1', '该分类下还有子级分类，无法删除！', false, true);
         }
-        $t = new TitleModel();
+        $t = D('Title');
         $condition_sort['sort_id'] = array('eq', $id);
         $t_data = $t->field('sort_id')->where($condition_sort)->find();
         if (is_array($t_data)) {

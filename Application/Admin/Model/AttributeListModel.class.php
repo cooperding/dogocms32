@@ -17,7 +17,7 @@ class AttributeListModel extends Model {
     protected $tableName = 'attribute_list';
     //_pk 表示主键字段名称 _autoinc 表示主键是否自动增长类型
     protected $fields = array(
-        'id', 'sort_id', 'attr_name', 'attr_input_type', 'attr_type', 'attr_values', 'attr_index', 'myorder', 'is_linked', 'attr_group', '_pk' => 'id'
+        'id', 'sort_id', 'attr_name', 'attr_input_type', 'attr_type', 'attr_values', 'attr_index', 'myorder', 'is_linked', 'attr_group', 'updatetime', '_pk' => 'id'
     );
 
 }

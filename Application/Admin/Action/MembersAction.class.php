@@ -103,11 +103,6 @@ class MembersAction extends BaseAction {
         $user_name = I('post.username');
         $email = I('post.email');
         $password = I('post.password');
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['sex'] = $_POST['sex']['0'];
-        $_POST['updatetime'] = time();
-        $_POST['addtime'] = time();
-        $_POST['ip'] = get_client_ip();
         if (empty($user_name)) {
             $this->dmsg('1', '用户名不能为空！', false, true);
         }
@@ -127,8 +122,17 @@ class MembersAction extends BaseAction {
         if ($rs_email) {
             $this->dmsg('1', '邮箱已经存在！', false, true);
         }
-        $_POST['password'] = $this->changePassword($user_name, $password);
-        $rs = $m->add($_POST);
+        $data['password'] = $this->changePassword($user_name, $password);
+        $data['username'] = $user_name;
+        $data['email'] = $email;
+        $data['sex'] = I('post.sex')['0'];
+        $data['status'] = I('post.status')['0'];
+        $data['remark'] = I('post.remark');
+        $data['addtime'] = time();
+        $data['updatetime'] = time();
+        $data['ip'] = get_client_ip();
+        
+        $rs = $m->add($data);
         if ($rs == true) {
             $this->dmsg('2', '操作成功！', true);
         } else {
@@ -150,10 +154,7 @@ class MembersAction extends BaseAction {
         $condition['id'] = array('eq', $id);
         $user_name = I('post.username');
         $email = I('post.email');
-        $_POST['status'] = $_POST['status']['0'];
-        //$_POST['is_recycle'] = $_POST['is_recycle']['0'];
-        $_POST['sex'] = $_POST['sex']['0'];
-        $_POST['updatetime'] = time();
+        $password = I('post.password');
         if (empty($user_name)) {
             $this->dmsg('1', '用户名不能为空！', false, true);
         }
@@ -173,11 +174,19 @@ class MembersAction extends BaseAction {
             $this->dmsg('1', '邮箱已经存在！', false, true);
         }
         if (!empty($password)) {
-            $_POST['password'] = $this->changePassword($user_name, $password);
+            $data['password'] = $this->changePassword($user_name, $password);
         } else {
-            unset($_POST['password']);
+            unset($data['password']);
         }
-        $rs = $m->where($condition)->save($_POST);
+        $data['username'] = $user_name;
+        $data['email'] = $email;
+        $data['sex'] = I('post.sex')['0'];
+        $data['status'] = I('post.status')['0'];
+        $data['remark'] = I('post.remark');
+        $data['updatetime'] = time();
+        
+        
+        $rs = $m->where($condition)->save($data);
         if ($rs == true) {
             $this->dmsg('2', '操作成功！', true);
         } else {

@@ -76,15 +76,19 @@ class BrandListAction extends BaseAction {
     public function insert()
     {
         $m = D('BrandList');
-        $name = I('post.name');
-        if (empty($name)) {
-            $this->dmsg('1', '请输入商家名称！', false, true);
+        $data['name'] = I('post.name');
+        if (empty($data['name'])) {
+            $this->dmsg('1', '商家名称不能为空！', false, true);
         }
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['addtime'] = time();
-        $_POST['updatetime'] = time();
+        $data['url'] = I('post.url');
+        $data['brand_logo'] = I('post.brand_logo');
+        $data['description'] = I('post.description');
+        $data['myorder'] = I('post.myorder');
+        
+        $data['status'] = I('status')['0'];
+        $data['updatetime'] = time();
         if ($m->create()) {
-            $rs = $m->add($_POST);
+            $rs = $m->add($data);
             if ($rs) {//存在值
                 $this->dmsg('2', '操作成功！', true);
             } else {
@@ -106,14 +110,19 @@ class BrandListAction extends BaseAction {
     {
         $m = D('BrandList');
         $id = I('post.id');
-        $name = I('post.name');
+        $data['name'] = I('post.name');
         $condition['id'] = array('eq', $id);
-        if (empty($name)) {
+        if (empty($data['name'])) {
             $this->dmsg('1', '商家名称不能为空！', false, true);
         }
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
-        $rs = $m->where($condition)->save($_POST);
+        $data['url'] = I('post.url');
+        $data['brand_logo'] = I('post.brand_logo');
+        $data['description'] = I('post.description');
+        $data['myorder'] = I('post.myorder');
+        
+        $data['status'] = I('status')['0'];
+        $data['updatetime'] = time();
+        $rs = $m->where($condition)->save($data);
         if ($rs == true) {
             $this->dmsg('2', ' 操作成功！', true);
         } else {

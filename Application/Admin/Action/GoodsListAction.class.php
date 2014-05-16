@@ -213,16 +213,33 @@ class GoodsListAction extends BaseAction {
         if ($sort_id == 0) {
             $this->dmsg('1', '请选择文档分类！', false, true);
         }
-        $_POST['updatetime'] = time();
-        $_POST['uid'] = session('LOGIN_UID');
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['is_sale'] = $_POST['is_sale']['0'];
-        $_POST['is_recycle'] = $_POST['is_recycle']['0'];
-        $value = $_POST['filed'];
-        $content['content'] = $_POST['content'];
-        $attr_id_list = $_POST['attr_id_list'];
-        $attr_value_list = $_POST['attr_value_list'];
-        $attr_price_list = $_POST['attr_price_list'];
+        $data_up['updatetime'] = time();
+        $data_up['uid'] = session('LOGIN_UID');
+        $data_up['status'] = I('post.status')['0'];
+        $data_up['is_sale'] = I('post.is_sale')['0'];
+        $data_up['is_recycle'] = I('post.is_recycle')['0'];
+        $data_up['title'] = $title;
+        $data_up['subtitle'] = I('post.subtitle');
+        $data_up['sort_id'] = $sort_id;
+        $data_up['brand_id'] = I('post.brand_id');
+        $data_up['thumb'] = I('post.thumb');
+        $data_up['keywords'] = I('post.keywords');
+        $data_up['description'] = I('post.description');
+        $data_up['number'] = I('post.number');
+        $data_up['stock'] = I('post.stock');
+        $data_up['stockalert'] = I('post.stockalert');
+        $data_up['market_price'] = I('post.market_price');
+        $data_up['shop_price'] = I('post.shop_price');
+        $data_up['selltime'] = I('post.selltime');
+        $data_up['soldouttime'] = I('post.soldouttime');
+        
+        
+        
+        $value = I('post.filed');
+        $content['content'] = I('post.content');
+        $attr_id_list = I('post.attr_id_list');
+        $attr_value_list = I('post.attr_value_list');
+        $attr_price_list = I('post.attr_price_list');
 
         if ($attr_id_list) {
             $condition_attr['goods_id'] = array('eq', $id);
@@ -239,11 +256,8 @@ class GoodsListAction extends BaseAction {
                 $rsa = $a->data($data_attr)->add();
             }
         }
-
-        $rs = $m->where($condition)->save($_POST);
+        $rs = $m->where($condition)->save($data_up);
         $rsc = $c->where($condition_other)->save($content);
-        //$sql = $m->getLastSql();
-        //$this->dmsg('1', $sql, false, true);
         if ($rs == true || $rsc == true || $rsa == true || $del == true) {
             $this->dmsg('2', '更新成功！', true);
         } else {
@@ -262,11 +276,11 @@ class GoodsListAction extends BaseAction {
     {
         $m = D('GoodsList');
         $id = I('post.id');
-        $data['id'] = array('in', $id);
-        if (empty($data['id'])) {
+        $condition['id'] = array('in', $id);
+        if (empty($condition['id'])) {
             $this->dmsg('1', '未有id值，操作失败！', false, true);
         }
-        $rs = $m->where($data)->setField('is_recycle', '20');
+        $rs = $m->where($condition)->setField('is_recycle', '20');
         if ($rs == true) {
             $this->dmsg('2', '操作成功！', true);
         } else {
@@ -397,11 +411,11 @@ class GoodsListAction extends BaseAction {
     {
         $m = D('GoodsList');
         $id = I('post.id');
-        $data['id'] = array('in', $id);
-        if (empty($data['id'])) {
+        $condition['id'] = array('in', $id);
+        if (empty($condition['id'])) {
             $this->dmsg('1', '未有id值，操作失败！', false, true);
         }
-        $rs = $m->where($data)->setField('is_recycle', '10');
+        $rs = $m->where($condition)->setField('is_recycle', '10');
         if ($rs == true) {
             $this->dmsg('2', '操作成功！', true);
         } else {

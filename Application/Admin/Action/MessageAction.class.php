@@ -61,14 +61,15 @@ class MessageAction extends BaseAction {
         $m = D('Message');
         $sort_id = I('post.sort_id');
         $id = I('post.id');
-        $data['id'] = array('eq', $id);
+        $condition['id'] = array('eq', $id);
         if ($sort_id == 0) {
             $this->dmsg('1', '请选择所属分类！', false, true);
         }
-        $_POST['replaytime'] = time();
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
-        $rs = $m->where($data)->save($_POST);
+        $data['replaytime'] = time();
+        $data['status'] = I('post.status')['0'];
+        $data['updatetime'] = time();
+        $data['replycontent'] = I('post.replycontent');
+        $rs = $m->where($condition)->save($data);
         if ($rs == true) {
             $this->dmsg('2', ' 操作成功！', true);
         } else {
@@ -163,10 +164,14 @@ class MessageAction extends BaseAction {
         if (empty($ename)) {
             $this->dmsg('1', '请将信息输入完整！', false, true);
         }
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
+        if ($m->field('id')->where($condition)->find()) {
+            $this->dmsg('1', '您输入的名称' . $ename . '已经存在！', false, true);
+        }
+        $data['ename'] = $ename;
+        $data['status'] = I('post.status')['0'];
+        $data['updatetime'] = time();
         if ($m->create()) {
-            $rs = $m->add($_POST);
+            $rs = $m->add($data);
             if ($rs) {//存在值
                 $this->dmsg('2', '操作成功！', true);
             } else {
@@ -197,9 +202,11 @@ class MessageAction extends BaseAction {
         if ($m->field('id')->where($condition)->find()) {
             $this->dmsg('1', '您输入的名称' . $ename . '已经存在！', false, true);
         }
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
-        $rs = $m->save($_POST);
+        $data['ename'] = $ename;
+        $data['status'] = I('post.status')['0'];
+        $data['updatetime'] = time();
+        $condition_id['id'] = array('eq', $id);
+        $rs = $m->where($condition_id)->save($data);
         if ($rs == true) {
             $this->dmsg('2', '操作成功！', true);
         } else {
@@ -223,7 +230,8 @@ class MessageAction extends BaseAction {
         if ($l->field('id')->where($condition)->find()) {
             $this->dmsg('1', '列表中含有该分类的信息，不能删除！', false, true);
         }
-        $del = $m->where('id=' . $id)->delete();
+        $condition_id['id'] = array('eq', $id);
+        $del = $m->where($condition_id)->delete();
         if ($del == true) {
             $this->dmsg('2', '操作成功！', true);
         } else {
@@ -256,7 +264,7 @@ class MessageAction extends BaseAction {
             foreach ($data as $k => $v) {
                 $data[$k]['addtime'] = date('Y-m-d H:i:s', $v['addtime']);
                 $data[$k]['replytime'] = date('Y-m-d H:i:s', $v['replytime']);
-                if ($v['status'] = '20') {
+                if ($v['status'] == '20') {
                     $data[$k]['status'] = '可用';
                 } else {
                     $data[$k]['status'] = '禁用';
@@ -287,6 +295,11 @@ class MessageAction extends BaseAction {
         if ($list) {
             foreach ($list as $k => $v) {
                 $a[$k] = $v;
+                if ($v['status'] == '20') {
+                    $a[$k]['status'] = '可用';
+                } else {
+                    $a[$k]['status'] = '禁用';
+                }
             }
         }
         $array['total'] = $count;

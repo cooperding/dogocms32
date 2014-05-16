@@ -8,7 +8,7 @@
  * @license http://www.apache.org/licenses/LICENSE-2.0
  * @version dogocms 1.0 2013-1-5 14:57
  * @package  Controller
- * @todo 信息各项操作
+ * @todo 权限相关的操作
  */
 namespace Admin\Action;
 use Think\Action;
@@ -54,10 +54,16 @@ class OperatorsAction extends BaseAction {
     {
         $m = D('Operators');
         $id = I('get.id');
-        $condition['o.id'] = array('eq', $id);
-        $data = $m->Table(C('DB_PREFIX') . 'operators o')
-                        ->join(C('DB_PREFIX') . 'role_user r ON r.user_id=o.id')
-                        ->where($condition)->find();
+        $condition['id'] = array('eq', $id);
+        $data = $m->where($condition)->find();
+        /*
+          $data = $m->Table(C('DB_PREFIX') . 'operators o')
+          ->join(C('DB_PREFIX') . 'role_user r ON r.user_id=o.id')
+          ->where($condition)->find();
+         * 
+         */
+
+        dump($data);
         $status = array(
             '20' => '可用',
             '10' => '禁用'
@@ -78,25 +84,31 @@ class OperatorsAction extends BaseAction {
     public function insert()
     {
         $m = D('Operators');
-        $user_name = I('post.username');
-        $password = I('post.password');
-        $_POST['status'] = $_POST['status'][0];
-        if (empty($user_name)) {
+        $data['username'] = I('post.username');
+        $data['password'] = I('post.password');
+        $data['status'] = I('post.status')[0];
+        if (empty($data['username'])) {
             $this->dmsg('1', '用户名不能为空！', false, true);
         }
-        if (empty($password)) {
+        if (empty($data['password'])) {
             $this->dmsg('1', '密码不能为空！', false, true);
         }
-        $condition['username'] = array('eq', $user_name);
-        $data = $m->where($condition)->find();
-        if ($data) {
+        $condition['username'] = array('eq', $data['username']);
+        $data_username = $m->where($condition)->find();
+        if ($data_username) {
             $this->dmsg('1', '用户名已经存在！', false, true);
         }
-        $_POST['creat_time'] = time();
-        $_POST['updatetime'] = time();
-        $_POST['password'] = $this->changePassword($user_name, $password);
+        $data['creat_time'] = time();
+        $data['updatetime'] = time();
+        if (!empty($data['password'])) {
+            $data['password'] = $this->changePassword($data['username'], $data['password']);
+        } else {
+            unset($data['password']);
+        }
+        $data['role_id'] = I('post.role_id');
+        $data['remark'] = I('post.remark');
         if ($m->create()) {
-            $rs = $m->add($_POST);
+            $rs = $m->add($data);
             if ($rs == true) {
                 $id = $m->getLastInsID();
                 $role_user['user_id'] = $id;
@@ -118,28 +130,28 @@ class OperatorsAction extends BaseAction {
     public function update()
     {
         $m = D('Operators');
-        $user_name = I('post.username');
-        $password = I('post.password');
-        $_POST['status'] = $_POST['status'][0];
-        if (empty($user_name)) {
+        $id = I('post.id');
+        $data['username'] = I('post.username');
+        $data['password'] = I('post.password');
+        $data['status'] = I('post.status')[0];
+        if (empty($data['username'])) {
             $this->dmsg('1', '用户名不能为空！', false, true);
         }
-        if (empty($password)) {
-            $this->dmsg('1', '密码不能为空！', false, true);
-        }
-        $condition['username'] = array('eq', $user_name);
-        $data = $m->where($condition)->find();
-        if ($data) {
+        $condition['username'] = array('eq', $data['username']);
+        $condition['id'] = array('neq', $id);
+        $data_username = $m->where($condition)->find();
+        if ($data_username) {
             $this->dmsg('1', '用户名已经存在！', false, true);
         }
-        $_POST['creat_time'] = time();
-        $_POST['updatetime'] = time();
-        if (!empty($password)) {
-            $_POST['password'] = $this->changePassword($user_name, $password);
+        $data['creat_time'] = time();
+        $data['updatetime'] = time();
+        if (!empty($data['password'])) {
+            $data['password'] = $this->changePassword($data['username'], $data['password']);
         } else {
-            unset($_POST['password']);
+            unset($data['password']);
         }
-        $rs = $m->save($_POST);
+        $codition_id['id'] = array('eq', $id);
+        $rs = $m->where($codition_id)->save($data);
         if ($rs == true) {
             $this->dmsg('2', '操作成功！', true);
         } else {

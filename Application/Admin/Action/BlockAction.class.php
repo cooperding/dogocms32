@@ -77,15 +77,27 @@ class BlockAction extends BaseAction {
     public function insert()
     {
         $m = D('BlockList');
-        $title = I('post.title');
-        if (empty($title)) {
-            $this->dmsg('1', '请将信息输入完整！', false, true);
+        $data['title'] = I('post.title');
+        $data['sort_id'] = I('post.sort_id');
+        if (empty($data['title'])) {
+            $this->dmsg('1', '名称不能为空！', false, true);
         }
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['addtime'] = time();
-        $_POST['updatetime'] = time();
+        if ($data['sort_id'] == 0) {
+            $this->dmsg('1', '请选择所属分类！', false, true);
+        }
+        $data['url'] = I('post.url');
+        $data['title_img'] = I('post.title_img');
+        $data['description'] = I('post.description');
+        $data['myorder'] = I('post.myorder');
+        $data['field1'] = I('post.field1');
+        $data['field2'] = I('post.field2');
+        $data['field3'] = I('post.field3');
+        $data['field4'] = I('post.field4');
+        $data['field5'] = I('post.field5');
+        $data['updatetime'] = time();
+        $data['status'] = I('post.status')['0'];
         if ($m->create()) {
-            $rs = $m->add($_POST);
+            $rs = $m->add($data);
             if ($rs) {//存在值
                 $this->dmsg('2', '操作成功！', true);
             } else {
@@ -107,18 +119,27 @@ class BlockAction extends BaseAction {
     {
         $m = D('BlockList');
         $id = I('post.id');
-        $title = I('post.title');
-        $sort_id = I('post.sort_id');
+        $data['title'] = I('post.title');
+        $data['sort_id'] = I('post.sort_id');
         $condition['id'] = array('eq', $id);
-        if (empty($title)) {
-            $this->dmsg('1', '网站名不能为空！', false, true);
+        if (empty($data['title'])) {
+            $this->dmsg('1', '名称不能为空！', false, true);
         }
-        if ($sort_id == 0) {
+        if ($data['sort_id'] == 0) {
             $this->dmsg('1', '请选择所属分类！', false, true);
         }
-        $_POST['updatetime'] = time();
-        $_POST['status'] = $_POST['status']['0'];
-        $rs = $m->where($condition)->save($_POST);
+        $data['url'] = I('post.url');
+        $data['title_img'] = I('post.title_img');
+        $data['description'] = I('post.description');
+        $data['myorder'] = I('post.myorder');
+        $data['field1'] = I('post.field1');
+        $data['field2'] = I('post.field2');
+        $data['field3'] = I('post.field3');
+        $data['field4'] = I('post.field4');
+        $data['field5'] = I('post.field5');
+        $data['updatetime'] = time();
+        $data['status'] = I('post.status')['0'];
+        $rs = $m->where($condition)->save($data);
         if ($rs == true) {
             $this->dmsg('2', ' 操作成功！', true);
         } else {
@@ -213,10 +234,14 @@ class BlockAction extends BaseAction {
         if (empty($ename)) {
             $this->dmsg('1', '请将信息输入完整！', false, true);
         }
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
+        if ($m->field('id')->where($condition)->find()) {
+            $this->dmsg('1', '您输入的名称' . $ename . '已经存在！', false, true);
+        }
+        $data['ename'] = $ename;
+        $data['status'] = I('post.status')['0'];
+        $data['updatetime'] = time();
         if ($m->create()) {
-            $rs = $m->add($_POST);
+            $rs = $m->add($data);
             if ($rs) {//存在值
                 $this->dmsg('2', '操作成功！', true);
             } else {
@@ -247,9 +272,11 @@ class BlockAction extends BaseAction {
         if ($m->field('id')->where($condition)->find()) {
             $this->dmsg('1', '您输入的名称' . $ename . '已经存在！', false, true);
         }
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
-        $rs = $m->save($_POST);
+        $condition_id['id'] = array('eq', $id);
+        $data['ename'] = $ename;
+        $data['status'] = I('post.status')['0'];
+        $data['updatetime'] = time();
+        $rs = $m->where($condition_id)->save($data);
         if ($rs == true) {
             $this->dmsg('2', '操作成功！', true);
         } else {
@@ -322,9 +349,9 @@ class BlockAction extends BaseAction {
     {
         $qiuyun = new \Org\Util\Qiuyun;
         $m = D('BlockSort');
-        $condition['status'] = array('eq', 'y');
+        $condition['status'] = array('eq', '20');
         $tree = $m->field(array('id', 'ename' => 'text'))->where($condition)->select();
-        $tree = $qiuyun->list_to_tree($tree, 'id', 'parent_id', 'children');
+        //$tree = $qiuyun->list_to_tree($tree, 'id', 'parent_id', 'children');
         $tree = array_merge(array(array('id' => 0, 'text' => L('sort_root_name'))), $tree);
         echo json_encode($tree);
     }

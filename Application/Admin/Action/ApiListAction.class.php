@@ -63,11 +63,10 @@ class ApiListAction extends BaseAction {
     {
         $m = D('ApiList');
         $id = I('post.id');
-        $name = I('post.name');
         $condition['id'] = array('eq', $id);
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
-        $rs = $m->where($condition)->save($_POST);
+        $data['status'] = I('post.status')['0'];
+        $data['updatetime'] = time();
+        $rs = $m->where($condition)->save($data);
         if ($rs == true) {
             $this->dmsg('2', ' 操作成功！', true);
         } else {

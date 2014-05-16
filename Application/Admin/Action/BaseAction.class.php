@@ -24,16 +24,16 @@ class BaseAction extends Action {
             exit;
         }
         $uid = session('LOGIN_UID');
-        if (!in_array($uid, C('ADMINISTRATOR'))) {//验证超级管理员不用进行权限认证
-            $auth = new \Think\Auth(); //加载Auth类库
-            $authcheck = $auth->check(MODULE_NAME . '/' . ACTION_NAME, session('LOGIN_UID'));
+        //if (!in_array($uid, C('ADMINISTRATOR'))) {//验证超级管理员不用进行权限认证
+            //$auth = new \Think\Auth(); //加载Auth类库
+            //$authcheck = $auth->check(MODULE_NAME . '/' . ACTION_NAME, session('LOGIN_UID'));
 //        if (!$authcheck) {
 //            echo '您没有此项操作权限！';
 //            exit;
 //        }
-        }
+       // }
         $this->assign('style_common', '__PUBLIC__/Common');
-        $this->assign('style', '/Skin/Admin/' . C('DEFAULT_THEME') . $skin);
+        $this->assign('style', '/Skin/Admin/' . C('DEFAULT_THEME'));
     }
 
 //endf

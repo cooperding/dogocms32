@@ -8,13 +8,17 @@
                 </tr>
                 <tr>
                     <th>上级分组名：</th>
-                    <td><input name="parent_id" class="easyui-combotree combotree" data-options="url:'__GROUP__/GoodsSort/jsonTree',required:true"  value="0"  style="width:200px;"/>
+                    <td><input name="parent_id" class="easyui-combotree combotree" data-options="url:'{:U('GoodsSort/jsonTree')}',required:true"  value="0"  style="width:200px;"/>
                     </td>
                 </tr>
                 <tr>
                     <th>选择属性分类：</th>
-                    <td><input name="model_id" class="easyui-combotree combotree" data-options="url:'__GROUP__/AttributeSort/jsonTree',required:true"  value="0"  style="width:200px;"/>
+                    <td><input name="model_id" class="easyui-combotree combotree" data-options="url:'{:U('AttributeSort/jsonTree')}',required:true"  value="0"  style="width:200px;"/>
                     </td>
+                </tr>
+                <tr>
+                    <th>审核状态：</th>
+                    <td><html:radio name="status" radios="status" checked="20"/></td>
                 </tr>
                 <tr>
                     <th>{:L("keywords")}：</th>

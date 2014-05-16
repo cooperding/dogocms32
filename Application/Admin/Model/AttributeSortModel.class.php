@@ -17,7 +17,7 @@ class AttributeSortModel extends Model {
     protected $tableName = 'attribute_sort';
     //_pk 表示主键字段名称 _autoinc 表示主键是否自动增长类型
     protected $fields = array(
-        'id', 'cat_name', 'status','attr_group','_pk' => 'id'
+        'id', 'cat_name', 'status', 'attr_group', 'updatetime', '_pk' => 'id'
     );
 
 }

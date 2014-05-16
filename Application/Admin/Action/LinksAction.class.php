@@ -76,18 +76,22 @@ class LinksAction extends BaseAction {
     public function insert()
     {
         $m = D('Links');
-        $webname = I('post.webname');
-        $sort_id = I('post.sort_id');
-        if (empty($webname)) {
+        $data['webname'] = I('post.webname');
+        $data['sort_id'] = I('post.sort_id');
+        if (empty($data['webname'])) {
             $this->dmsg('1', '网站名不能为空！', false, true);
         }
-        if ($sort_id == 0) {
+        if ($data['sort_id'] == 0) {
             $this->dmsg('1', '请选择所属分类！', false, true);
         }
-        $_POST['addtime'] = time();
-        $_POST['updatetime'] = time();
-        $_POST['status'] = $_POST['status']['0'];
-        if ($m->create($_POST)) {
+        $data['weburl'] = I('post.weburl');
+        $data['webpic'] = I('post.webpic');
+        $data['emark'] = I('post.emark');
+        $data['myorder'] = I('post.myorder');
+        
+        $data['updatetime'] = time();
+        $data['status'] = I('post.status')['0'];
+        if ($m->create($data)) {
             $rs = $m->add();
             if ($rs == true) {
                 $this->dmsg('2', ' 操作成功！', true);
@@ -110,18 +114,23 @@ class LinksAction extends BaseAction {
     {
         $m = D('Links');
         $id = I('post.id');
-        $webname = I('post.webname');
-        $sort_id = I('post.sort_id');
-        $data['id'] = array('eq', $id);
-        if (empty($webname)) {
+        $data['webname'] = I('post.webname');
+        $data['sort_id'] = I('post.sort_id');
+        $condition['id'] = array('eq', $id);
+        if (empty($data['webname'])) {
             $this->dmsg('1', '网站名不能为空！', false, true);
         }
-        if ($sort_id == 0) {
+        if ($data['sort_id'] == 0) {
             $this->dmsg('1', '请选择所属分类！', false, true);
         }
-        $_POST['updatetime'] = time();
-        $_POST['status'] = $_POST['status']['0'];
-        $rs = $m->where($data)->save($_POST);
+        $data['weburl'] = I('post.weburl');
+        $data['webpic'] = I('post.webpic');
+        $data['emark'] = I('post.emark');
+        $data['myorder'] = I('post.myorder');
+        
+        $data['updatetime'] = time();
+        $data['status'] = I('post.status')['0'];
+        $rs = $m->where($condition)->save($data);
         if ($rs == true) {
             $this->dmsg('2', ' 操作成功！', true);
         } else {
@@ -211,14 +220,14 @@ class LinksAction extends BaseAction {
     public function sortinsert()
     {
         $m = D('LinksSort');
-        $ename = I('post.ename');
-        if (empty($ename)) {
+        $data['ename'] = I('post.ename');
+        if (empty($data['ename'])) {
             $this->dmsg('1', '请将信息输入完整！', false, true);
         }
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
+        $data['status'] = I('post.status')['0'];
+        $data['updatetime'] = time();
         if ($m->create()) {
-            $rs = $m->add($_POST);
+            $rs = $m->add($data);
             if ($rs) {//存在值
                 $this->dmsg('2', '操作成功！', true);
             } else {
@@ -240,18 +249,19 @@ class LinksAction extends BaseAction {
     {
         $m = D('LinksSort');
         $id = I('post.id');
-        $ename = I('post.ename');
+        $data['ename'] = I('post.ename');
         $condition['ename'] = array('eq', $ename);
         $condition['id'] = array('neq', $id);
-        if (empty($ename)) {
+        if (empty($data['ename'])) {
             $this->dmsg('1', '请将信息输入完整！', false, true);
         }
         if ($m->field('id')->where($condition)->find()) {
-            $this->dmsg('1', '您输入的名称' . $ename . '已经存在！', false, true);
+            $this->dmsg('1', '您输入的名称' . $data['ename'] . '已经存在！', false, true);
         }
-        $_POST['status'] = $_POST['status']['0'];
-        $_POST['updatetime'] = time();
-        $rs = $m->save($_POST);
+        $data['status'] = I('post.status')['0'];
+        $data['updatetime'] = time();
+        $condition_id['id'] = array('eq', $id);
+        $rs = $m->where($condition_id)->save($data);
         if ($rs == true) {
             $this->dmsg('2', '操作成功！', true);
         } else {

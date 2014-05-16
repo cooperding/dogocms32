@@ -33,7 +33,7 @@ class AttributeListAction extends BaseAction {
      * @version dogocms 1.0
      */
     public function newslist() {
-        $id = intval($_GET['id']);
+        $id = I('get.id');
         $this->assign('id', $id);
         $this->display('list');
     }
@@ -46,7 +46,7 @@ class AttributeListAction extends BaseAction {
      */
     public function add()
     {
-        $id = intval($_GET['id']);
+        $id = I('get.id');
         $attr_index = array(
             '0' => ' 不需要检索 ',
             '1' => ' 关键字检索 ',
@@ -84,7 +84,7 @@ class AttributeListAction extends BaseAction {
     public function edit()
     {
         $m = D('AttributeList');
-        $id = intval($_GET['id']);
+        $id = I('get.id');
         $condition['id'] = array('eq',$id);
         $data = $m->where($condition)->find();
         $attr_index = array(
@@ -128,20 +128,22 @@ class AttributeListAction extends BaseAction {
     public function insert()
     {
         $m = D('AttributeList');
-        $ename = $_POST['attr_name'];
-        $sort_id = $_POST['sort_id'];
-        if (empty($ename)) {
+        $data['attr_name'] = I('post.attr_name');
+        $data['sort_id'] = I('post.sort_id');
+        if (empty($data['attr_name'])) {
             $this->dmsg('1', '商品类型名称不能为空！', false, true);
         }
-        if ($sort_id == 0) {
+        if ($data['sort_id'] == 0) {
             $this->dmsg('1', '请选择所属分类！', false, true);
         }
-        $_POST['attr_index'] = $_POST['attr_index']['0'];
-        $_POST['is_linked'] = $_POST['is_linked']['0'];
-        $_POST['attr_input_type'] = $_POST['attr_input_type']['0'];
-        $_POST['attr_type'] = $_POST['attr_type']['0'];
-        $_POST['updatetime'] = time();
-        if ($m->create($_POST)) {
+        $data['attr_index'] = I('post.attr_index')['0'];
+        $data['is_linked'] = I('post.is_linked')['0'];
+        $data['attr_input_type'] = I('post.attr_input_type')['0'];
+        $data['attr_type'] = I('post.attr_type')['0'];
+        $data['updatetime'] = time();
+        $data['myorder'] = I('post.myorder');
+        $data['attr_values'] = I('post.attr_values');
+        if ($m->create($data)) {
             $rs = $m->add();
             if ($rs == true) {
                 $this->dmsg('2', ' 操作成功！', true);
@@ -162,21 +164,24 @@ class AttributeListAction extends BaseAction {
     public function update()
     {
         $m = D('AttributeList');
-        $ename = $_POST['attr_name'];
-        $data['id'] = array('eq', intval($_POST['id']));
-        $sort_id = $_POST['sort_id'];
-        if (empty($ename)) {
+        $condition['id'] = array('eq', I('post.id'));
+        $data['attr_name'] = I('post.attr_name');
+        $data['sort_id'] = I('post.sort_id');
+        if (empty($data['attr_name'])) {
             $this->dmsg('1', '商品类型名称不能为空！', false, true);
         }
-        if ($sort_id == 0) {
+        if ($data['sort_id'] == 0) {
             $this->dmsg('1', '请选择所属分类！', false, true);
         }
-        $_POST['attr_index'] = $_POST['attr_index']['0'];
-        $_POST['is_linked'] = $_POST['is_linked']['0'];
-        $_POST['attr_input_type'] = $_POST['attr_input_type']['0'];
-        $_POST['attr_type'] = $_POST['attr_type']['0'];
-        $_POST['updatetime'] = time();
-        $rs = $m->where($data)->save($_POST);
+        $data['attr_index'] = I('post.attr_index')['0'];
+        $data['is_linked'] = I('post.is_linked')['0'];
+        $data['attr_input_type'] = I('post.attr_input_type')['0'];
+        $data['attr_type'] = I('post.attr_type')['0'];
+        $data['updatetime'] = time();
+        $data['myorder'] = I('post.myorder');
+        $data['attr_values'] = I('post.attr_values');
+        
+        $rs = $m->where($condition)->save($data);
         if ($rs == true) {
             $this->dmsg('2', ' 操作成功！', true);
         } else {
@@ -192,9 +197,9 @@ class AttributeListAction extends BaseAction {
      */
     public function delete()
     {
-        $id = intval($_POST['id']);
+        $condition['id'] = array('eq',I('post.id'));
         $m = D('AttributeList');
-        $del = $m->where('id=' . $id)->delete();
+        $del = $m->where($condition)->delete();
         if ($del == true) {
             $this->dmsg('2', '操作成功！', true);
         } else {
@@ -210,7 +215,7 @@ class AttributeListAction extends BaseAction {
      */
     public function listJsonId() {
         $m = D('AttributeList');
-        $id = intval($_GET['id']);
+        $id = I('get.id');
         if ($id != 0) {//id为0时调用全部文档
             $condition['sort_id'] = $id;
         }

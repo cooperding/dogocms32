@@ -40,7 +40,7 @@ class SettingAction extends BaseAction {
             'radio' => '布尔型',
             'textarea' => '多行文本'
         );
-        $id = intval($_GET['id']);
+        $id = I('get.id');
         $this->assign('id', $id);
         $this->assign('radios', $radios);
         $this->display();
@@ -56,7 +56,7 @@ class SettingAction extends BaseAction {
     public function edit()
     {
         $m = D('Setting');
-        $id = intval($_GET['id']);
+        $id = I('get.id');
         $condition['id'] = array('eq', $id);
         $data = $m->where($condition)->find();
         $data['sys_value'] = htmlspecialchars_decode($data['sys_value']);
@@ -82,9 +82,8 @@ class SettingAction extends BaseAction {
     public function insert()
     {
         $m = D('Setting');
-        $sys_name = I('post.sys_name');
         $sys_gid = I('post.sys_gid');
-        $_POST['sys_value'] = I('post.sys_value');
+        $sys_name = I('post.sys_name');
         if (empty($sys_gid) || empty($sys_name)) {//不为空说明存在，存在就不能添加
             $this->dmsg('1', '变量名或者所属分组不能为空！', false, true);
         }
@@ -93,9 +92,13 @@ class SettingAction extends BaseAction {
         if (!empty($rs)) {//不为空说明存在，存在就不能添加
             $this->dmsg('1', '变量名"' . $sys_name . '"已经存在', false, true);
         }
-        $_POST['sys_type'] = $_POST['sys_type'][0];
-        $_POST['updatetime'] = time();
-        if ($m->create($_POST)) {
+        $data['sys_value'] = I('post.sys_value');
+        $data['sys_type'] = I('post.sys_type')[0];
+        $data['updatetime'] = time();
+        $data['sys_gid'] = I('post.sys_gid');
+        $data['sys_info'] = I('post.sys_info');
+        $data['myorder'] = I('post.myorder');
+        if ($m->create($data)) {
             $rs = $m->add();
             if ($rs) {
                 $this->dmsg('2', '添加成功！', true);
@@ -118,7 +121,7 @@ class SettingAction extends BaseAction {
         $id = I('post.id');
         $sys_gid = I('post.sys_gid');
         $sys_name = I('post.sys_name');
-        $_POST['sys_value'] = I('post.sys_value');
+        
         $condition['id'] = array('neq', $id);
         if (empty($sys_gid) || empty($sys_name)) {//不为空说明存在，存在就不能添加
             $this->dmsg('1', '变量名或者所属分组不能为空！', false, true);
@@ -128,10 +131,15 @@ class SettingAction extends BaseAction {
         if (!empty($rs)) {//不为空说明存在，存在就不能添加
             $this->dmsg('1', '变量名"' . $sys_name . '"已经存在', false, true);
         }
-        $_POST['sys_type'] = $_POST['sys_type'][0];
-        $_POST['updatetime'] = time();
-        $rs = $m->save($_POST);
-        if ($rs == true) {
+        $data['sys_value'] = I('post.sys_value');
+        $data['sys_type'] = I('post.sys_type')[0];
+        $data['updatetime'] = time();
+        $data['sys_gid'] = I('post.sys_gid');
+        $data['sys_info'] = I('post.sys_info');
+        $data['myorder'] = I('post.myorder');
+        $condition_id['id'] = array('eq', $id);
+        $rs2 = $m->where($condition_id)->save($data);
+        if ($rs2 == true) {
             $this->dmsg('2', '修改成功！', true);
         } else {
             $this->dmsg('1', '未有当作或者操作失败！', false, true);
